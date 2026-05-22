@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRACE — Content Accountability Standard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:   #F2EEE8;
+      --ink:     #1A1A1A;
+      --mid:     #888880;
+      --rule:    #D8D4CC;
+      --green:   #1B5E35;
+      --paper:   #FAFAF7;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--ink);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 48px;
+    }
+    .nav-wordmark {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px; font-weight: 500;
+      color: var(--cream); letter-spacing: 0.18em;
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      font-size: 11px; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 0.1em; color: #888; text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--cream); }
+
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 48px 48px 64px;
+      border-bottom: 1px solid var(--rule);
+      position: relative; overflow: hidden;
+    }
+    .hero-bg-text {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Fraunces', serif; font-weight: 900;
+      font-size: clamp(180px, 28vw, 380px);
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(26,26,26,0.07);
+      letter-spacing: -0.04em;
+      white-space: nowrap;
+      pointer-events: none; user-select: none;
+    }
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--mid);
+      margin-bottom: 24px;
+    }
+    .hero-title {
+      font-family: 'Fraunces', serif; font-weight: 900;
+      font-size: clamp(64px, 12vw, 160px);
+      line-height: 0.9; letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 32px;
+    }
+    .hero-expansion {
+      display: flex; gap: 0;
+      margin-bottom: 48px;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+    .hero-letter {
+      flex: 1; padding: 16px 20px;
+      border-right: 1px solid var(--rule);
+    }
+    .hero-letter:last-child { border-right: none; }
+    .hl-char {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: 22px; color: var(--ink);
+      display: block; margin-bottom: 4px;
+    }
+    .hl-word {
+      font-size: 11px; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--mid);
+    }
+    .hero-bottom {
+      display: flex; align-items: flex-end;
+      justify-content: space-between; gap: 32px;
+    }
+    .hero-tagline {
+      font-family: 'Fraunces', serif; font-style: italic; font-weight: 300;
+      font-size: clamp(18px, 2.5vw, 26px);
+      line-height: 1.3; color: var(--ink);
+      max-width: 540px;
+    }
+    .hero-cta {
+      display: inline-block;
+      background: var(--ink); color: var(--cream);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; text-decoration: none;
+      padding: 16px 32px;
+      white-space: nowrap;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    .hero-cta:hover { background: var(--green); }
+
+    section { padding: 80px 48px; border-bottom: 1px solid var(--rule); }
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--mid);
+      margin-bottom: 32px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--rule);
+    }
+
+    .problem-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 48px; align-items: start;
+    }
+    .problem-statement {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: clamp(22px, 2.8vw, 32px);
+      line-height: 1.25; color: var(--ink);
+    }
+    .problem-body { font-size: 15px; line-height: 1.75; color: #444; }
+    .problem-body p + p { margin-top: 16px; }
+
+    .conditions { display: flex; flex-direction: column; gap: 0; }
+    .condition {
+      display: grid;
+      grid-template-columns: 72px 1fr 2fr;
+      gap: 0;
+      border-top: 1px solid var(--rule);
+      padding: 32px 0;
+      align-items: start;
+    }
+    .condition:last-child { border-bottom: 1px solid var(--rule); }
+    .cond-letter {
+      font-family: 'Fraunces', serif; font-weight: 900;
+      font-size: 52px; line-height: 1; color: var(--ink);
+      opacity: 0.15;
+    }
+    .cond-word {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: 22px; line-height: 1.2; color: var(--ink);
+      padding-right: 32px; padding-top: 4px;
+    }
+    .cond-desc { font-size: 15px; line-height: 1.7; color: #444; padding-top: 4px; }
+
+    .test-section {
+      background: var(--ink); color: var(--cream);
+      text-align: center; padding: 96px 48px;
+    }
+    .test-section .section-label { color: #666; justify-content: center; }
+    .test-section .section-label::after { display: none; }
+    .test-heading {
+      font-family: 'Fraunces', serif; font-weight: 900;
+      font-size: clamp(36px, 6vw, 72px);
+      line-height: 1; letter-spacing: -0.02em;
+      color: var(--cream); margin-bottom: 20px;
+    }
+    .test-sub { font-size: 16px; color: #888; max-width: 480px; margin: 0 auto 40px; }
+    .test-cta {
+      display: inline-block;
+      background: var(--cream); color: var(--ink);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; text-decoration: none;
+      padding: 18px 40px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .test-cta:hover { background: var(--green); color: var(--cream); }
+    .test-tracks {
+      display: flex; justify-content: center; gap: 40px;
+      margin-top: 48px; padding-top: 40px;
+      border-top: 1px solid #333;
+    }
+    .track-item { text-align: left; }
+    .track-name {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: #666; margin-bottom: 6px;
+    }
+    .track-desc { font-size: 13px; color: #aaa; max-width: 200px; }
+
+    .foundation-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; align-items: start;
+    }
+    .foundation-title {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: clamp(24px, 3vw, 36px);
+      line-height: 1.15; color: var(--ink); margin-bottom: 20px;
+    }
+    .foundation-body { font-size: 15px; line-height: 1.75; color: #444; }
+    .foundation-body p + p { margin-top: 14px; }
+    .foundation-link {
+      display: inline-block; margin-top: 28px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--ink);
+      text-decoration: none; border-bottom: 2px solid var(--ink);
+      padding-bottom: 2px; transition: color 0.15s, border-color 0.15s;
+    }
+    .foundation-link:hover { color: var(--green); border-color: var(--green); }
+    .foundation-questions {
+      background: var(--paper); border: 1px solid var(--rule); padding: 32px;
+    }
+    .fq-label {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--mid); margin-bottom: 20px;
+    }
+    .fq-list { list-style: none; }
+    .fq-list li {
+      font-family: 'Fraunces', serif; font-weight: 300;
+      font-size: 17px; line-height: 1.4; color: var(--ink);
+      padding: 14px 0; border-bottom: 1px solid var(--rule);
+      display: flex; gap: 16px; align-items: baseline;
+    }
+    .fq-list li:last-child { border-bottom: none; }
+    .fq-num {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      color: var(--mid); flex-shrink: 0; padding-top: 4px;
+    }
+
+    .resources-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: var(--rule); border: 1px solid var(--rule);
+    }
+    .resource-card {
+      background: var(--cream); padding: 32px 28px;
+      text-decoration: none; color: inherit;
+      display: flex; flex-direction: column; transition: background 0.15s;
+    }
+    .resource-card:hover { background: var(--paper); }
+    .rc-type {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--mid); margin-bottom: 16px;
+    }
+    .rc-title {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: 19px; line-height: 1.25; color: var(--ink);
+      margin-bottom: 12px; flex: 1;
+    }
+    .rc-desc { font-size: 13px; line-height: 1.6; color: #666; margin-bottom: 20px; }
+    .rc-arrow {
+      font-size: 18px; color: var(--mid); transition: transform 0.15s, color 0.15s;
+    }
+    .resource-card:hover .rc-arrow { transform: translateX(4px); color: var(--ink); }
+
+    footer {
+      padding: 32px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid var(--rule);
+    }
+    .footer-left {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      color: var(--mid); letter-spacing: 0.06em;
+    }
+    .footer-left span { color: var(--ink); font-weight: 500; }
+    .footer-right { font-size: 12px; color: var(--mid); }
+    .footer-right a { color: var(--mid); text-decoration: none; }
+    .footer-right a:hover { color: var(--ink); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 64px 24px 48px; }
+      .hero-expansion { flex-direction: column; }
+      .hero-letter { border-right: none; border-bottom: 1px solid var(--rule); padding: 12px 0; }
+      .hero-letter:last-child { border-bottom: none; }
+      .hero-bottom { flex-direction: column; align-items: flex-start; gap: 24px; }
+      section { padding: 56px 24px; }
+      .problem-grid { grid-template-columns: 1fr; gap: 28px; }
+      .condition { grid-template-columns: 40px 1fr; grid-template-rows: auto auto; }
+      .cond-letter { font-size: 36px; }
+      .cond-desc { grid-column: 2 / 3; }
+      .foundation-grid { grid-template-columns: 1fr; gap: 40px; }
+      .resources-grid { grid-template-columns: 1fr; }
+      .test-tracks { flex-direction: column; gap: 24px; align-items: center; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-eyebrow  { animation: fadeUp 0.6s ease both; }
+    .hero-title    { animation: fadeUp 0.6s 0.1s ease both; }
+    .hero-expansion{ animation: fadeUp 0.6s 0.2s ease both; }
+    .hero-bottom   { animation: fadeUp 0.6s 0.3s ease both; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-wordmark">TRACE</div>
+    <div class="nav-links">
+      <a href="#standard">The Standard</a>
+      <a href="#test">Test Your Content</a>
+      <a href="#foundation">Foundation</a>
+      <a href="#resources">Resources</a>
+      <a href="https://github.com/zirnhelt/curated-podcast-generator">GitHub</a>
+    </div>
+  </nav>
+
+  <section class="hero" id="top">
+    <div class="hero-bg-text">TRACE</div>
+    <div class="hero-eyebrow">Content Accountability Standard</div>
+    <h1 class="hero-title">TRACE</h1>
+    <div class="hero-expansion">
+      <div class="hero-letter"><span class="hl-char">T</span><span class="hl-word">Transparency</span></div>
+      <div class="hero-letter"><span class="hl-char">R</span><span class="hl-word">Representation</span></div>
+      <div class="hero-letter"><span class="hl-char">A</span><span class="hl-word">Accountability</span></div>
+      <div class="hero-letter"><span class="hl-char">C</span><span class="hl-word">Consent</span></div>
+      <div class="hero-letter"><span class="hl-char">E</span><span class="hl-word">Engagement</span></div>
+    </div>
+    <div class="hero-bottom">
+      <p class="hero-tagline">A shared standard for evaluating whether content about a community serves it — or extracts from it.</p>
+      <a href="#test" class="hero-cta">Test Your Content →</a>
+    </div>
+  </section>
+
+  <section id="problem">
+    <div class="section-label">The Problem</div>
+    <div class="problem-grid">
+      <div class="problem-statement">Communities are the subjects of content they didn't commission, don't control, and can't correct.</div>
+      <div class="problem-body">
+        <p>This is not new. Externally produced journalism, documentary, and platform-driven content have always raised questions of representation and extraction. What is new is scale.</p>
+        <p>AI tools now allow any producer, from anywhere, to generate culturally specific content about a community indefinitely and at near-zero cost. Journalism ethics codes bind professional journalists — not NGOs, platforms, researchers, or AI operators. No shared accountability standard exists that communities can invoke and producers can be held to.</p>
+        <p>TRACE is a proposal toward that standard.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="standard">
+    <div class="section-label">The Standard</div>
+    <div class="conditions">
+      <div class="condition">
+        <div class="cond-letter">T</div>
+        <div class="cond-word">Transparency</div>
+        <div class="cond-desc">Content must clearly disclose who or what produced it, how, and why — at the point of encounter, not in fine print. Audiences have a right to evaluate what they're consuming. Producers have an obligation to make that evaluation possible.</div>
+      </div>
+      <div class="condition">
+        <div class="cond-letter">R</div>
+        <div class="cond-word">Representation</div>
+        <div class="cond-desc">Content that speaks for, about, or on behalf of a community must accurately reflect that community's actual diversity, complexity, and self-understanding — not a simplified version that serves the producer's narrative or platform's engagement model.</div>
+      </div>
+      <div class="condition">
+        <div class="cond-letter">A</div>
+        <div class="cond-word">Accountability</div>
+        <div class="cond-desc">A genuine feedback mechanism must exist — not a comment form — through which the community can challenge, correct, or remove content. This mechanism must be accessible to community members who are not technically literate, and must have actual power to change outcomes.</div>
+      </div>
+      <div class="condition">
+        <div class="cond-letter">C</div>
+        <div class="cond-word">Consent</div>
+        <div class="cond-desc">No content should attribute views, statements, cultural knowledge, or creative expression to living people without their explicit, informed, and revocable consent. This applies with particular force to community leaders and public figures whose attributed voice carries weight beyond their individual words.</div>
+      </div>
+      <div class="condition">
+        <div class="cond-letter">E</div>
+        <div class="cond-word">Engagement</div>
+        <div class="cond-desc">Content that competes with or substitutes for human creators already doing this work in the community requires, at minimum, an honest assessment of that competition. The stronger standard is active collaboration where existing creators retain meaningful creative authority.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="test-section" id="test">
+    <div class="section-label">Assessment Tool</div>
+    <h2 class="test-heading">Test Your Content</h2>
+    <p class="test-sub">Score any content project against the TRACE standard. Takes about ten minutes. Results in a shareable accountability card.</p>
+    <a href="https://github.com/zirnhelt/curated-podcast-generator" class="test-cta">Open the Scorecard →</a>
+    <div class="test-tracks">
+      <div class="track-item">
+        <div class="track-name">Track A</div>
+        <div class="track-desc">Community-insider, non-commercial, self-funded. 6 categories, 20 points.</div>
+      </div>
+      <div class="track-item">
+        <div class="track-name">Track B</div>
+        <div class="track-desc">External, institutional, commercial, or mixed. 7 categories, 35 points.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="foundation">
+    <div class="section-label">Foundation</div>
+    <div class="foundation-grid">
+      <div class="foundation-left">
+        <h2 class="foundation-title">The Community Content Compact</h2>
+        <div class="foundation-body">
+          <p>TRACE is built on the Community Content Compact — a manifesto for ethical content production developed through Cariboo Signals, a community journalism project serving rural British Columbia.</p>
+          <p>The Compact identifies the structural obstacles that good intentions alone cannot solve: project-based funding that produces pilots instead of infrastructure, and extraction models capitalized at incompatible scale.</p>
+          <p>Meeting the five conditions is achievable. The obstacle is not technical complexity. It is political.</p>
+        </div>
+        <a href="https://github.com/zirnhelt/curated-podcast-generator" class="foundation-link">Read the Compact →</a>
+      </div>
+      <div>
+        <div class="foundation-questions">
+          <div class="fq-label">Four Questions for Any Content Partnership</div>
+          <ul class="fq-list">
+            <li><span class="fq-num">01</span> Who owns the output?</li>
+            <li><span class="fq-num">02</span> Who owns the audience relationship?</li>
+            <li><span class="fq-num">03</span> Who owns the archive?</li>
+            <li><span class="fq-num">04</span> Does the community hold final editorial authority?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="resources">
+    <div class="section-label">Resources</div>
+    <div class="resources-grid">
+      <a href="https://github.com/zirnhelt/curated-podcast-generator" class="resource-card">
+        <div class="rc-type">Scoring Framework</div>
+        <div class="rc-title">Creative Content Accountability Framework</div>
+        <div class="rc-desc">The full scoring guide for both tracks, with criteria, point values, verdict thresholds, and continuous improvement guidance.</div>
+        <div class="rc-arrow">→</div>
+      </a>
+      <a href="https://github.com/zirnhelt/curated-podcast-generator" class="resource-card">
+        <div class="rc-type">Policy Brief</div>
+        <div class="rc-title">Who Gets to Tell a Community's Story?</div>
+        <div class="rc-desc">A two-page brief for funders and policymakers, with three specific asks for mandatory disclosure, governance funding, and community data rights.</div>
+        <div class="rc-arrow">→</div>
+      </a>
+      <a href="https://github.com/zirnhelt/curated-podcast-generator" class="resource-card">
+        <div class="rc-type">Case Study</div>
+        <div class="rc-title">Cariboo Signals Self-Assessment</div>
+        <div class="rc-desc">A Track A self-assessment showing how the framework applies in practice. Score: 15/20 — Sound.</div>
+        <div class="rc-arrow">→</div>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-left">
+      <span>TRACE</span> — Content Accountability Standard &nbsp;·&nbsp;
+      Built on the Community Content Compact &nbsp;·&nbsp;
+      Cariboo Signals, May 2026
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com/zirnhelt/curated-podcast-generator">github.com/zirnhelt/curated-podcast-generator</a>
+    </div>
+  </footer>
+
+</body>
+</html>
