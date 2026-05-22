@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Community Content Compact — TRACE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:   #F2EEE8;
+      --ink:     #1A1A1A;
+      --mid:     #888880;
+      --rule:    #D8D4CC;
+      --green:   #1B5E35;
+      --paper:   #FAFAF7;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--ink);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 48px;
+    }
+    .nav-wordmark {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px; font-weight: 500;
+      color: var(--cream); letter-spacing: 0.18em;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      font-size: 11px; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 0.1em; color: #888; text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--cream); }
+
+    .page-hero {
+      padding: 128px 48px 72px;
+      border-bottom: 1px solid var(--rule);
+      max-width: 900px;
+    }
+    .page-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--mid);
+      margin-bottom: 20px;
+    }
+    .page-title {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: clamp(36px, 6vw, 64px);
+      line-height: 1.05; letter-spacing: -0.02em;
+      color: var(--ink); margin-bottom: 24px;
+    }
+    .page-sub {
+      font-family: 'Fraunces', serif; font-style: italic; font-weight: 300;
+      font-size: clamp(16px, 2vw, 20px); line-height: 1.5;
+      color: #555; max-width: 620px;
+    }
+
+    .doc-body {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 0;
+      max-width: 1100px;
+    }
+    .doc-nav {
+      padding: 48px 32px 48px 48px;
+      position: sticky; top: 48px; height: fit-content;
+      border-right: 1px solid var(--rule);
+    }
+    .doc-nav-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--mid);
+      margin-bottom: 16px;
+    }
+    .doc-nav-links { display: flex; flex-direction: column; gap: 10px; }
+    .doc-nav-links a {
+      font-size: 12px; color: var(--mid); text-decoration: none;
+      transition: color 0.15s;
+    }
+    .doc-nav-links a:hover { color: var(--ink); }
+
+    .doc-content { padding: 48px 64px 96px 48px; }
+
+    .doc-section { margin-bottom: 64px; }
+    .doc-section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--mid);
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .doc-section-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--rule);
+    }
+    .doc-section h2 {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: clamp(22px, 2.8vw, 30px);
+      line-height: 1.15; color: var(--ink);
+      margin-bottom: 24px;
+    }
+    .doc-section h3 {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: 18px; line-height: 1.2; color: var(--ink);
+      margin-top: 32px; margin-bottom: 12px;
+    }
+    .doc-section p {
+      font-size: 15px; line-height: 1.8; color: #333;
+      max-width: 680px;
+    }
+    .doc-section p + p { margin-top: 16px; }
+
+    .condition-block {
+      border-top: 1px solid var(--rule);
+      padding: 28px 0;
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    .condition-block:last-of-type { border-bottom: 1px solid var(--rule); }
+    .cb-letter {
+      font-family: 'Fraunces', serif; font-weight: 900;
+      font-size: 44px; line-height: 1; color: var(--ink);
+      opacity: 0.12;
+    }
+    .cb-content {}
+    .cb-word {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: 17px; color: var(--ink); margin-bottom: 8px;
+    }
+    .cb-desc { font-size: 15px; line-height: 1.75; color: #444; max-width: 580px; }
+
+    .compact-questions {
+      background: var(--paper); border: 1px solid var(--rule);
+      padding: 32px; max-width: 640px; margin-top: 8px;
+    }
+    .cq-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--mid);
+      margin-bottom: 20px;
+    }
+    .cq-list { list-style: none; }
+    .cq-list li {
+      font-family: 'Fraunces', serif; font-weight: 300;
+      font-size: 16px; line-height: 1.4; color: var(--ink);
+      padding: 14px 0; border-bottom: 1px solid var(--rule);
+      display: flex; gap: 16px; align-items: baseline;
+    }
+    .cq-list li:last-child { border-bottom: none; }
+    .cq-num {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      color: var(--mid); flex-shrink: 0; padding-top: 3px;
+    }
+
+    .doc-callout {
+      background: var(--ink); color: var(--cream);
+      padding: 32px; max-width: 640px; margin: 32px 0;
+    }
+    .doc-callout p {
+      font-family: 'Fraunces', serif; font-style: italic; font-weight: 300;
+      font-size: clamp(17px, 2vw, 20px); line-height: 1.5;
+      color: var(--cream); max-width: none;
+    }
+
+    .doc-colophon {
+      border-top: 1px solid var(--rule);
+      padding: 32px 0;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; color: var(--mid);
+      line-height: 1.6;
+    }
+
+    footer {
+      padding: 32px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid var(--rule);
+    }
+    .footer-left {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      color: var(--mid); letter-spacing: 0.06em;
+    }
+    .footer-left span { color: var(--ink); font-weight: 500; }
+    .footer-right { font-size: 12px; color: var(--mid); }
+    .footer-right a { color: var(--mid); text-decoration: none; }
+    .footer-right a:hover { color: var(--ink); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .page-hero { padding: 88px 24px 48px; }
+      .doc-body { grid-template-columns: 1fr; }
+      .doc-nav { display: none; }
+      .doc-content { padding: 40px 24px 64px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-wordmark">TRACE</a>
+    <div class="nav-links">
+      <a href="/#standard">The Standard</a>
+      <a href="/scorecard">Scorecard</a>
+      <a href="/policy-brief">Policy Brief</a>
+      <a href="/compact" class="active">Compact</a>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-eyebrow">Foundation Document</div>
+    <h1 class="page-title">The Community<br>Content Compact</h1>
+    <p class="page-sub">A statement of principles for ethical content production, developed through Cariboo Signals, a community journalism project serving rural British Columbia.</p>
+  </div>
+
+  <div class="doc-body">
+    <nav class="doc-nav">
+      <div class="doc-nav-label">Sections</div>
+      <div class="doc-nav-links">
+        <a href="#preamble">Preamble</a>
+        <a href="#structure">The Structure of the Problem</a>
+        <a href="#conditions">Five Conditions</a>
+        <a href="#questions">Four Questions</a>
+        <a href="#commitment">A Commitment</a>
+      </div>
+    </nav>
+
+    <div class="doc-content">
+
+      <div class="doc-section" id="preamble">
+        <div class="doc-section-label">Preamble</div>
+        <p>Every community has a story. The question of who tells that story — and on whose terms — has never been neutral.</p>
+        <p>For most of media history, communities were subjects of content: catalogued by ethnographers, profiled by journalists, documented by filmmakers, all without meaningful say in framing, publication, or correction. The relationship was extractive by design. What was taken was called "the public record." What was left behind was called "coverage."</p>
+        <p>The tools have changed. The structure has not.</p>
+        <p>AI now enables any operator, from anywhere, to produce culturally specific content about any community at near-zero cost and effectively infinite scale. What was once bounded by the economics of production has become unbounded. What communities could once rely on — that professional journalism ethics would bind at least the most prominent producers — no longer holds when the dominant producers are platforms, algorithms, and automated systems operating without professional accountability.</p>
+
+        <div class="doc-callout">
+          <p>"Communities are the subjects of content they didn't commission, don't control, and can't correct. This is not new. What is new is scale."</p>
+        </div>
+
+        <p>The Community Content Compact is our response. It is not a complaint about the present. It is a set of conditions for a better arrangement — specific enough to be tested, public enough to be enforced by the communities it protects.</p>
+      </div>
+
+      <div class="doc-section" id="structure">
+        <div class="doc-section-label">The Structure of the Problem</div>
+        <h2>Good intentions are not the obstacle.</h2>
+        <p>Most producers of community content believe they are doing something valuable. They are often wrong not because they are dishonest, but because the incentive structures of content production are misaligned with community benefit in ways that persist independent of individual intent.</p>
+        <p>Three structural misalignments define the problem:</p>
+
+        <h3>1. Project-based funding produces pilots, not infrastructure.</h3>
+        <p>Community journalism requires sustained relationships. Sustained relationships require sustained investment. Most funders offer project grants — one-time interventions that produce a product, generate a report, and then end. Communities are left with neither the capacity nor the archive. The funder moves on. The community remains, without the tools to continue what was started on their behalf.</p>
+
+        <h3>2. Extraction is capitalized at incompatible scale.</h3>
+        <p>A community newspaper employs two people and knows the names of the people it covers. A platform or AI operator produces content about that community from a server farm staffed by thousands. The economics of content production have decoupled from the economics of community benefit. Speed and volume are rewarded; relationships and accountability are not. There is no market correction for this. The communities most affected are the ones with the least market power.</p>
+
+        <h3>3. Accountability is opt-in for everyone except journalists.</h3>
+        <p>Journalism ethics codes bind professional journalists through professional norms and organizational employment. They do not extend to NGOs, platforms, AI operators, researchers, or independent producers — the majority of entities now producing content about communities at scale. Communities have no mechanism to invoke accountability standards because no shared standards exist that these producers have committed to. The gap is not technical. It is political. Closing it requires producers to accept obligations they currently do not have.</p>
+      </div>
+
+      <div class="doc-section" id="conditions">
+        <div class="doc-section-label">The Five Conditions</div>
+        <h2>These are minimums, not aspirations.</h2>
+        <p>The TRACE standard identifies five conditions that any content about a community must meet to be considered accountable. Meeting them is achievable. Most failures to meet them are choices, not accidents.</p>
+
+        <div style="margin-top: 32px;">
+          <div class="condition-block">
+            <div class="cb-letter">T</div>
+            <div class="cb-content">
+              <div class="cb-word">Transparency</div>
+              <p class="cb-desc">Communities have a right to know who made the content, how, and why — at the point of encounter. Not in a privacy policy. Not in a terms-of-service document. At the point of encounter, in plain language. Disclosure is not a burden on producers. It is a precondition for the trust that gives content its value. A producer who cannot disclose their methods should question whether their methods are defensible.</p>
+            </div>
+          </div>
+          <div class="condition-block">
+            <div class="cb-letter">R</div>
+            <div class="cb-content">
+              <div class="cb-word">Representation</div>
+              <p class="cb-desc">A community is not its most prominent spokesperson, its most stereotyped characteristic, or its most convenient narrative. Content that purports to represent a community must reflect its actual diversity and complexity — not the version that travels well on platforms, not the version that confirms the producer's prior assumptions, not the version that was easiest to produce. The burden of accurate representation is on the producer. It cannot be discharged by quoting one local source.</p>
+            </div>
+          </div>
+          <div class="condition-block">
+            <div class="cb-letter">A</div>
+            <div class="cb-content">
+              <div class="cb-word">Accountability</div>
+              <p class="cb-desc">"Leave a comment" is not accountability. Accountability means a real person with a real name who can be reached by a community member with a complaint, and who has genuine authority to change outcomes. It means a documented record of changes made in response to community feedback. It means real corrective power for communities, not symbolic responsiveness that produces the appearance of accountability without the substance. If no one in the producing organization can be removed from their role because of community feedback, the accountability mechanism is theater.</p>
+            </div>
+          </div>
+          <div class="condition-block">
+            <div class="cb-letter">C</div>
+            <div class="cb-content">
+              <div class="cb-word">Consent</div>
+              <p class="cb-desc">Attributed statements, cultural knowledge, and creative expression belong to the people and communities that produced them. Using these without consent is not "inspiration" or "reference" or "fair use in the public interest." It is appropriation. The standard is explicit, informed, and revocable consent. Not implied consent. Not silence treated as agreement. Not consent obtained under conditions of dependence or imbalance. This applies with particular force to living individuals, community leaders, and holders of traditional knowledge, whose attributed voice carries weight beyond their individual words.</p>
+            </div>
+          </div>
+          <div class="condition-block">
+            <div class="cb-letter">E</div>
+            <div class="cb-content">
+              <div class="cb-word">Engagement</div>
+              <p class="cb-desc">Content that competes with, displaces, or substitutes for human creators already doing this work in the community has a special obligation to that community. The minimum is an honest assessment of the competition — a genuine accounting of whether this content makes it harder for community creators to sustain themselves. The stronger standard is active collaboration in which existing creators retain meaningful creative authority. The goal is not prohibition of external production. It is the elimination of the dynamic in which external producers benefit from a community's story while the community's own storytellers are impoverished by the competition.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="questions">
+        <div class="doc-section-label">Four Questions</div>
+        <h2>For any content partnership, on the record, before it begins.</h2>
+        <p>The structural problems of community content production are often locked in at the contract stage — not because anyone intends harm, but because the questions that would reveal the harm are not asked. These four questions must be answered on the record before any content partnership proceeds. If they cannot be answered clearly and in writing, that is itself an answer.</p>
+
+        <div class="compact-questions">
+          <div class="cq-label">Four Questions for Any Content Partnership</div>
+          <ul class="cq-list">
+            <li>
+              <span class="cq-num">01</span>
+              <span><strong>Who owns the output?</strong> The content itself — who holds copyright, who controls distribution, who decides when it is published, modified, or removed. If the answer is "the external partner," ask why.</span>
+            </li>
+            <li>
+              <span class="cq-num">02</span>
+              <span><strong>Who owns the audience relationship?</strong> The readers, listeners, or viewers developed through this content — do they belong to the community outlet, or to the external partner's platform? Subscriber data, email lists, social audiences: who holds them when the partnership ends?</span>
+            </li>
+            <li>
+              <span class="cq-num">03</span>
+              <span><strong>Who owns the archive?</strong> What happens to the content after the partnership ends. Does the community retain access to its own history, in formats it can use, without ongoing payment to a platform that controls the archive?</span>
+            </li>
+            <li>
+              <span class="cq-num">04</span>
+              <span><strong>Does the community hold final editorial authority?</strong> Can the community veto content it finds inaccurate, harmful, or misrepresentative — and does that veto have actual effect, not just the effect of producing a statement of disagreement that runs alongside the original content?</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="doc-section" id="commitment">
+        <div class="doc-section-label">A Commitment</div>
+        <h2>What endorsement means.</h2>
+        <p>Communities that endorse the Community Content Compact commit to three things: applying its principles in their own production; requiring them in the partnerships they enter; and invoking them publicly when content about their community fails to meet the standard.</p>
+        <p>Producers that endorse the Community Content Compact commit to three things: disclosing their methods fully; meeting the five TRACE conditions in content about any community that has endorsed the Compact; and accepting accountability when they fall short — not by issuing statements, but by changing the content, the practice, or the relationship.</p>
+        <p>The Compact is not a legal instrument. It does not create enforceable rights or professional liability. It is a shared statement of what ethical content production requires, made public and specific enough that communities can use it as a standard of expectation, and that producers who fall short of it cannot claim they did not know what was expected.</p>
+        <p>Accountability without consequence is theater. The consequence the Compact makes available is reputational: a producer who endorses it and fails its conditions is answerable to the public record of that endorsement. That is not a small thing. It is often the only thing available to communities with limited legal and financial resources. We have built this standard to be usable with what communities actually have.</p>
+
+        <div class="doc-colophon">
+          The Community Content Compact was developed through Cariboo Signals, with the TRACE Content Accountability Standard.<br>
+          Version 1.0 &nbsp;·&nbsp; May 2026 &nbsp;·&nbsp; Open for community endorsement
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-left">
+      <span>TRACE</span> — Content Accountability Standard &nbsp;·&nbsp;
+      Built on the Community Content Compact &nbsp;·&nbsp;
+      Cariboo Signals, May 2026
+    </div>
+    <div class="footer-right">
+      <a href="/">tracestandard.org</a>
+    </div>
+  </footer>
+
+</body>
+</html>

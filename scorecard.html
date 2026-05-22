@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRACE Scorecard — Assessment Tool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:   #F2EEE8;
+      --ink:     #1A1A1A;
+      --mid:     #888880;
+      --rule:    #D8D4CC;
+      --green:   #1B5E35;
+      --paper:   #FAFAF7;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--ink);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 48px;
+    }
+    .nav-wordmark {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px; font-weight: 500;
+      color: var(--cream); letter-spacing: 0.18em;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      font-size: 11px; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 0.1em; color: #888; text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--cream); }
+
+    .page-hero {
+      padding: 128px 48px 64px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .page-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--mid);
+      margin-bottom: 20px;
+    }
+    .page-title {
+      font-family: 'Fraunces', serif; font-weight: 900;
+      font-size: clamp(36px, 7vw, 80px);
+      line-height: 0.95; letter-spacing: -0.03em;
+      color: var(--ink); margin-bottom: 24px;
+    }
+    .page-sub {
+      font-size: 15px; line-height: 1.7; color: #555;
+      max-width: 520px;
+    }
+
+    /* Track selector */
+    .track-section {
+      padding: 48px 48px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .track-selector {
+      display: flex; gap: 0;
+      max-width: 680px;
+      border: 1px solid var(--rule);
+    }
+    .track-btn {
+      flex: 1; padding: 24px 28px;
+      background: var(--cream); border: none; cursor: pointer;
+      text-align: left;
+      border-right: 1px solid var(--rule);
+      transition: background 0.15s;
+      position: relative;
+    }
+    .track-btn:last-child { border-right: none; }
+    .track-btn.active {
+      background: var(--ink);
+    }
+    .track-btn.active .tb-name,
+    .track-btn.active .tb-pts { color: var(--cream); }
+    .track-btn.active .tb-desc { color: #999; }
+    .track-btn:not(.active):hover { background: var(--paper); }
+    .tb-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .tb-desc {
+      font-size: 13px; line-height: 1.5; color: var(--mid);
+      margin-bottom: 12px;
+    }
+    .tb-pts {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: 13px; color: var(--ink);
+    }
+
+    /* Sticky score bar */
+    .score-bar {
+      position: sticky; top: 48px; z-index: 50;
+      background: var(--paper);
+      border-bottom: 1px solid var(--rule);
+      padding: 0 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 56px;
+    }
+    .sb-left { display: flex; align-items: baseline; gap: 12px; }
+    .sb-score {
+      font-family: 'Fraunces', serif; font-weight: 900;
+      font-size: 28px; line-height: 1; color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+    .sb-of {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      color: var(--mid); letter-spacing: 0.08em;
+    }
+    .sb-right { display: flex; align-items: center; gap: 20px; }
+    .sb-verdict {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; padding: 6px 14px;
+      background: transparent; color: var(--mid);
+      border: 1px solid var(--rule);
+      transition: all 0.2s;
+    }
+    .sb-verdict.exemplary { background: var(--green); color: white; border-color: var(--green); }
+    .sb-verdict.sound { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+    .sb-verdict.developing { background: #8B5E00; color: white; border-color: #8B5E00; }
+    .sb-verdict.noncompliant { background: #8B1A1A; color: white; border-color: #8B1A1A; }
+
+    .sb-progress {
+      flex: 1; height: 3px; background: var(--rule);
+      margin: 0 24px; max-width: 200px;
+    }
+    .sb-progress-fill {
+      height: 100%; background: var(--ink);
+      width: 0%; transition: width 0.3s ease;
+    }
+
+    /* Project info */
+    .project-section {
+      padding: 40px 48px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .project-section label {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--mid);
+      margin-bottom: 8px;
+    }
+    .project-section input {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px; color: var(--ink);
+      background: transparent;
+      border: none; border-bottom: 1px solid var(--rule);
+      padding: 8px 0; width: 100%; max-width: 480px;
+      outline: none; transition: border-color 0.15s;
+    }
+    .project-section input:focus { border-bottom-color: var(--ink); }
+    .project-section input::placeholder { color: var(--mid); }
+
+    /* Category sections */
+    .category-section {
+      border-bottom: 1px solid var(--rule);
+      padding: 0 48px;
+    }
+    .cat-header {
+      display: flex; align-items: baseline;
+      gap: 16px; padding: 32px 0 24px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .cat-letter {
+      font-family: 'Fraunces', serif; font-weight: 900;
+      font-size: 40px; line-height: 1; color: var(--ink);
+      opacity: 0.12;
+    }
+    .cat-name {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: 22px; color: var(--ink);
+    }
+    .cat-max {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      color: var(--mid); margin-left: auto;
+    }
+    .cat-score-display {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: 22px; color: var(--ink);
+      margin-left: 8px;
+    }
+
+    /* Criteria rows */
+    .criterion {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--rule);
+      align-items: center;
+    }
+    .criterion:last-child { border-bottom: none; }
+    .crit-id {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--mid); margin-bottom: 4px;
+    }
+    .crit-text { font-size: 14px; line-height: 1.6; color: #333; }
+
+    .score-selector {
+      display: flex; gap: 4px; flex-shrink: 0;
+    }
+    .score-btn {
+      width: 36px; height: 36px;
+      background: transparent; border: 1px solid var(--rule);
+      cursor: pointer;
+      font-family: 'DM Mono', monospace;
+      font-size: 13px; font-weight: 500; color: var(--mid);
+      transition: all 0.1s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .score-btn:hover { border-color: var(--ink); color: var(--ink); }
+    .score-btn.selected {
+      background: var(--ink); color: var(--cream);
+      border-color: var(--ink);
+    }
+
+    /* Results card */
+    .results-section {
+      padding: 64px 48px;
+      display: none;
+    }
+    .results-section.visible { display: block; }
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--mid);
+      margin-bottom: 32px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--rule);
+    }
+
+    .accountability-card {
+      max-width: 600px;
+      border: 1px solid var(--ink);
+      background: var(--paper);
+    }
+    .ac-header {
+      background: var(--ink); padding: 24px 28px;
+      display: flex; justify-content: space-between; align-items: flex-start;
+    }
+    .ac-header-left {}
+    .ac-project {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: 18px; color: var(--cream); margin-bottom: 4px;
+    }
+    .ac-track {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #777;
+    }
+    .ac-verdict-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; padding: 8px 16px;
+      border: 1px solid #444; color: var(--cream);
+    }
+    .ac-verdict-badge.exemplary { border-color: var(--green); color: #6EC88C; }
+    .ac-verdict-badge.sound { border-color: var(--cream); color: var(--cream); }
+    .ac-verdict-badge.developing { border-color: #D4960A; color: #D4960A; }
+    .ac-verdict-badge.noncompliant { border-color: #D44A4A; color: #D44A4A; }
+
+    .ac-categories {
+      padding: 24px 28px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .ac-cat-row {
+      display: grid;
+      grid-template-columns: 160px 1fr 52px;
+      gap: 12px; align-items: center;
+      margin-bottom: 12px;
+    }
+    .ac-cat-row:last-child { margin-bottom: 0; }
+    .ac-cat-name {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--mid);
+    }
+    .ac-bar-track {
+      height: 4px; background: var(--rule);
+      position: relative;
+    }
+    .ac-bar-fill {
+      position: absolute; left: 0; top: 0; bottom: 0;
+      background: var(--ink); transition: width 0.4s ease;
+    }
+    .ac-cat-pts {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      color: var(--ink); text-align: right;
+    }
+
+    .ac-total {
+      padding: 20px 28px;
+      display: flex; align-items: baseline; justify-content: space-between;
+    }
+    .ac-total-label {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--mid);
+    }
+    .ac-total-score {
+      font-family: 'Fraunces', serif; font-weight: 900;
+      font-size: 32px; letter-spacing: -0.02em; color: var(--ink);
+    }
+    .ac-total-max {
+      font-family: 'DM Mono', monospace; font-size: 13px;
+      color: var(--mid); margin-left: 4px;
+    }
+
+    .ac-verdict-desc {
+      padding: 16px 28px;
+      background: var(--cream);
+      border-top: 1px solid var(--rule);
+      font-size: 13px; line-height: 1.6; color: #444;
+    }
+
+    .ac-stamp {
+      padding: 12px 28px;
+      border-top: 1px solid var(--rule);
+      font-family: 'DM Mono', monospace; font-size: 9px;
+      color: var(--mid); letter-spacing: 0.08em;
+      display: flex; justify-content: space-between;
+    }
+
+    .generate-btn {
+      display: inline-block; margin-top: 32px;
+      background: var(--ink); color: var(--cream);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; text-decoration: none;
+      padding: 16px 32px; border: none; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .generate-btn:hover { background: var(--green); }
+
+    .print-btn {
+      display: inline-block; margin-top: 16px; margin-left: 12px;
+      background: transparent; color: var(--ink);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; text-decoration: none;
+      padding: 16px 32px; border: 1px solid var(--ink); cursor: pointer;
+      transition: all 0.15s;
+    }
+    .print-btn:hover { background: var(--cream); }
+
+    footer {
+      padding: 32px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid var(--rule);
+    }
+    .footer-left {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      color: var(--mid); letter-spacing: 0.06em;
+    }
+    .footer-left span { color: var(--ink); font-weight: 500; }
+    .footer-right { font-size: 12px; color: var(--mid); }
+    .footer-right a { color: var(--mid); text-decoration: none; }
+    .footer-right a:hover { color: var(--ink); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .page-hero { padding: 88px 24px 48px; }
+      .track-section, .project-section, .category-section, .results-section { padding-left: 24px; padding-right: 24px; }
+      .score-bar { padding: 0 24px; }
+      .track-selector { flex-direction: column; }
+      .track-btn { border-right: none; border-bottom: 1px solid var(--rule); }
+      .criterion { grid-template-columns: 1fr; gap: 12px; }
+      .cat-header { padding: 24px 0 16px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+    }
+
+    @media print {
+      nav, .page-hero, .track-section, .project-section, .category-section,
+      .score-bar, .generate-btn, .print-btn, footer { display: none !important; }
+      .results-section { display: block !important; padding: 0; }
+      .accountability-card { border: 1px solid #000; max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-wordmark">TRACE</a>
+    <div class="nav-links">
+      <a href="/#standard">The Standard</a>
+      <a href="/scorecard" class="active">Scorecard</a>
+      <a href="/policy-brief">Policy Brief</a>
+      <a href="/compact">Compact</a>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-eyebrow">Assessment Tool</div>
+    <h1 class="page-title">TRACE<br>Scorecard</h1>
+    <p class="page-sub">Score any content project against the TRACE standard. Answer each criterion honestly. Takes about ten minutes. Results in a shareable accountability card.</p>
+  </div>
+
+  <div class="score-bar" id="scoreBar">
+    <div class="sb-left">
+      <div class="sb-score"><span id="totalScore">0</span></div>
+      <div class="sb-of">/ <span id="totalMax">20</span> points</div>
+      <div class="sb-progress"><div class="sb-progress-fill" id="progressFill"></div></div>
+    </div>
+    <div class="sb-right">
+      <div class="sb-verdict" id="verdictBadge">—</div>
+    </div>
+  </div>
+
+  <div class="track-section">
+    <div style="padding: 32px 0 24px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--mid);margin-bottom:16px;">Select Track</div>
+      <div class="track-selector">
+        <button class="track-btn active" data-track="A" id="trackBtnA" onclick="selectTrack('A')">
+          <div class="tb-name">Track A</div>
+          <div class="tb-desc">Community-insider, non-commercial, self-funded</div>
+          <div class="tb-pts">6 categories · 20 points</div>
+        </button>
+        <button class="track-btn" data-track="B" id="trackBtnB" onclick="selectTrack('B')">
+          <div class="tb-name">Track B</div>
+          <div class="tb-desc">External, institutional, commercial, or mixed</div>
+          <div class="tb-pts">7 categories · 35 points</div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <label for="projectName">Project Name</label>
+    <input type="text" id="projectName" placeholder="e.g. Cariboo Signals — The Ranching Episode" />
+  </div>
+
+  <div id="formSections"></div>
+
+  <div class="results-section" id="resultsSection">
+    <div class="section-label">Accountability Card</div>
+    <div class="accountability-card" id="accountabilityCard">
+      <div class="ac-header">
+        <div class="ac-header-left">
+          <div class="ac-project" id="cardProject">Untitled Project</div>
+          <div class="ac-track" id="cardTrack">TRACK A — COMMUNITY INSIDER · TRACE ASSESSMENT</div>
+        </div>
+        <div class="ac-verdict-badge" id="cardVerdictBadge">—</div>
+      </div>
+      <div class="ac-categories" id="cardCategories"></div>
+      <div class="ac-total">
+        <div class="ac-total-label">Total Score</div>
+        <div>
+          <span class="ac-total-score" id="cardTotalScore">0</span>
+          <span class="ac-total-max">/ <span id="cardTotalMax">20</span></span>
+        </div>
+      </div>
+      <div class="ac-verdict-desc" id="cardVerdictDesc"></div>
+      <div class="ac-stamp">
+        <span>TRACE Content Accountability Standard</span>
+        <span id="cardDate"></span>
+      </div>
+    </div>
+    <button class="generate-btn" onclick="generateCard()">Regenerate Card</button>
+    <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+  </div>
+
+  <footer>
+    <div class="footer-left">
+      <span>TRACE</span> — Content Accountability Standard &nbsp;·&nbsp;
+      Built on the Community Content Compact &nbsp;·&nbsp;
+      Cariboo Signals, May 2026
+    </div>
+    <div class="footer-right">
+      <a href="/">tracestandard.org</a>
+    </div>
+  </footer>
+
+  <script>
+    const TRACKS = {
+      A: {
+        label: 'Track A — Community Insider',
+        max: 20,
+        thresholds: [
+          { min: 18, label: 'Exemplary', cls: 'exemplary', desc: 'Meets the TRACE standard in full. Community endorsement warranted. Suitable for public accountability card publication.' },
+          { min: 14, label: 'Sound', cls: 'sound', desc: 'Meets the standard with minor gaps. A written improvement plan is recommended before publication.' },
+          { min: 10, label: 'Developing', cls: 'developing', desc: 'Significant gaps identified. Remediation required before publication. Specific criteria below threshold must be addressed.' },
+          { min: 0,  label: 'Non-Compliant', cls: 'noncompliant', desc: 'Does not meet the TRACE standard. Substantial revision required. Consider pausing publication until conditions are met.' },
+        ],
+        categories: [
+          {
+            id: 'T', name: 'Transparency', max: 4,
+            criteria: [
+              { id: 'T1', max: 1, text: 'Production method is disclosed at point of encounter — including whether AI, automated tools, or human production were used' },
+              { id: 'T2', max: 1, text: 'All contributors and their roles are clearly credited in the content itself' },
+              { id: 'T3', max: 1, text: 'Funding source and organizational affiliation are stated' },
+              { id: 'T4', max: 1, text: 'A corrections policy exists and is accessible to community members' },
+            ]
+          },
+          {
+            id: 'R', name: 'Representation', max: 4,
+            criteria: [
+              { id: 'R1', max: 2, text: 'Content reflects the actual demographic and cultural diversity of the community — not a simplified or convenient version' },
+              { id: 'R2', max: 1, text: 'Multiple perspectives within the community are represented, not just prominent or accessible voices' },
+              { id: 'R3', max: 1, text: 'No single spokesperson or perspective is positioned as speaking for the whole community' },
+            ]
+          },
+          {
+            id: 'A', name: 'Accountability', max: 3,
+            criteria: [
+              { id: 'A1', max: 1, text: 'A named, reachable contact exists and is published for community feedback and corrections' },
+              { id: 'A2', max: 1, text: 'The feedback mechanism is accessible to non-technically-literate community members' },
+              { id: 'A3', max: 1, text: 'Community feedback has resulted in at least one documented change to published content' },
+            ]
+          },
+          {
+            id: 'C', name: 'Consent', max: 4,
+            criteria: [
+              { id: 'C1', max: 2, text: 'No statements are attributed to named living individuals without verified, on-record consent' },
+              { id: 'C2', max: 1, text: 'Cultural knowledge and creative expression are used only with community authorization' },
+              { id: 'C3', max: 1, text: 'Consent can be revoked, with a documented removal process' },
+            ]
+          },
+          {
+            id: 'E', name: 'Engagement', max: 3,
+            criteria: [
+              { id: 'E1', max: 1, text: 'Content does not directly displace community creators already doing this work' },
+              { id: 'E2', max: 1, text: 'Community collaborators are credited and compensated fairly for their contributions' },
+              { id: 'E3', max: 1, text: 'Community members retain meaningful creative authority over their own representations' },
+            ]
+          },
+          {
+            id: 'B', name: 'Community Benefit', max: 2,
+            criteria: [
+              { id: 'B1', max: 1, text: 'Community members can access and use the content without restriction' },
+              { id: 'B2', max: 1, text: 'Revenue or substantive outputs return documented benefit to the community' },
+            ]
+          },
+        ]
+      },
+      B: {
+        label: 'Track B — External / Institutional',
+        max: 35,
+        thresholds: [
+          { min: 31, label: 'Exemplary', cls: 'exemplary', desc: 'Meets the TRACE standard in full. Community endorsement warranted. Suitable for public accountability card publication.' },
+          { min: 24, label: 'Sound', cls: 'sound', desc: 'Meets the standard with minor gaps. A written improvement plan is recommended for next publication cycle.' },
+          { min: 17, label: 'Developing', cls: 'developing', desc: 'Significant gaps identified. Remediation required before publication. Specific criteria below threshold must be addressed.' },
+          { min: 0,  label: 'Non-Compliant', cls: 'noncompliant', desc: 'Does not meet the TRACE standard. Substantial revision required. Consider pausing publication until conditions are met.' },
+        ],
+        categories: [
+          {
+            id: 'T', name: 'Transparency', max: 6,
+            criteria: [
+              { id: 'T1', max: 2, text: 'AI use is disclosed, including the nature and extent of AI involvement in production' },
+              { id: 'T2', max: 1, text: 'Full editorial team, contractors, and institutional affiliation are publicly disclosed' },
+              { id: 'T3', max: 1, text: 'All funding sources are disclosed, including indirect funding and platform relationships' },
+              { id: 'T4', max: 1, text: 'Conflicts of interest are declared' },
+              { id: 'T5', max: 1, text: 'A formal corrections policy with a stated response timeline is published' },
+            ]
+          },
+          {
+            id: 'R', name: 'Representation', max: 6,
+            criteria: [
+              { id: 'R1', max: 2, text: 'Community members had meaningful input on scope, framing, and key editorial decisions' },
+              { id: 'R2', max: 2, text: 'Content reflects the community\'s actual demographic and cultural diversity' },
+              { id: 'R3', max: 1, text: 'No reductive, stereotyped, or simplified portrayal of the community' },
+              { id: 'R4', max: 1, text: 'The community\'s own terminology, place names, and naming conventions are used throughout' },
+            ]
+          },
+          {
+            id: 'A', name: 'Accountability', max: 5,
+            criteria: [
+              { id: 'A1', max: 1, text: 'A named accountability officer or editorial contact is publicly identified' },
+              { id: 'A2', max: 1, text: 'A feedback mechanism is accessible and does not require technical literacy' },
+              { id: 'A3', max: 1, text: 'The community can formally request correction or removal of published content' },
+              { id: 'A4', max: 1, text: 'A response timeline for community concerns is publicly published' },
+              { id: 'A5', max: 1, text: 'At least one community representative holds editorial review authority' },
+            ]
+          },
+          {
+            id: 'C', name: 'Consent', max: 6,
+            criteria: [
+              { id: 'C1', max: 2, text: 'Explicit written consent is on file for all attributed statements from named individuals' },
+              { id: 'C2', max: 2, text: 'No synthetic or AI-generated statements are attributed to named individuals' },
+              { id: 'C3', max: 1, text: 'Use of cultural knowledge, traditional practices, or community-origin creative work is authorized' },
+              { id: 'C4', max: 1, text: 'Consent can be revoked with a clear and accessible process' },
+            ]
+          },
+          {
+            id: 'E', name: 'Engagement', max: 5,
+            criteria: [
+              { id: 'E1', max: 1, text: 'Existing community creators were identified and their work was not displaced' },
+              { id: 'E2', max: 2, text: 'Active collaboration with community creators was meaningfully pursued' },
+              { id: 'E3', max: 1, text: 'Community creators receive fair compensation and full public credit' },
+              { id: 'E4', max: 1, text: 'The community holds a meaningful creative veto over its own representation' },
+            ]
+          },
+          {
+            id: 'S', name: 'Structural Benefit', max: 4,
+            criteria: [
+              { id: 'S1', max: 1, text: 'A portion of revenue is contractually committed to the community' },
+              { id: 'S2', max: 1, text: 'The community co-owns or holds rights to the content archive' },
+              { id: 'S3', max: 1, text: 'The community retains the audience relationship and subscriber or listener data' },
+              { id: 'S4', max: 1, text: 'The partnership includes capacity-building for community journalists' },
+            ]
+          },
+          {
+            id: 'D', name: 'Data Rights', max: 3,
+            criteria: [
+              { id: 'D1', max: 1, text: 'Community content is not used for AI training without explicit opt-in consent' },
+              { id: 'D2', max: 1, text: 'Data collected about community members is disclosed, minimized, and accessible to them' },
+              { id: 'D3', max: 1, text: 'Community members can request deletion of their data' },
+            ]
+          },
+        ]
+      }
+    };
+
+    let currentTrack = 'A';
+    let scores = {};
+
+    function selectTrack(track) {
+      currentTrack = track;
+      scores = {};
+      document.getElementById('trackBtnA').classList.toggle('active', track === 'A');
+      document.getElementById('trackBtnB').classList.toggle('active', track === 'B');
+      document.getElementById('totalMax').textContent = TRACKS[track].max;
+      document.getElementById('cardTotalMax').textContent = TRACKS[track].max;
+      renderForm();
+      updateScore();
+      document.getElementById('resultsSection').classList.remove('visible');
+    }
+
+    function renderForm() {
+      const container = document.getElementById('formSections');
+      const track = TRACKS[currentTrack];
+      container.innerHTML = '';
+
+      track.categories.forEach(cat => {
+        const section = document.createElement('div');
+        section.className = 'category-section';
+        section.id = 'cat-' + cat.id;
+
+        const header = document.createElement('div');
+        header.className = 'cat-header';
+        header.innerHTML = `
+          <div class="cat-letter">${cat.id}</div>
+          <div class="cat-name">${cat.name}</div>
+          <div class="cat-max"><span class="cat-score-display" id="catScore-${cat.id}">0</span> / ${cat.max}</div>
+        `;
+        section.appendChild(header);
+
+        cat.criteria.forEach(crit => {
+          const row = document.createElement('div');
+          row.className = 'criterion';
+
+          let btns = '';
+          for (let i = 0; i <= crit.max; i++) {
+            btns += `<button type="button" class="score-btn" data-cat="${cat.id}" data-crit="${crit.id}" data-val="${i}" onclick="setScore('${crit.id}', ${i}, this)">${i}</button>`;
+          }
+
+          row.innerHTML = `
+            <div>
+              <div class="crit-id">${crit.id}</div>
+              <div class="crit-text">${crit.text}</div>
+            </div>
+            <div class="score-selector">${btns}</div>
+          `;
+          section.appendChild(row);
+        });
+
+        // Generate card button at end of last category
+        if (cat.id === track.categories[track.categories.length - 1].id) {
+          const genRow = document.createElement('div');
+          genRow.style.cssText = 'padding: 32px 0;';
+          genRow.innerHTML = '<button class="generate-btn" onclick="generateCard()">Generate Accountability Card →</button>';
+          section.appendChild(genRow);
+        }
+
+        container.appendChild(section);
+      });
+    }
+
+    function setScore(critId, val, btn) {
+      scores[critId] = val;
+      // update button states for this criterion
+      btn.closest('.score-selector').querySelectorAll('.score-btn').forEach(b => {
+        b.classList.toggle('selected', parseInt(b.dataset.val) === val);
+      });
+      updateScore();
+    }
+
+    function updateScore() {
+      const track = TRACKS[currentTrack];
+      let total = 0;
+
+      track.categories.forEach(cat => {
+        let catTotal = 0;
+        cat.criteria.forEach(crit => {
+          catTotal += (scores[crit.id] || 0);
+        });
+        total += catTotal;
+        const el = document.getElementById('catScore-' + cat.id);
+        if (el) el.textContent = catTotal;
+      });
+
+      document.getElementById('totalScore').textContent = total;
+
+      const pct = total / track.max * 100;
+      document.getElementById('progressFill').style.width = pct + '%';
+
+      const verdict = getVerdict(total, track.thresholds);
+      const badge = document.getElementById('verdictBadge');
+      badge.textContent = verdict.label;
+      badge.className = 'sb-verdict ' + verdict.cls;
+    }
+
+    function getVerdict(score, thresholds) {
+      for (const t of thresholds) {
+        if (score >= t.min) return t;
+      }
+      return thresholds[thresholds.length - 1];
+    }
+
+    function generateCard() {
+      const track = TRACKS[currentTrack];
+      const total = parseInt(document.getElementById('totalScore').textContent);
+      const projectName = document.getElementById('projectName').value.trim() || 'Untitled Project';
+      const verdict = getVerdict(total, track.thresholds);
+
+      document.getElementById('cardProject').textContent = projectName;
+      document.getElementById('cardTrack').textContent = track.label.toUpperCase() + ' · TRACE ASSESSMENT';
+      document.getElementById('cardTotalScore').textContent = total;
+      document.getElementById('cardTotalMax').textContent = track.max;
+
+      const vBadge = document.getElementById('cardVerdictBadge');
+      vBadge.textContent = verdict.label;
+      vBadge.className = 'ac-verdict-badge ' + verdict.cls;
+
+      document.getElementById('cardVerdictDesc').textContent = verdict.desc;
+
+      const cats = document.getElementById('cardCategories');
+      cats.innerHTML = '';
+      track.categories.forEach(cat => {
+        let catTotal = 0;
+        cat.criteria.forEach(crit => { catTotal += (scores[crit.id] || 0); });
+        const pct = (catTotal / cat.max * 100).toFixed(0);
+
+        const row = document.createElement('div');
+        row.className = 'ac-cat-row';
+        row.innerHTML = `
+          <div class="ac-cat-name">${cat.id} — ${cat.name}</div>
+          <div class="ac-bar-track"><div class="ac-bar-fill" style="width:${pct}%"></div></div>
+          <div class="ac-cat-pts">${catTotal}/${cat.max}</div>
+        `;
+        cats.appendChild(row);
+      });
+
+      const now = new Date();
+      document.getElementById('cardDate').textContent = now.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+
+      document.getElementById('resultsSection').classList.add('visible');
+      document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Initialize
+    renderForm();
+    updateScore();
+  </script>
+
+</body>
+</html>
