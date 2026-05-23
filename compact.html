@@ -49,8 +49,17 @@
     }
     .nav-links a:hover, .nav-links a.active { color: var(--cream); }
 
+    .proposal-notice {
+      position: fixed; top: 48px; left: 0; right: 0; z-index: 99;
+      background: #F5E6C8; border-bottom: 1px solid #D4B896;
+      padding: 9px 32px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+      color: #5C3D1E; text-align: center;
+    }
+
     .page-hero {
-      padding: 128px 48px 72px;
+      padding: 164px 48px 72px;
       border-bottom: 1px solid var(--rule);
       max-width: 900px;
     }
@@ -80,7 +89,7 @@
     }
     .doc-nav {
       padding: 48px 32px 48px 48px;
-      position: sticky; top: 48px; height: fit-content;
+      position: sticky; top: 84px; height: fit-content;
       border-right: 1px solid var(--rule);
     }
     .doc-nav-label {
@@ -214,6 +223,8 @@
   </style>
 </head>
 <body>
+
+  <div class="proposal-notice">PROPOSAL &mdash; No institutional endorsement or formal adoption. Independent work by Cariboo Signals, open for critique and community input.</div>
 
   <nav>
     <a href="/" class="nav-wordmark">TRACE</a>
