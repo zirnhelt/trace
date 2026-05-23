@@ -68,13 +68,13 @@ TRACE was developed through [Cariboo Signals](https://cariboosignals.ca), a comm
 
 ## How to Cite
 
-> Cariboo Signals. (2026). *TRACE Content Accountability Standard, v1.0*. https://github.com/zirnhelt/trace
+> Cariboo Signals. (2026). *TRACE Content Accountability Standard, v1.0*. https://tracestandard.org
 
 **APA:**
-Cariboo Signals. (2026). *TRACE Content Accountability Standard* (Version 1.0). https://github.com/zirnhelt/trace
+Cariboo Signals. (2026). *TRACE Content Accountability Standard* (Version 1.0). https://tracestandard.org
 
 **Chicago:**
-Cariboo Signals. "TRACE Content Accountability Standard." Version 1.0. May 2026. https://github.com/zirnhelt/trace.
+Cariboo Signals. "TRACE Content Accountability Standard." Version 1.0. May 2026. https://tracestandard.org.
 
 ---
 
