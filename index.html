@@ -300,6 +300,7 @@
       .test-tracks { flex-direction: column; gap: 24px; align-items: center; }
       .sample-section { padding: 56px 24px; }
       .sc-cat-row { grid-template-columns: 120px 1fr 36px; }
+      .origin-layout { grid-template-columns: 1fr; gap: 40px; }
       footer { flex-direction: column; gap: 16px; text-align: center; }
     }
 
@@ -395,6 +396,47 @@
       color: #5C3D1E; text-align: center;
     }
 
+    .origin-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; align-items: start;
+    }
+    .origin-statement {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: clamp(20px, 2.5vw, 28px);
+      line-height: 1.25; color: var(--ink); margin-bottom: 20px;
+    }
+    .origin-body { font-size: 15px; line-height: 1.75; color: #444; }
+    .origin-body p + p { margin-top: 14px; }
+    .origin-citation {
+      background: var(--paper); border: 1px solid var(--rule); padding: 32px;
+    }
+    .oc-label {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--mid); margin-bottom: 16px;
+    }
+    .oc-title {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: 20px; line-height: 1.2; color: var(--ink); margin-bottom: 4px;
+    }
+    .oc-meta {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      color: var(--mid); letter-spacing: 0.06em; margin-bottom: 24px;
+    }
+    .oc-pull {
+      border-left: 2px solid var(--ink);
+      padding-left: 16px; margin: 0 0 24px;
+      font-family: 'Fraunces', serif; font-style: italic; font-weight: 300;
+      font-size: 15px; line-height: 1.5; color: var(--ink);
+    }
+    .oc-five-label {
+      font-size: 12px; color: var(--mid); margin-bottom: 10px;
+    }
+    .oc-tests {
+      margin: 0 0 0 16px;
+      font-size: 13px; line-height: 1.9; color: #444;
+    }
+
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -416,6 +458,7 @@
       <a href="/scorecard">Scorecard</a>
       <a href="/policy-brief">Policy Brief</a>
       <a href="/compact">Compact</a>
+      <a href="#origin">Origin</a>
       <a href="#resources">Resources</a>
     </div>
   </nav>
@@ -578,6 +621,33 @@
             <li><span class="fq-num">04</span> Does the community hold final editorial authority?</li>
           </ul>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="origin">
+    <div class="section-label">Origin</div>
+    <div class="origin-layout">
+      <div>
+        <p class="origin-statement">The five conditions in TRACE first appeared as a pre-publication checklist in a podcast conversation about AI-generated cultural content in underserved communities.</p>
+        <div class="origin-body">
+          <p>The episode named the governance gap TRACE is designed to fill: no shared standard that communities could invoke and producers could be held to. The conversation asked whether AI could legitimately serve communities that lack local creators — and under what conditions.</p>
+          <p>That question, and the five tests the hosts proposed to answer it, became the seed this framework grew from.</p>
+        </div>
+      </div>
+      <div class="origin-citation">
+        <div class="oc-label">Origin Seed</div>
+        <div class="oc-title">Arts, Culture &amp; Digital Storytelling</div>
+        <div class="oc-meta">Cariboo Connections &nbsp;·&nbsp; May 18, 2026</div>
+        <blockquote class="oc-pull">"The real barrier isn't technical — it's structural. Venture-capital-driven extraction models vastly outpace community-controlled alternatives due to funding asymmetries, not superior design."</blockquote>
+        <div class="oc-five-label">The episode's five pre-publication tests became the TRACE conditions:</div>
+        <ol class="oc-tests">
+          <li>Is it labeled as AI-generated?</li>
+          <li>Does it avoid claiming human authorship?</li>
+          <li>Does it avoid displacing local human creators?</li>
+          <li>Does it avoid attributing views to living people without consent?</li>
+          <li>Does it include genuine community feedback mechanisms?</li>
+        </ol>
       </div>
     </div>
   </section>
