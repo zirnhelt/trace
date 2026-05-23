@@ -89,6 +89,8 @@ Cariboo Signals. "TRACE Content Accountability Standard." Version 1.0. May 2026.
 | `worker.js` | Cloudflare Worker router |
 | `wrangler.toml` | Worker configuration |
 | `.github/workflows/deploy.yml` | Auto-deploy on push to main |
+| `CHANGELOG.md` | Version history |
+| `LICENSE` | CC BY 4.0 license text |
 
 **Deploying:** Push to `main` — GitHub Actions deploys via Wrangler. Requires a `CF_API_TOKEN` secret (Settings → Secrets) with Cloudflare Workers edit permissions.
 
