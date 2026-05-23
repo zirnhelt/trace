@@ -1,5 +1,8 @@
 # TRACE — Content Accountability Standard
 
+> **PROPOSAL — No institutional endorsement or formal adoption.**
+> This is an independent proposal developed through [Cariboo Signals](https://cariboosignals.ca). It has no backing from any journalism organization, standards body, funder, or government. It is published openly for critique, adaptation, and community input. Nothing here represents an adopted standard.
+
 **v1.0 · May 2026**
 
 TRACE is a framework for evaluating whether content about a community meets minimum conditions of accountability. It addresses a structural gap: communities are routinely the subjects of content they didn't commission, don't control, and can't correct — and the proliferation of AI-generated content has made this problem dramatically worse.
