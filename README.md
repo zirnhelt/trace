@@ -96,4 +96,6 @@ Cariboo Signals. "TRACE Content Accountability Standard." Version 1.0. May 2026.
 
 ## License
 
-Offered for adaptation and use by any organization working on these questions.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSE)
+
+You are free to share and adapt this work for any purpose, including commercially, as long as you give appropriate credit to Cariboo Signals and indicate if changes were made.
