@@ -405,9 +405,58 @@
       footer { flex-direction: column; gap: 16px; text-align: center; }
     }
 
+    /* Metadata snippet generation */
+    .meta-section {
+      padding: 48px 48px 64px;
+      border-top: 1px solid var(--rule);
+      display: none;
+    }
+    .meta-section.visible { display: block; }
+    .meta-intro {
+      font-size: 14px; color: #555; line-height: 1.7;
+      max-width: 540px; margin-bottom: 36px;
+    }
+    .meta-block { margin-bottom: 24px; }
+    .meta-block-header {
+      display: flex; align-items: center;
+      gap: 12px; margin-bottom: 0;
+      background: var(--paper); border: 1px solid var(--rule);
+      border-bottom: none; padding: 10px 16px;
+    }
+    .meta-block-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--ink);
+    }
+    .meta-block-sub { font-size: 12px; color: var(--mid); flex: 1; }
+    .meta-copy-btn {
+      background: transparent; border: 1px solid var(--rule);
+      font-family: 'DM Mono', monospace; font-size: 9px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--mid); padding: 4px 10px; cursor: pointer;
+      transition: all 0.15s; flex-shrink: 0;
+    }
+    .meta-copy-btn:hover { border-color: var(--ink); color: var(--ink); }
+    .meta-copy-btn.copied { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+    .meta-code {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      line-height: 1.65; background: var(--ink); color: #D4D0C8;
+      padding: 20px 24px; overflow-x: auto;
+      white-space: pre; margin: 0;
+      border: 1px solid var(--ink);
+    }
+    .meta-docs-link {
+      display: inline-block; margin-top: 28px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--ink);
+      text-decoration: none; border-bottom: 2px solid var(--ink);
+      padding-bottom: 2px; transition: color 0.15s, border-color 0.15s;
+    }
+    .meta-docs-link:hover { color: var(--green); border-color: var(--green); }
+
     @media print {
       nav, .page-hero, .track-section, .project-section, .category-section,
-      .score-bar, .generate-btn, .print-btn, footer { display: none !important; }
+      .score-bar, .generate-btn, .print-btn, .meta-section, footer { display: none !important; }
       .results-section { display: block !important; padding: 0; }
       .accountability-card { border: 1px solid #000; max-width: 100%; }
     }
@@ -496,6 +545,40 @@
     </div>
     <button class="generate-btn" onclick="generateCard()">Regenerate Card</button>
     <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+  </div>
+
+  <div class="meta-section" id="metaSection">
+    <div class="section-label">Embed This Assessment</div>
+    <p class="meta-intro">Make your TRACE assessment machine-readable. Paste these snippets into your content so platforms, feeds, and archives can read accountability data automatically.</p>
+
+    <div class="meta-block">
+      <div class="meta-block-header">
+        <div class="meta-block-title">JSON-LD</div>
+        <div class="meta-block-sub">Paste into your HTML &lt;head&gt;</div>
+        <button class="meta-copy-btn" onclick="copyMeta('metaJsonld', this)">Copy</button>
+      </div>
+      <pre class="meta-code" id="metaJsonld"></pre>
+    </div>
+
+    <div class="meta-block">
+      <div class="meta-block-header">
+        <div class="meta-block-title">XML · RSS / Atom</div>
+        <div class="meta-block-sub">Add to your podcast feed's &lt;channel&gt; or &lt;item&gt;</div>
+        <button class="meta-copy-btn" onclick="copyMeta('metaXml', this)">Copy</button>
+      </div>
+      <pre class="meta-code" id="metaXml"></pre>
+    </div>
+
+    <div class="meta-block">
+      <div class="meta-block-header">
+        <div class="meta-block-title">C2PA Manifest</div>
+        <div class="meta-block-sub">Use with c2patool to embed in MP3 or M4A files</div>
+        <button class="meta-copy-btn" onclick="copyMeta('metaC2pa', this)">Copy</button>
+      </div>
+      <pre class="meta-code" id="metaC2pa"></pre>
+    </div>
+
+    <a href="/metadata" class="meta-docs-link">Format documentation →</a>
   </div>
 
   <footer>
@@ -662,6 +745,7 @@
       renderForm();
       updateScore();
       document.getElementById('resultsSection').classList.remove('visible');
+      document.getElementById('metaSection').classList.remove('visible');
     }
 
     function renderForm() {
@@ -793,7 +877,82 @@
       document.getElementById('cardDate').textContent = now.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
 
       document.getElementById('resultsSection').classList.add('visible');
+      generateMetadata();
       document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function escXml(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function generateMetadata() {
+      const track = TRACKS[currentTrack];
+      const total = parseInt(document.getElementById('totalScore').textContent);
+      const projectName = document.getElementById('projectName').value.trim() || 'Untitled Project';
+      const verdict = getVerdict(total, track.thresholds);
+      const today = new Date().toISOString().split('T')[0];
+
+      const catScores = {};
+      track.categories.forEach(cat => {
+        let s = 0;
+        cat.criteria.forEach(crit => { s += (scores[crit.id] || 0); });
+        catScores[cat.id] = { score: s, max: cat.max };
+      });
+
+      // JSON-LD
+      const jld = {
+        '@context': 'https://tracestandard.org/schema/v1',
+        '@type': 'TraceAssessment',
+        project: projectName,
+        track: currentTrack,
+        verdict: verdict.label,
+        totalScore: total,
+        maxScore: track.max,
+        assessedDate: today,
+        scores: catScores
+      };
+      document.getElementById('metaJsonld').textContent =
+        `<script type="application/ld+json">\n${JSON.stringify(jld, null, 2)}\n<\/script>`;
+
+      // XML
+      const scoreLines = Object.entries(catScores)
+        .map(([k, v]) => `    <trace:score category="${k}" score="${v.score}" max="${v.max}"/>`)
+        .join('\n');
+      document.getElementById('metaXml').textContent =
+`<trace:assessment xmlns:trace="https://tracestandard.org/ns/1.0">
+  <trace:project>${escXml(projectName)}</trace:project>
+  <trace:track>${currentTrack}</trace:track>
+  <trace:verdict>${verdict.label}</trace:verdict>
+  <trace:totalScore>${total}</trace:totalScore>
+  <trace:maxScore>${track.max}</trace:maxScore>
+  <trace:assessedDate>${today}</trace:assessedDate>
+  <trace:scores>
+${scoreLines}
+  </trace:scores>
+</trace:assessment>`;
+
+      // C2PA
+      const c2pa = {
+        alg: 'Es256',
+        assertions: [{
+          label: 'org.tracestandard.assessment',
+          data: { project: projectName, track: currentTrack, verdict: verdict.label,
+                  totalScore: total, maxScore: track.max, assessedDate: today, scores: catScores }
+        }],
+        claim_generator: 'c2patool/0.9',
+        title: projectName
+      };
+      document.getElementById('metaC2pa').textContent = JSON.stringify(c2pa, null, 2);
+
+      document.getElementById('metaSection').classList.add('visible');
+    }
+
+    function copyMeta(id, btn) {
+      navigator.clipboard.writeText(document.getElementById(id).textContent).then(() => {
+        btn.textContent = 'Copied';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+      });
     }
 
     // Initialize
