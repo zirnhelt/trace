@@ -44,8 +44,16 @@
     }
     .nav-links a:hover, .nav-links a.active { color: var(--cream); }
 
+    .proposal-notice {
+      position: fixed; top: 48px; left: 0; right: 0; z-index: 99;
+      background: #F5E6C8; border-bottom: 1px solid #D4B896;
+      padding: 9px 32px; font-family: 'DM Mono', monospace;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+      color: #5C3D1E; text-align: center;
+    }
+
     .page-header {
-      padding: 112px 48px 64px;
+      padding: 164px 48px 64px;
       border-bottom: 1px solid var(--rule);
     }
     .breadcrumb {
@@ -235,7 +243,7 @@
     @media (max-width: 768px) {
       nav { padding: 0 20px; }
       .nav-links { display: none; }
-      .page-header { padding: 80px 24px 40px; }
+      .page-header { padding: 104px 24px 40px; }
       section { padding: 48px 24px; }
       .format-grid { grid-template-columns: 1fr; }
       footer { flex-direction: column; gap: 12px; text-align: center; }
@@ -244,14 +252,16 @@
 </head>
 <body>
 
+  <div class="proposal-notice">PROPOSAL &mdash; No institutional endorsement or formal adoption. Independent work by Cariboo Signals, open for critique and community input.</div>
+
   <nav>
     <a href="/" class="nav-wordmark">TRACE</a>
     <div class="nav-links">
-      <a href="/standard">The Standard</a>
-      <a href="/metadata" class="active">Implement</a>
-      <a href="/foundation">Foundation</a>
-      <a href="/resources">Resources</a>
-      <a href="https://github.com/zirnhelt/curated-podcast-generator">GitHub</a>
+      <a href="/#standard">The Standard</a>
+      <a href="/scorecard">Scorecard</a>
+      <a href="/policy-brief">Policy Brief</a>
+      <a href="/compact">Compact</a>
+      <a href="/metadata" class="active">Metadata</a>
     </div>
   </nav>
 
@@ -518,10 +528,11 @@
   <footer>
     <div class="footer-left">
       <span>TRACE</span> — Content Accountability Standard &nbsp;·&nbsp;
-      Metadata Standard v1.0 Draft &nbsp;·&nbsp; May 2026
+      Built on the Community Content Compact &nbsp;·&nbsp;
+      Cariboo Signals, May 2026
     </div>
     <div class="footer-right">
-      <a href="https://github.com/zirnhelt/curated-podcast-generator">github.com/zirnhelt/curated-podcast-generator</a>
+      <a href="https://github.com/zirnhelt/trace">github.com/zirnhelt/trace</a>
     </div>
   </footer>
 
