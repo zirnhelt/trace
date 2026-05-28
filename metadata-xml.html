@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XML Namespace Spec — TRACE Metadata Standard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #F2EEE8; --ink: #1A1A1A; --mid: #888880;
+      --rule: #D8D4CC; --green: #1B5E35; --paper: #FAFAF7;
+    }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      background: var(--cream); color: var(--ink);
+      font-family: 'DM Sans', sans-serif; line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--ink); display: flex; align-items: center;
+      justify-content: space-between; padding: 0 32px; height: 48px;
+    }
+    .nav-wordmark { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--cream); letter-spacing: 0.18em; text-decoration: none; }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: #888; text-decoration: none; transition: color 0.15s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--cream); }
+
+    .layout { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; padding-top: 48px; }
+    .sidebar {
+      position: sticky; top: 48px; height: calc(100vh - 48px);
+      overflow-y: auto; background: var(--ink); padding: 32px 0;
+    }
+    .sb-head { padding: 0 24px 24px; border-bottom: 1px solid #333; margin-bottom: 16px; }
+    .sb-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: #666; margin-bottom: 6px; }
+    .sb-title { font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; color: var(--cream); line-height: 1.2; }
+    .sb-version { font-family: 'DM Mono', monospace; font-size: 9px; color: #555; margin-top: 4px; }
+    .sb-nav { padding: 0 12px; }
+    .sb-nav a { display: block; padding: 6px 12px; font-size: 12px; color: #888; text-decoration: none; border-radius: 2px; transition: all 0.15s; }
+    .sb-nav a:hover { color: var(--cream); background: #2a2a2a; }
+    .sb-nav-section { padding: 14px 12px 4px; font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: #555; }
+
+    .page-header { padding: 56px 56px 48px; border-bottom: 1px solid var(--rule); }
+    .breadcrumb { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mid); margin-bottom: 20px; }
+    .breadcrumb a { color: var(--mid); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .page-title { font-family: 'Fraunces', serif; font-weight: 900; font-size: clamp(36px, 5vw, 60px); line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .status-row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+    .status-pill { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; padding: 4px 10px; border: 1px solid var(--rule); color: var(--mid); }
+    .page-lead { font-size: 15px; line-height: 1.75; color: #444; max-width: 580px; }
+
+    .spec-section { padding: 48px 56px; border-bottom: 1px solid var(--rule); }
+    .section-label { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mid); margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+    h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: 26px; margin-bottom: 16px; line-height: 1.2; }
+    h3 { font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; margin-bottom: 12px; margin-top: 32px; }
+    p { font-size: 14px; line-height: 1.75; color: #444; margin-bottom: 16px; }
+    code { font-family: 'DM Mono', monospace; font-size: 12px; background: #E8E4DC; padding: 2px 5px; border-radius: 2px; color: var(--ink); }
+
+    .code-block { background: #141410; border-radius: 3px; overflow: hidden; margin: 20px 0; }
+    .code-block-label { background: #222; padding: 8px 16px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #666; display: flex; justify-content: space-between; align-items: center; }
+    .code-block pre { padding: 20px; overflow-x: auto; font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.7; color: #D4D0C8; }
+    .copy-btn { background: none; border: 1px solid #444; color: #888; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.08em; padding: 3px 8px; cursor: pointer; transition: all 0.15s; }
+    .copy-btn:hover { border-color: #888; color: #ccc; }
+
+    /* XML syntax colors */
+    .x-tag { color: #EF9A9A; }
+    .x-attr { color: #81C784; }
+    .x-val { color: #F9A825; }
+    .x-cmt { color: #546E7A; font-style: italic; }
+    .x-ns { color: #CE93D8; }
+    .x-txt { color: #D4D0C8; }
+    .x-pi { color: #90CAF9; }
+
+    .prop-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 20px 0; }
+    .prop-table th { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); text-align: left; padding: 8px 12px; border-bottom: 2px solid var(--ink); background: var(--paper); white-space: nowrap; }
+    .prop-table td { padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+    .prop-table tr:last-child td { border-bottom: none; }
+    .prop-table tr:hover td { background: var(--paper); }
+    .prop-name { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--ink); }
+    .prop-type { font-family: 'DM Mono', monospace; font-size: 11px; color: #666; }
+    .badge { display: inline-block; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.06em; padding: 2px 6px; border-radius: 2px; }
+    .badge-req { background: #1B1A10; color: #C8B400; }
+    .badge-opt { background: #101A10; color: #4CAF50; }
+    .badge-attr { background: #101018; color: #90CAF9; }
+
+    .note-block { background: var(--paper); border: 1px solid var(--rule); border-left: 3px solid var(--mid); padding: 14px 18px; margin: 20px 0; font-size: 13px; line-height: 1.65; color: #555; }
+    .note-block strong { color: var(--ink); }
+    .warn-block { background: #FFF8E8; border: 1px solid #D4B060; border-left: 3px solid #B08020; padding: 14px 18px; margin: 20px 0; font-size: 13px; line-height: 1.65; color: #5A4000; }
+
+    .ns-block { background: var(--ink); color: var(--cream); padding: 20px 24px; margin: 20px 0; }
+    .ns-block .label { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: #666; margin-bottom: 6px; }
+    .ns-block .uri { font-family: 'DM Mono', monospace; font-size: 14px; color: #CE93D8; }
+
+    footer { padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--rule); }
+    .footer-left { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--mid); }
+    .footer-left span { color: var(--ink); font-weight: 500; }
+    .footer-right { font-size: 12px; color: var(--mid); }
+    .footer-right a { color: var(--mid); text-decoration: none; }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; }
+      .spec-section, .page-header { padding: 40px 24px; }
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/" class="nav-wordmark">TRACE</a>
+    <div class="nav-links">
+      <a href="/standard">The Standard</a>
+      <a href="/metadata" class="active">Implement</a>
+      <a href="/foundation">Foundation</a>
+      <a href="/resources">Resources</a>
+      <a href="https://github.com/zirnhelt/curated-podcast-generator">GitHub</a>
+    </div>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sb-head">
+        <div class="sb-tag">Format 02</div>
+        <div class="sb-title">XML Namespace Spec</div>
+        <div class="sb-version">v1.0 · Draft · May 2026</div>
+      </div>
+      <nav class="sb-nav">
+        <div class="sb-nav-section">On this page</div>
+        <a href="#overview">Overview</a>
+        <a href="#namespace">Namespace Declaration</a>
+        <a href="#elements">Element Reference</a>
+        <a href="#attributes">Attribute Reference</a>
+        <a href="#channel">Channel-Level Use</a>
+        <a href="#item">Item-Level Use</a>
+        <a href="#rss-example">Full RSS Example</a>
+        <a href="#atom">Atom Feed</a>
+        <a href="#validation">Validation</a>
+        <a href="#changelog">Change Log</a>
+        <div class="sb-nav-section">Other Formats</div>
+        <a href="/metadata/json-ld">JSON-LD →</a>
+        <a href="/metadata/c2pa">C2PA Assertion →</a>
+        <a href="/metadata">← All Formats</a>
+      </nav>
+    </aside>
+
+    <main>
+      <div class="page-header" id="overview">
+        <div class="breadcrumb"><a href="/">TRACE</a> / <a href="/metadata">Metadata</a> / XML Namespace</div>
+        <h1 class="page-title">XML Namespace<br>Specification</h1>
+        <div class="status-row">
+          <span class="status-pill">v1.0 Draft</span>
+          <span class="status-pill">May 2026</span>
+          <span class="status-pill">Prefix: trace:</span>
+        </div>
+        <p class="page-lead">The TRACE XML namespace extends RSS 2.0, Atom, and other XML-based feed formats with structured content accountability data. It follows the same extension pattern as established namespaces like <code>podcast:</code> (Podcasting 2.0) and <code>itunes:</code>, and is readable by any namespace-aware feed parser.</p>
+      </div>
+
+      <!-- Namespace -->
+      <div class="spec-section" id="namespace">
+        <div class="section-label">Namespace Declaration</div>
+        <h2>URI and Prefix</h2>
+        <p>The canonical namespace URI is the identifier for the TRACE XML vocabulary. The recommended prefix is <code>trace</code>. Declare it in the root element of your feed alongside any other namespaces you use.</p>
+
+        <div class="ns-block">
+          <div class="label">Namespace URI</div>
+          <div class="uri">https://tracestandard.org/ns/trace/1.0</div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-label"><span>Namespace declaration in RSS 2.0</span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+          <pre><span class="x-tag">&lt;rss</span> <span class="x-attr">version</span>=<span class="x-val">"2.0"</span>
+     <span class="x-ns">xmlns:trace</span>=<span class="x-val">"https://tracestandard.org/ns/trace/1.0"</span>
+     <span class="x-ns">xmlns:podcast</span>=<span class="x-val">"https://podcastindex.org/namespace/1.0"</span><span class="x-tag">&gt;</span></pre>
+        </div>
+
+        <div class="note-block">
+          <strong>Prefix choice:</strong> The prefix <code>trace</code> is recommended but not required. Any valid XML prefix works. Consumers of the namespace use the URI to identify elements, not the prefix. If you use an alternative prefix, your feed remains conformant.
+        </div>
+      </div>
+
+      <!-- Elements -->
+      <div class="spec-section" id="elements">
+        <div class="section-label">Element Reference</div>
+        <h2>TRACE XML Elements</h2>
+        <p>All elements are in the <code>https://tracestandard.org/ns/trace/1.0</code> namespace. Nesting structure is shown by indentation. Elements marked <span class="badge badge-req">required</span> must be present when a <code>trace:assessment</code> block is used.</p>
+
+        <table class="prop-table">
+          <thead>
+            <tr><th>Element</th><th>Parent</th><th>Status</th><th>Content / Purpose</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="prop-name">trace:assessment</span></td>
+              <td><span class="prop-type">channel, item</span></td>
+              <td><span class="badge badge-req">required</span></td>
+              <td class="prop-desc">Root container for all TRACE metadata. Carries a <code>version</code> attribute.</td>
+            </tr>
+            <tr>
+              <td><span class="prop-name">trace:content</span></td>
+              <td><span class="prop-type">assessment</span></td>
+              <td><span class="badge badge-opt">optional</span></td>
+              <td class="prop-desc">Content identification block. Attributes carry the title, URL, and type. May be omitted when the content is the feed item itself.</td>
+            </tr>
+            <tr>
+              <td><span class="prop-name">trace:producer</span></td>
+              <td><span class="prop-type">assessment</span></td>
+              <td><span class="badge badge-req">required</span></td>
+              <td class="prop-desc">Text content: name of the producer. Optional <code>url</code> attribute for a homepage or profile.</td>
+            </tr>
+            <tr>
+              <td><span class="prop-name">trace:community</span></td>
+              <td><span class="prop-type">assessment</span></td>
+              <td><span class="badge badge-req">required</span></td>
+              <td class="prop-desc">Text content: free-text description of the community represented or depicted.</td>
+            </tr>
+            <tr>
+              <td><span class="prop-name">trace:ai</span></td>
+              <td><span class="prop-type">assessment</span></td>
+              <td><span class="badge badge-opt">optional</span></td>
+              <td class="prop-desc">AI disclosure block. Attributes: <code>generated</code> (true/false), <code>role</code> (primary/partial/assisted/none). Contains zero or more <code>trace:tool</code> children.</td>
+            </tr>
+            <tr>
+              <td><span class="prop-name">trace:tool</span></td>
+              <td><span class="prop-type">ai</span></td>
+              <td><span class="badge badge-opt">optional</span></td>
+              <td class="prop-desc">Text content: name of one AI tool used. Add one element per tool.</td>
+            </tr>
+            <tr>
+              <td><span class="prop-name">trace:track</span></td>
+              <td><span class="prop-type">assessment</span></td>
+              <td><span class="badge badge-req">required</span></td>
+              <td class="prop-desc">Text content: <code>A</code> or <code>B</code>.</td>
+            </tr>
+            <tr>
+              <td><span class="prop-name">trace:disqualified</span></td>
+              <td><span class="prop-type">assessment</span></td>
+              <td><span class="badge badge-req">required</span></td>
+              <td class="prop-desc">Text content: <code>true</code> or <code>false</code>. Optional <code>code</code> attribute: <code>DQ1</code> or <code>DQ2</code> when triggered.</td>
+            </tr>
+            <tr>
+              <td><span class="prop-name">trace:scores</span></td>
+              <td><span class="prop-type">assessment</span></td>
+              <td><span class="badge badge-opt">optional</span></td>
+              <td class="prop-desc">Container for category-level scores. Omit when <code>disqualified</code> is true. Contains one <code>trace:score</code> per category.</td>
+            </tr>
+            <tr>
+              <td><span class="prop-name">trace:score</span></td>
+              <td><span class="prop-type">scores</span></td>
+              <td><span class="badge badge-opt">optional</span></td>
+              <td class="prop-desc">Self-closing. Attributes: <code>category</code>, <code>value</code> (integer), <code>max</code> (integer). See categories below.</td>
+            </tr>
+            <tr>
+              <td><span class="prop-name">trace:total</span></td>
+              <td><span class="prop-type">assessment</span></td>
+              <td><span class="badge badge-req">required</span></td>
+              <td class="prop-desc">Self-closing. Attributes: <code>score</code> (integer), <code>max</code> (integer), <code>pct</code> (integer 0–100, optional). Omit when disqualified.</td>
+            </tr>
+            <tr>
+              <td><span class="prop-name">trace:verdict</span></td>
+              <td><span class="prop-type">assessment</span></td>
+              <td><span class="badge badge-req">required</span></td>
+              <td class="prop-desc">Text content: verdict string. See <a href="/metadata/json-ld#verdicts">Verdict Values</a>. Omit when disqualified, or use <code>Disqualified</code>.</td>
+            </tr>
+            <tr>
+              <td><span class="prop-name">trace:assessmentDate</span></td>
+              <td><span class="prop-type">assessment</span></td>
+              <td><span class="badge badge-req">required</span></td>
+              <td class="prop-desc">Text content: ISO 8601 date (<code>YYYY-MM-DD</code>).</td>
+            </tr>
+            <tr>
+              <td><span class="prop-name">trace:assessedBy</span></td>
+              <td><span class="prop-type">assessment</span></td>
+              <td><span class="badge badge-opt">optional</span></td>
+              <td class="prop-desc">Text content: <code>self</code>, <code>third-party</code>, or assessor name.</td>
+            </tr>
+            <tr>
+              <td><span class="prop-name">trace:nextReviewDate</span></td>
+              <td><span class="prop-type">assessment</span></td>
+              <td><span class="badge badge-opt">optional</span></td>
+              <td class="prop-desc">Text content: ISO 8601 date of planned reassessment.</td>
+            </tr>
+            <tr>
+              <td><span class="prop-name">trace:cardURL</span></td>
+              <td><span class="prop-type">assessment</span></td>
+              <td><span class="badge badge-opt">optional</span></td>
+              <td class="prop-desc">Text content: URL of the TRACE scorecard for this assessment.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Category values for trace:score</h3>
+        <p>The <code>category</code> attribute of <code>trace:score</code> must be one of the following strings:</p>
+        <table class="prop-table">
+          <thead><tr><th>category value</th><th>Track A max</th><th>Track B max</th></tr></thead>
+          <tbody>
+            <tr><td><span class="prop-name">transparency</span></td><td>4</td><td>7</td></tr>
+            <tr><td><span class="prop-name">sourceIntegrity</span></td><td>3</td><td>4</td></tr>
+            <tr><td><span class="prop-name">displacement</span></td><td>2</td><td>5</td></tr>
+            <tr><td><span class="prop-name">consentAttribution</span></td><td>4</td><td>4</td></tr>
+            <tr><td><span class="prop-name">benefitFlow</span></td><td>5</td><td>6</td></tr>
+            <tr><td><span class="prop-name">accountability</span></td><td>2</td><td>4</td></tr>
+            <tr><td><span class="prop-name">governanceDurability</span></td><td>—</td><td>5 (Track B only)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Channel vs Item -->
+      <div class="spec-section" id="channel">
+        <div class="section-label">Channel-Level Use</div>
+        <h2>Assessing a Whole Feed or Series</h2>
+        <p>Place <code>trace:assessment</code> directly inside <code>&lt;channel&gt;</code> to assert an assessment that applies to the entire feed or podcast series. This is appropriate when a single assessment covers the production practices of all episodes, and individual episode-level differences are not material enough to track separately.</p>
+
+        <div class="code-block">
+          <div class="code-block-label"><span>Channel-level placement</span></div>
+          <pre><span class="x-tag">&lt;channel&gt;</span>
+  <span class="x-tag">&lt;title&gt;</span><span class="x-txt">Cariboo Signals</span><span class="x-tag">&lt;/title&gt;</span>
+  <span class="x-tag">&lt;link&gt;</span><span class="x-txt">https://cariboosignals.ca</span><span class="x-tag">&lt;/link&gt;</span>
+  <span class="x-tag">&lt;description&gt;</span><span class="x-txt">Community journalism for the Cariboo</span><span class="x-tag">&lt;/description&gt;</span>
+
+  <span class="x-cmt">&lt;!-- TRACE assessment for the entire series --&gt;</span>
+  <span class="x-tag">&lt;trace:assessment</span> <span class="x-attr">version</span>=<span class="x-val">"1.0"</span><span class="x-tag">&gt;</span>
+    <span class="x-tag">&lt;trace:producer&gt;</span><span class="x-txt">Cariboo Signals</span><span class="x-tag">&lt;/trace:producer&gt;</span>
+    <span class="x-tag">&lt;trace:community&gt;</span><span class="x-txt">Rural Cariboo region, BC</span><span class="x-tag">&lt;/trace:community&gt;</span>
+    <span class="x-tag">&lt;trace:ai</span> <span class="x-attr">generated</span>=<span class="x-val">"true"</span> <span class="x-attr">role</span>=<span class="x-val">"partial"</span><span class="x-tag">&gt;</span>
+      <span class="x-tag">&lt;trace:tool&gt;</span><span class="x-txt">Claude</span><span class="x-tag">&lt;/trace:tool&gt;</span>
+      <span class="x-tag">&lt;trace:tool&gt;</span><span class="x-txt">ElevenLabs</span><span class="x-tag">&lt;/trace:tool&gt;</span>
+    <span class="x-tag">&lt;/trace:ai&gt;</span>
+    <span class="x-tag">&lt;trace:track&gt;</span><span class="x-txt">A</span><span class="x-tag">&lt;/trace:track&gt;</span>
+    <span class="x-tag">&lt;trace:disqualified&gt;</span><span class="x-txt">false</span><span class="x-tag">&lt;/trace:disqualified&gt;</span>
+    <span class="x-tag">&lt;trace:total</span> <span class="x-attr">score</span>=<span class="x-val">"15"</span> <span class="x-attr">max</span>=<span class="x-val">"20"</span> <span class="x-attr">pct</span>=<span class="x-val">"75"</span><span class="x-tag">/&gt;</span>
+    <span class="x-tag">&lt;trace:verdict&gt;</span><span class="x-txt">Sound</span><span class="x-tag">&lt;/trace:verdict&gt;</span>
+    <span class="x-tag">&lt;trace:assessmentDate&gt;</span><span class="x-txt">2026-05-15</span><span class="x-tag">&lt;/trace:assessmentDate&gt;</span>
+  <span class="x-tag">&lt;/trace:assessment&gt;</span>
+
+  <span class="x-tag">&lt;item&gt;</span>...<span class="x-tag">&lt;/item&gt;</span>
+<span class="x-tag">&lt;/channel&gt;</span></pre>
+        </div>
+      </div>
+
+      <div class="spec-section" id="item">
+        <div class="section-label">Item-Level Use</div>
+        <h2>Episode-Specific Assessments</h2>
+        <p>Place <code>trace:assessment</code> inside an <code>&lt;item&gt;</code> to override or add to the channel-level assessment for that specific episode. An item-level assessment takes precedence over the channel-level one for that item. You can use both: channel-level as the default, item-level for episodes that deviate.</p>
+
+        <div class="code-block">
+          <div class="code-block-label"><span>Item-level placement with full scores</span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+          <pre><span class="x-tag">&lt;item&gt;</span>
+  <span class="x-tag">&lt;title&gt;</span><span class="x-txt">Ep 12: Water Rights on the Chilcotin</span><span class="x-tag">&lt;/title&gt;</span>
+  <span class="x-tag">&lt;link&gt;</span><span class="x-txt">https://cariboosignals.ca/episodes/12</span><span class="x-tag">&lt;/link&gt;</span>
+  <span class="x-tag">&lt;guid&gt;</span><span class="x-txt">cariboo-ep-12</span><span class="x-tag">&lt;/guid&gt;</span>
+
+  <span class="x-tag">&lt;trace:assessment</span> <span class="x-attr">version</span>=<span class="x-val">"1.0"</span><span class="x-tag">&gt;</span>
+    <span class="x-tag">&lt;trace:content</span>
+      <span class="x-attr">title</span>=<span class="x-val">"Ep 12: Water Rights on the Chilcotin"</span>
+      <span class="x-attr">url</span>=<span class="x-val">"https://cariboosignals.ca/episodes/12"</span>
+      <span class="x-attr">type</span>=<span class="x-val">"podcast"</span><span class="x-tag">/&gt;</span>
+    <span class="x-tag">&lt;trace:producer&gt;</span><span class="x-txt">Cariboo Signals</span><span class="x-tag">&lt;/trace:producer&gt;</span>
+    <span class="x-tag">&lt;trace:community&gt;</span><span class="x-txt">Tsilhqot'in Nation; rural Cariboo</span><span class="x-tag">&lt;/trace:community&gt;</span>
+    <span class="x-tag">&lt;trace:ai</span> <span class="x-attr">generated</span>=<span class="x-val">"true"</span> <span class="x-attr">role</span>=<span class="x-val">"partial"</span><span class="x-tag">&gt;</span>
+      <span class="x-tag">&lt;trace:tool&gt;</span><span class="x-txt">Claude</span><span class="x-tag">&lt;/trace:tool&gt;</span>
+    <span class="x-tag">&lt;/trace:ai&gt;</span>
+    <span class="x-tag">&lt;trace:track&gt;</span><span class="x-txt">A</span><span class="x-tag">&lt;/trace:track&gt;</span>
+    <span class="x-tag">&lt;trace:disqualified&gt;</span><span class="x-txt">false</span><span class="x-tag">&lt;/trace:disqualified&gt;</span>
+    <span class="x-tag">&lt;trace:scores&gt;</span>
+      <span class="x-tag">&lt;trace:score</span> <span class="x-attr">category</span>=<span class="x-val">"transparency"</span>       <span class="x-attr">value</span>=<span class="x-val">"3"</span> <span class="x-attr">max</span>=<span class="x-val">"4"</span><span class="x-tag">/&gt;</span>
+      <span class="x-tag">&lt;trace:score</span> <span class="x-attr">category</span>=<span class="x-val">"sourceIntegrity"</span>    <span class="x-attr">value</span>=<span class="x-val">"2"</span> <span class="x-attr">max</span>=<span class="x-val">"3"</span><span class="x-tag">/&gt;</span>
+      <span class="x-tag">&lt;trace:score</span> <span class="x-attr">category</span>=<span class="x-val">"displacement"</span>      <span class="x-attr">value</span>=<span class="x-val">"2"</span> <span class="x-attr">max</span>=<span class="x-val">"2"</span><span class="x-tag">/&gt;</span>
+      <span class="x-tag">&lt;trace:score</span> <span class="x-attr">category</span>=<span class="x-val">"consentAttribution"</span> <span class="x-attr">value</span>=<span class="x-val">"3"</span> <span class="x-attr">max</span>=<span class="x-val">"4"</span><span class="x-tag">/&gt;</span>
+      <span class="x-tag">&lt;trace:score</span> <span class="x-attr">category</span>=<span class="x-val">"benefitFlow"</span>       <span class="x-attr">value</span>=<span class="x-val">"3"</span> <span class="x-attr">max</span>=<span class="x-val">"5"</span><span class="x-tag">/&gt;</span>
+      <span class="x-tag">&lt;trace:score</span> <span class="x-attr">category</span>=<span class="x-val">"accountability"</span>    <span class="x-attr">value</span>=<span class="x-val">"2"</span> <span class="x-attr">max</span>=<span class="x-val">"2"</span><span class="x-tag">/&gt;</span>
+    <span class="x-tag">&lt;/trace:scores&gt;</span>
+    <span class="x-tag">&lt;trace:total</span> <span class="x-attr">score</span>=<span class="x-val">"15"</span> <span class="x-attr">max</span>=<span class="x-val">"20"</span> <span class="x-attr">pct</span>=<span class="x-val">"75"</span><span class="x-tag">/&gt;</span>
+    <span class="x-tag">&lt;trace:verdict&gt;</span><span class="x-txt">Sound</span><span class="x-tag">&lt;/trace:verdict&gt;</span>
+    <span class="x-tag">&lt;trace:assessmentDate&gt;</span><span class="x-txt">2026-05-15</span><span class="x-tag">&lt;/trace:assessmentDate&gt;</span>
+    <span class="x-tag">&lt;trace:assessedBy&gt;</span><span class="x-txt">self</span><span class="x-tag">&lt;/trace:assessedBy&gt;</span>
+    <span class="x-tag">&lt;trace:cardURL&gt;</span><span class="x-txt">https://tracestandard.org/cards/cariboo-ep12</span><span class="x-tag">&lt;/trace:cardURL&gt;</span>
+  <span class="x-tag">&lt;/trace:assessment&gt;</span>
+<span class="x-tag">&lt;/item&gt;</span></pre>
+        </div>
+      </div>
+
+      <!-- Full RSS example -->
+      <div class="spec-section" id="rss-example">
+        <div class="section-label">Full RSS Example</div>
+        <h2>Complete RSS 2.0 Feed</h2>
+        <div class="code-block">
+          <div class="code-block-label"><span>Complete feed with channel + item TRACE blocks</span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+          <pre><span class="x-pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="x-tag">&lt;rss</span> <span class="x-attr">version</span>=<span class="x-val">"2.0"</span>
+     <span class="x-ns">xmlns:trace</span>=<span class="x-val">"https://tracestandard.org/ns/trace/1.0"</span>
+     <span class="x-ns">xmlns:podcast</span>=<span class="x-val">"https://podcastindex.org/namespace/1.0"</span>
+     <span class="x-ns">xmlns:itunes</span>=<span class="x-val">"http://www.itunes.com/dtds/podcast-1.0.dtd"</span><span class="x-tag">&gt;</span>
+
+  <span class="x-tag">&lt;channel&gt;</span>
+    <span class="x-tag">&lt;title&gt;</span><span class="x-txt">Cariboo Signals</span><span class="x-tag">&lt;/title&gt;</span>
+    <span class="x-tag">&lt;link&gt;</span><span class="x-txt">https://cariboosignals.ca</span><span class="x-tag">&lt;/link&gt;</span>
+    <span class="x-tag">&lt;description&gt;</span><span class="x-txt">Community journalism for the Cariboo</span><span class="x-tag">&lt;/description&gt;</span>
+    <span class="x-tag">&lt;language&gt;</span><span class="x-txt">en-ca</span><span class="x-tag">&lt;/language&gt;</span>
+
+    <span class="x-cmt">&lt;!-- Series-level TRACE assessment --&gt;</span>
+    <span class="x-tag">&lt;trace:assessment</span> <span class="x-attr">version</span>=<span class="x-val">"1.0"</span><span class="x-tag">&gt;</span>
+      <span class="x-tag">&lt;trace:producer</span> <span class="x-attr">url</span>=<span class="x-val">"https://cariboosignals.ca"</span><span class="x-tag">&gt;</span><span class="x-txt">Cariboo Signals</span><span class="x-tag">&lt;/trace:producer&gt;</span>
+      <span class="x-tag">&lt;trace:community&gt;</span><span class="x-txt">Rural Cariboo region, BC</span><span class="x-tag">&lt;/trace:community&gt;</span>
+      <span class="x-tag">&lt;trace:ai</span> <span class="x-attr">generated</span>=<span class="x-val">"true"</span> <span class="x-attr">role</span>=<span class="x-val">"partial"</span><span class="x-tag">&gt;</span>
+        <span class="x-tag">&lt;trace:tool&gt;</span><span class="x-txt">Claude</span><span class="x-tag">&lt;/trace:tool&gt;</span>
+        <span class="x-tag">&lt;trace:tool&gt;</span><span class="x-txt">ElevenLabs</span><span class="x-tag">&lt;/trace:tool&gt;</span>
+      <span class="x-tag">&lt;/trace:ai&gt;</span>
+      <span class="x-tag">&lt;trace:track&gt;</span><span class="x-txt">A</span><span class="x-tag">&lt;/trace:track&gt;</span>
+      <span class="x-tag">&lt;trace:disqualified&gt;</span><span class="x-txt">false</span><span class="x-tag">&lt;/trace:disqualified&gt;</span>
+      <span class="x-tag">&lt;trace:total</span> <span class="x-attr">score</span>=<span class="x-val">"15"</span> <span class="x-attr">max</span>=<span class="x-val">"20"</span><span class="x-tag">/&gt;</span>
+      <span class="x-tag">&lt;trace:verdict&gt;</span><span class="x-txt">Sound</span><span class="x-tag">&lt;/trace:verdict&gt;</span>
+      <span class="x-tag">&lt;trace:assessmentDate&gt;</span><span class="x-txt">2026-05-15</span><span class="x-tag">&lt;/trace:assessmentDate&gt;</span>
+    <span class="x-tag">&lt;/trace:assessment&gt;</span>
+
+    <span class="x-tag">&lt;item&gt;</span>
+      <span class="x-tag">&lt;title&gt;</span><span class="x-txt">Ep 12: Water Rights on the Chilcotin</span><span class="x-tag">&lt;/title&gt;</span>
+      <span class="x-tag">&lt;link&gt;</span><span class="x-txt">https://cariboosignals.ca/episodes/12</span><span class="x-tag">&lt;/link&gt;</span>
+      <span class="x-tag">&lt;guid</span> <span class="x-attr">isPermaLink</span>=<span class="x-val">"false"</span><span class="x-tag">&gt;</span><span class="x-txt">cariboo-ep-12</span><span class="x-tag">&lt;/guid&gt;</span>
+      <span class="x-tag">&lt;pubDate&gt;</span><span class="x-txt">Wed, 15 May 2026 09:00:00 -0700</span><span class="x-tag">&lt;/pubDate&gt;</span>
+      <span class="x-tag">&lt;enclosure</span> <span class="x-attr">url</span>=<span class="x-val">"https://cdn.cariboosignals.ca/ep12.mp3"</span>
+                 <span class="x-attr">length</span>=<span class="x-val">"47832044"</span> <span class="x-attr">type</span>=<span class="x-val">"audio/mpeg"</span><span class="x-tag">/&gt;</span>
+
+      <span class="x-cmt">&lt;!-- Episode-specific override: community differs from series default --&gt;</span>
+      <span class="x-tag">&lt;trace:assessment</span> <span class="x-attr">version</span>=<span class="x-val">"1.0"</span><span class="x-tag">&gt;</span>
+        <span class="x-tag">&lt;trace:community&gt;</span><span class="x-txt">Tsilhqot'in Nation; rural Cariboo</span><span class="x-tag">&lt;/trace:community&gt;</span>
+        <span class="x-tag">&lt;trace:track&gt;</span><span class="x-txt">A</span><span class="x-tag">&lt;/trace:track&gt;</span>
+        <span class="x-tag">&lt;trace:disqualified&gt;</span><span class="x-txt">false</span><span class="x-tag">&lt;/trace:disqualified&gt;</span>
+        <span class="x-tag">&lt;trace:total</span> <span class="x-attr">score</span>=<span class="x-val">"15"</span> <span class="x-attr">max</span>=<span class="x-val">"20"</span><span class="x-tag">/&gt;</span>
+        <span class="x-tag">&lt;trace:verdict&gt;</span><span class="x-txt">Sound</span><span class="x-tag">&lt;/trace:verdict&gt;</span>
+        <span class="x-tag">&lt;trace:assessmentDate&gt;</span><span class="x-txt">2026-05-15</span><span class="x-tag">&lt;/trace:assessmentDate&gt;</span>
+        <span class="x-tag">&lt;trace:cardURL&gt;</span><span class="x-txt">https://tracestandard.org/cards/cariboo-ep12</span><span class="x-tag">&lt;/trace:cardURL&gt;</span>
+      <span class="x-tag">&lt;/trace:assessment&gt;</span>
+    <span class="x-tag">&lt;/item&gt;</span>
+
+  <span class="x-tag">&lt;/channel&gt;</span>
+<span class="x-tag">&lt;/rss&gt;</span></pre>
+        </div>
+      </div>
+
+      <!-- Atom -->
+      <div class="spec-section" id="atom">
+        <div class="section-label">Atom Feed</div>
+        <h2>Atom 1.0 Integration</h2>
+        <p>The namespace declaration and element structure are identical in Atom feeds. Declare the namespace on the root <code>&lt;feed&gt;</code> element and use <code>trace:assessment</code> as a child of <code>&lt;feed&gt;</code> (series-level) or <code>&lt;entry&gt;</code> (item-level).</p>
+        <div class="code-block">
+          <div class="code-block-label"><span>Atom feed fragment</span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+          <pre><span class="x-tag">&lt;feed</span> <span class="x-ns">xmlns</span>=<span class="x-val">"http://www.w3.org/2005/Atom"</span>
+      <span class="x-ns">xmlns:trace</span>=<span class="x-val">"https://tracestandard.org/ns/trace/1.0"</span><span class="x-tag">&gt;</span>
+
+  <span class="x-tag">&lt;title&gt;</span><span class="x-txt">Cariboo Signals</span><span class="x-tag">&lt;/title&gt;</span>
+
+  <span class="x-tag">&lt;trace:assessment</span> <span class="x-attr">version</span>=<span class="x-val">"1.0"</span><span class="x-tag">&gt;</span>
+    <span class="x-tag">&lt;trace:producer&gt;</span><span class="x-txt">Cariboo Signals</span><span class="x-tag">&lt;/trace:producer&gt;</span>
+    <span class="x-tag">&lt;trace:track&gt;</span><span class="x-txt">A</span><span class="x-tag">&lt;/trace:track&gt;</span>
+    <span class="x-tag">&lt;trace:disqualified&gt;</span><span class="x-txt">false</span><span class="x-tag">&lt;/trace:disqualified&gt;</span>
+    <span class="x-tag">&lt;trace:total</span> <span class="x-attr">score</span>=<span class="x-val">"15"</span> <span class="x-attr">max</span>=<span class="x-val">"20"</span><span class="x-tag">/&gt;</span>
+    <span class="x-tag">&lt;trace:verdict&gt;</span><span class="x-txt">Sound</span><span class="x-tag">&lt;/trace:verdict&gt;</span>
+    <span class="x-tag">&lt;trace:assessmentDate&gt;</span><span class="x-txt">2026-05-15</span><span class="x-tag">&lt;/trace:assessmentDate&gt;</span>
+  <span class="x-tag">&lt;/trace:assessment&gt;</span>
+
+  <span class="x-tag">&lt;entry&gt;</span>
+    <span class="x-tag">&lt;title&gt;</span><span class="x-txt">Ep 12: Water Rights on the Chilcotin</span><span class="x-tag">&lt;/title&gt;</span>
+    <span class="x-cmt">&lt;!-- entry-level trace:assessment goes here if needed --&gt;</span>
+  <span class="x-tag">&lt;/entry&gt;</span>
+
+<span class="x-tag">&lt;/feed&gt;</span></pre>
+        </div>
+      </div>
+
+      <!-- Validation -->
+      <div class="spec-section" id="validation">
+        <div class="section-label">Validation</div>
+        <h2>Checking Your Feed</h2>
+        <table class="prop-table">
+          <thead><tr><th>Tool</th><th>What it checks</th><th>URL</th></tr></thead>
+          <tbody>
+            <tr><td class="prop-name">W3C Feed Validator</td><td class="prop-desc">RSS and Atom well-formedness; namespace extension support</td><td class="prop-desc"><code>validator.w3.org/feed</code></td></tr>
+            <tr><td class="prop-name">Podcast Index Validator</td><td class="prop-desc">Podcasting 2.0 namespace compliance; coexistence check</td><td class="prop-desc"><code>podcastindex.org/validate</code></td></tr>
+            <tr><td class="prop-name">TRACE Feed Validator</td><td class="prop-desc">TRACE-specific element and attribute validation</td><td class="prop-desc"><code>tracestandard.org/validate/xml</code> (forthcoming)</td></tr>
+          </tbody>
+        </table>
+        <div class="note-block"><strong>Unknown element handling:</strong> Feed readers that do not recognize the <code>trace:</code> namespace will silently ignore all TRACE elements. The feed remains valid and fully functional for those consumers. TRACE metadata is purely additive.</div>
+      </div>
+
+      <div class="spec-section" id="changelog">
+        <div class="section-label">Change Log</div>
+        <h2>Version History</h2>
+        <table class="prop-table">
+          <thead><tr><th>Version</th><th>Date</th><th>Status</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td class="prop-name">1.0</td><td class="prop-type">May 2026</td><td><span class="badge badge-opt">Draft</span></td><td class="prop-desc">Initial draft. All elements defined. Awaiting community review and XSD schema publication.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <footer>
+        <div class="footer-left"><span>TRACE</span> — XML Namespace Specification v1.0 Draft · May 2026</div>
+        <div class="footer-right"><a href="https://github.com/zirnhelt/curated-podcast-generator">github.com/zirnhelt/curated-podcast-generator</a></div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    function copyBlock(btn) {
+      const pre = btn.closest('.code-block').querySelector('pre');
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = 'Copied';
+        setTimeout(() => btn.textContent = orig, 1500);
+      });
+    }
+  </script>
+</body>
+</html>

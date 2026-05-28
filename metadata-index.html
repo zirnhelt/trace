@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Implement TRACE Metadata — TRACE Content Accountability Standard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F2EEE8;
+      --ink:   #1A1A1A;
+      --mid:   #888880;
+      --rule:  #D8D4CC;
+      --green: #1B5E35;
+      --paper: #FAFAF7;
+      --blue:  #1A3A5C;
+      --amber: #7A4A00;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      background: var(--cream); color: var(--ink);
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--ink);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 48px;
+    }
+    .nav-wordmark {
+      font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500;
+      color: var(--cream); letter-spacing: 0.18em; text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      font-size: 11px; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 0.1em; color: #888; text-decoration: none; transition: color 0.15s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--cream); }
+
+    .page-header {
+      padding: 112px 48px 64px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .breadcrumb {
+      font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--mid); margin-bottom: 20px;
+    }
+    .breadcrumb a { color: var(--mid); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .page-title {
+      font-family: 'Fraunces', serif; font-weight: 900;
+      font-size: clamp(40px, 7vw, 80px);
+      line-height: 0.95; letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+    .page-lead {
+      font-size: 17px; line-height: 1.7; color: #444;
+      max-width: 640px;
+    }
+
+    section { padding: 64px 48px; border-bottom: 1px solid var(--rule); }
+    .section-label {
+      font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--mid);
+      margin-bottom: 32px; display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+    /* Format cards */
+    .format-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: var(--rule);
+      border: 1px solid var(--rule);
+      margin-bottom: 2px;
+    }
+    .format-card {
+      background: var(--cream); padding: 36px 32px 32px;
+      display: flex; flex-direction: column;
+      transition: background 0.15s;
+      position: relative;
+      cursor: pointer;
+    }
+    .format-card:hover { background: var(--paper); }
+    .format-card.highlighted {
+      background: var(--ink);
+      color: var(--cream);
+    }
+    .format-card.highlighted .fc-type,
+    .format-card.highlighted .fc-desc,
+    .format-card.highlighted .fc-best-label { color: #888; }
+    .format-card.highlighted .fc-best li { color: #ccc; }
+    .format-card.highlighted .fc-best li::before { color: #666; }
+    .format-card.highlighted .fc-link { background: var(--cream); color: var(--ink); }
+    .format-card.highlighted .fc-link:hover { background: #ddd; }
+    .format-card.dimmed { opacity: 0.35; }
+
+    .fc-tag {
+      font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--mid); margin-bottom: 16px;
+    }
+    .format-card.highlighted .fc-tag { color: #666; }
+    .fc-format-id {
+      font-family: 'Fraunces', serif; font-weight: 900;
+      font-size: 42px; line-height: 1; letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+    .fc-type {
+      font-family: 'DM Mono', monospace; font-size: 11px; color: var(--mid);
+      margin-bottom: 20px; letter-spacing: 0.04em;
+    }
+    .fc-desc {
+      font-size: 14px; line-height: 1.65; color: #444;
+      margin-bottom: 20px; flex: 1;
+    }
+    .fc-best-label {
+      font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--mid); margin-bottom: 8px;
+    }
+    .fc-best { list-style: none; margin-bottom: 28px; }
+    .fc-best li {
+      font-size: 13px; color: #555; padding: 3px 0;
+      display: flex; gap: 8px; align-items: baseline;
+    }
+    .fc-best li::before { content: '→'; color: var(--mid); flex-shrink: 0; }
+    .fc-link {
+      display: inline-block; padding: 10px 20px;
+      background: var(--ink); color: var(--cream);
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none;
+      transition: background 0.15s; align-self: flex-start;
+    }
+    .fc-link:hover { background: var(--green); color: var(--cream); }
+
+    /* Diagnostic */
+    .diagnostic {
+      background: var(--paper); border: 1px solid var(--rule);
+      padding: 36px; margin-top: 40px;
+    }
+    .diag-title {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: 22px; margin-bottom: 24px; color: var(--ink);
+    }
+    .diag-q { margin-bottom: 24px; }
+    .diag-q-label {
+      font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 10px;
+    }
+    .diag-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .diag-opt {
+      padding: 7px 14px; border: 1px solid var(--rule);
+      background: white; font-size: 13px; cursor: pointer;
+      transition: all 0.15s; color: var(--ink);
+      border-radius: 2px;
+    }
+    .diag-opt:hover { border-color: var(--ink); background: var(--cream); }
+    .diag-opt.selected { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+    .diag-result {
+      margin-top: 24px; padding: 16px 20px;
+      border-left: 3px solid var(--ink);
+      display: none;
+    }
+    .diag-result.visible { display: block; }
+    .dr-label {
+      font-family: 'DM Mono', monospace; font-size: 9px;
+      text-transform: uppercase; letter-spacing: 0.12em; color: var(--mid); margin-bottom: 4px;
+    }
+    .dr-rec {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: 20px; color: var(--ink); margin-bottom: 4px;
+    }
+    .dr-why { font-size: 13px; color: #555; }
+    .dr-link {
+      display: inline-block; margin-top: 12px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--ink);
+      text-decoration: none; border-bottom: 2px solid var(--ink);
+      padding-bottom: 1px; transition: color 0.15s, border-color 0.15s;
+    }
+    .dr-link:hover { color: var(--green); border-color: var(--green); }
+    .reset-btn {
+      margin-top: 16px; display: block;
+      background: none; border: none; font-size: 12px;
+      color: var(--mid); cursor: pointer; text-decoration: underline;
+    }
+    .reset-btn:hover { color: var(--ink); }
+
+    /* Comparison table */
+    .compare-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 13px;
+    }
+    .compare-table th {
+      font-family: 'DM Mono', monospace; font-size: 9px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--mid); text-align: left;
+      padding: 8px 16px; border-bottom: 2px solid var(--ink);
+      background: var(--paper);
+    }
+    .compare-table th:first-child { width: 220px; }
+    .compare-table td {
+      padding: 10px 16px; border-bottom: 1px solid var(--rule);
+      vertical-align: top; color: #333;
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child { font-size: 12px; color: var(--mid); font-weight: 500; }
+    .check { color: var(--green); font-weight: 700; }
+    .partial { color: var(--amber); }
+    .cross { color: #999; }
+
+    /* Note block */
+    .note-block {
+      background: var(--paper); border: 1px solid var(--rule);
+      border-left: 3px solid var(--mid); padding: 16px 20px;
+      margin-top: 32px; font-size: 13px; line-height: 1.65; color: #555;
+    }
+    .note-block strong { color: var(--ink); }
+
+    footer {
+      padding: 32px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid var(--rule);
+    }
+    .footer-left { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--mid); }
+    .footer-left span { color: var(--ink); font-weight: 500; }
+    .footer-right { font-size: 12px; color: var(--mid); }
+    .footer-right a { color: var(--mid); text-decoration: none; }
+    .footer-right a:hover { color: var(--ink); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .page-header { padding: 80px 24px 40px; }
+      section { padding: 48px 24px; }
+      .format-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-wordmark">TRACE</a>
+    <div class="nav-links">
+      <a href="/standard">The Standard</a>
+      <a href="/metadata" class="active">Implement</a>
+      <a href="/foundation">Foundation</a>
+      <a href="/resources">Resources</a>
+      <a href="https://github.com/zirnhelt/curated-podcast-generator">GitHub</a>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <div class="breadcrumb"><a href="/">TRACE</a> / Metadata Standard</div>
+    <h1 class="page-title">Implement<br>TRACE Metadata</h1>
+    <p class="page-lead">TRACE assessments are designed to be machine-readable. Embedding them in your content makes accountability findable, indexable, and verifiable — without requiring anyone to visit the scorecard manually. Three formats exist for different publishing contexts.</p>
+  </div>
+
+  <!-- Format cards -->
+  <section id="formats">
+    <div class="section-label">Choose a Format</div>
+
+    <div class="format-grid" id="format-grid">
+
+      <div class="format-card" data-format="jsonld">
+        <div class="fc-tag">Format 01</div>
+        <div class="fc-format-id">JSON-LD</div>
+        <div class="fc-type">application/ld+json</div>
+        <div class="fc-desc">Structured linked data embedded in the HTML <code>&lt;head&gt;</code> or returned from an API. Readable by search engines, aggregators, and any JSON-aware tool. The default format for web-published content.</div>
+        <div class="fc-best-label">Best for</div>
+        <ul class="fc-best">
+          <li>Web pages and articles</li>
+          <li>REST API responses</li>
+          <li>Platforms with CMS access</li>
+          <li>SEO-visible accountability data</li>
+        </ul>
+        <a href="/metadata/json-ld" class="fc-link">View Spec →</a>
+      </div>
+
+      <div class="format-card" data-format="xml">
+        <div class="fc-tag">Format 02</div>
+        <div class="fc-format-id">XML</div>
+        <div class="fc-type">trace: namespace</div>
+        <div class="fc-desc">An XML namespace extension for RSS, Atom, and other feed formats. Add a <code>trace:</code> block to your feed's channel or item elements. Read natively by podcast apps and feed aggregators that support namespace extensions.</div>
+        <div class="fc-best-label">Best for</div>
+        <ul class="fc-best">
+          <li>Podcast RSS feeds</li>
+          <li>Atom and news feeds</li>
+          <li>XML-based document formats</li>
+          <li>Podcasting 2.0 ecosystems</li>
+        </ul>
+        <a href="/metadata/xml" class="fc-link">View Spec →</a>
+      </div>
+
+      <div class="format-card" data-format="c2pa">
+        <div class="fc-tag">Format 03</div>
+        <div class="fc-format-id">C2PA</div>
+        <div class="fc-type">trace.assessment assertion</div>
+        <div class="fc-desc">A TRACE assertion type within the Coalition for Content Provenance and Authenticity standard. Cryptographically signed and embedded directly in media files — survives download, re-hosting, and platform migration. The durability choice.</div>
+        <div class="fc-best-label">Best for</div>
+        <ul class="fc-best">
+          <li>Images, video, and audio files</li>
+          <li>PDFs and documents</li>
+          <li>AI-generated media</li>
+          <li>Long-term archival content</li>
+        </ul>
+        <a href="/metadata/c2pa" class="fc-link">View Spec →</a>
+      </div>
+
+    </div>
+
+    <!-- Diagnostic -->
+    <div class="diagnostic" id="diagnostic">
+      <div class="diag-title">Not sure which format you need?</div>
+
+      <div class="diag-q" id="q1">
+        <div class="diag-q-label">1. Where will this TRACE assessment data live?</div>
+        <div class="diag-options">
+          <button class="diag-opt" data-q="1" data-val="web" onclick="answer(1,'web')">In an HTML page or API response</button>
+          <button class="diag-opt" data-q="1" data-val="feed" onclick="answer(1,'feed')">In a podcast or news feed</button>
+          <button class="diag-opt" data-q="1" data-val="file" onclick="answer(1,'file')">Embedded inside a media file</button>
+          <button class="diag-opt" data-q="1" data-val="unsure" onclick="answer(1,'unsure')">I'm not sure yet</button>
+        </div>
+      </div>
+
+      <div class="diag-q" id="q2" style="display:none">
+        <div class="diag-q-label">2. Who is the primary audience for this metadata?</div>
+        <div class="diag-options">
+          <button class="diag-opt" data-q="2" data-val="engines" onclick="answer(2,'engines')">Search engines and aggregators</button>
+          <button class="diag-opt" data-q="2" data-val="apps" onclick="answer(2,'apps')">Podcast or feed reader apps</button>
+          <button class="diag-opt" data-q="2" data-val="platforms" onclick="answer(2,'platforms')">Content platforms and archives</button>
+          <button class="diag-opt" data-q="2" data-val="anyone" onclick="answer(2,'anyone')">Whoever encounters the file</button>
+        </div>
+      </div>
+
+      <div class="diag-result" id="diag-result">
+        <div class="dr-label">Recommendation</div>
+        <div class="dr-rec" id="dr-rec-text">—</div>
+        <div class="dr-why" id="dr-why-text"></div>
+        <a href="#" class="dr-link" id="dr-link-el">Read the spec →</a>
+        <button class="reset-btn" onclick="resetDiag()">Start over</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison table -->
+  <section id="compare">
+    <div class="section-label">Format Comparison</div>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Criterion</th>
+          <th>JSON-LD</th>
+          <th>XML Namespace</th>
+          <th>C2PA Assertion</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Primary use context</td>
+          <td>Web pages, APIs</td>
+          <td>RSS / Atom feeds</td>
+          <td>Media files</td>
+        </tr>
+        <tr>
+          <td>Human-readable without tools</td>
+          <td class="check">Yes — inspect source</td>
+          <td class="check">Yes — inspect feed</td>
+          <td class="cross">No — requires C2PA reader</td>
+        </tr>
+        <tr>
+          <td>Indexed by search engines</td>
+          <td class="check">Yes (Google, Bing)</td>
+          <td class="partial">Partial (feed crawlers)</td>
+          <td class="cross">No</td>
+        </tr>
+        <tr>
+          <td>Survives file download / re-hosting</td>
+          <td class="cross">No — page-level only</td>
+          <td class="cross">No — feed-level only</td>
+          <td class="check">Yes — embedded in file</td>
+        </tr>
+        <tr>
+          <td>Cryptographic verification</td>
+          <td class="cross">No</td>
+          <td class="cross">No</td>
+          <td class="check">Yes — tamper-evident</td>
+        </tr>
+        <tr>
+          <td>Supported file types</td>
+          <td>.html, .json</td>
+          <td>.rss, .xml, .opml</td>
+          <td>JPEG, PNG, MP4, MP3, PDF, and more</td>
+        </tr>
+        <tr>
+          <td>Implementation effort</td>
+          <td>Low — add a script tag</td>
+          <td>Low — add namespace + elements</td>
+          <td>Medium — requires C2PA tooling</td>
+        </tr>
+        <tr>
+          <td>Can coexist with other formats</td>
+          <td class="check">Yes</td>
+          <td class="check">Yes</td>
+          <td class="check">Yes</td>
+        </tr>
+        <tr>
+          <td>Versioning support</td>
+          <td class="check">Yes — frameworkVersion field</td>
+          <td class="check">Yes — version attribute</td>
+          <td class="check">Yes — specVersion field</td>
+        </tr>
+        <tr>
+          <td>Community authorship possible</td>
+          <td class="check">Yes — assessedBy field</td>
+          <td class="check">Yes — trace:assessedBy element</td>
+          <td class="check">Yes — field in assertion data</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note-block">
+      <strong>Formats are complementary, not exclusive.</strong> A podcast episode might carry TRACE metadata in all three formats simultaneously: JSON-LD on the episode page, a <code>trace:</code> block in the RSS feed, and a C2PA assertion embedded in the audio file. Each serves a different reader in a different context.
+    </div>
+  </section>
+
+  <!-- Common fields -->
+  <section id="common">
+    <div class="section-label">What All Formats Carry</div>
+    <p style="font-size:15px; color:#444; line-height:1.75; max-width:680px; margin-bottom:32px;">
+      Regardless of format, every TRACE metadata object encodes the same core information. The field names differ by format; the data model is identical.
+    </p>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Data Point</th>
+          <th>JSON-LD field</th>
+          <th>XML element</th>
+          <th>C2PA assertion key</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Content title</td>
+          <td><code>contentTitle</code></td>
+          <td><code>&lt;trace:content title="…"&gt;</code></td>
+          <td><code>contentTitle</code></td>
+        </tr>
+        <tr>
+          <td>Producer</td>
+          <td><code>producer</code></td>
+          <td><code>&lt;trace:producer&gt;</code></td>
+          <td><code>producer</code></td>
+        </tr>
+        <tr>
+          <td>Community represented</td>
+          <td><code>communityRepresented</code></td>
+          <td><code>&lt;trace:community&gt;</code></td>
+          <td><code>communityRepresented</code></td>
+        </tr>
+        <tr>
+          <td>AI disclosure</td>
+          <td><code>aiGenerated</code>, <code>aiTools</code></td>
+          <td><code>&lt;trace:ai generated="true"&gt;</code></td>
+          <td><code>aiGenerated</code>, <code>aiTools</code></td>
+        </tr>
+        <tr>
+          <td>Track (A or B)</td>
+          <td><code>track</code></td>
+          <td><code>&lt;trace:track&gt;</code></td>
+          <td><code>track</code></td>
+        </tr>
+        <tr>
+          <td>Disqualified</td>
+          <td><code>disqualified</code></td>
+          <td><code>&lt;trace:disqualified&gt;</code></td>
+          <td><code>disqualified</code></td>
+        </tr>
+        <tr>
+          <td>Category scores</td>
+          <td><code>scores.transparency</code>, etc.</td>
+          <td><code>&lt;trace:score category="…"&gt;</code></td>
+          <td><code>scores.transparency</code>, etc.</td>
+        </tr>
+        <tr>
+          <td>Total score</td>
+          <td><code>totalScore</code>, <code>maxScore</code></td>
+          <td><code>&lt;trace:total score="…" max="…"&gt;</code></td>
+          <td><code>totalScore</code>, <code>maxScore</code></td>
+        </tr>
+        <tr>
+          <td>Verdict</td>
+          <td><code>verdict</code></td>
+          <td><code>&lt;trace:verdict&gt;</code></td>
+          <td><code>verdict</code></td>
+        </tr>
+        <tr>
+          <td>Assessment date</td>
+          <td><code>assessmentDate</code></td>
+          <td><code>&lt;trace:assessmentDate&gt;</code></td>
+          <td><code>assessmentDate</code></td>
+        </tr>
+        <tr>
+          <td>Link to scorecard</td>
+          <td><code>cardURL</code></td>
+          <td><code>&lt;trace:cardURL&gt;</code></td>
+          <td><code>cardURL</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    <div class="footer-left">
+      <span>TRACE</span> — Content Accountability Standard &nbsp;·&nbsp;
+      Metadata Standard v1.0 Draft &nbsp;·&nbsp; May 2026
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com/zirnhelt/curated-podcast-generator">github.com/zirnhelt/curated-podcast-generator</a>
+    </div>
+  </footer>
+
+  <script>
+    const answers = {};
+
+    const recommendations = {
+      web:     { name: 'JSON-LD',         why: 'Web pages and API responses are the native home for JSON-LD. It\'s indexed by search engines, visible in page source, and requires nothing more than a script tag.',          link: '/metadata/json-ld' },
+      feed:    { name: 'XML Namespace',   why: 'RSS and Atom feeds already use XML namespaces to extend the core spec. The trace: namespace drops into any feed without breaking existing readers.',                            link: '/metadata/xml' },
+      file:    { name: 'C2PA Assertion',  why: 'Embedding metadata inside the file itself is the only format that survives download and re-hosting. C2PA also adds cryptographic signing, so the assertion can be verified.',  link: '/metadata/c2pa' },
+      engines: { name: 'JSON-LD',         why: 'JSON-LD with a published schema at tracestandard.org is directly indexable by major search engines and structured-data aggregators.',                                          link: '/metadata/json-ld' },
+      apps:    { name: 'XML Namespace',   why: 'Podcast and feed reader apps parse RSS namespaces natively. The trace: namespace integrates with Podcasting 2.0 tooling without any app changes.',                            link: '/metadata/xml' },
+      platforms:{ name: 'C2PA Assertion', why: 'Content platforms that support C2PA (Adobe, Google, YouTube) will surface the TRACE assertion alongside other content credentials. Best for long-lived archival content.',    link: '/metadata/c2pa' },
+      anyone:  { name: 'C2PA Assertion',  why: 'If the metadata needs to travel with the file regardless of where it ends up, C2PA is the only format that travels inside the file itself.',                                   link: '/metadata/c2pa' },
+      unsure:  null,
+    };
+
+    function answer(q, val) {
+      answers[q] = val;
+      document.querySelectorAll(`[data-q="${q}"]`).forEach(b => b.classList.remove('selected'));
+      document.querySelector(`[data-q="${q}"][data-val="${val}"]`).classList.add('selected');
+
+      const rec = recommendations[val];
+
+      if (val === 'unsure') {
+        document.getElementById('q2').style.display = 'block';
+        hideResult();
+        return;
+      }
+
+      if (rec) {
+        showResult(rec);
+        highlightCard(rec.name);
+      }
+    }
+
+    function showResult(rec) {
+      const result = document.getElementById('diag-result');
+      document.getElementById('dr-rec-text').textContent = rec.name;
+      document.getElementById('dr-why-text').textContent = rec.why;
+      const link = document.getElementById('dr-link-el');
+      link.href = rec.link;
+      link.textContent = `Read the ${rec.name} spec →`;
+      result.classList.add('visible');
+    }
+
+    function hideResult() {
+      document.getElementById('diag-result').classList.remove('visible');
+    }
+
+    function highlightCard(name) {
+      const map = { 'JSON-LD': 'jsonld', 'XML Namespace': 'xml', 'C2PA Assertion': 'c2pa' };
+      const target = map[name];
+      document.querySelectorAll('.format-card').forEach(card => {
+        if (card.dataset.format === target) {
+          card.classList.add('highlighted');
+          card.classList.remove('dimmed');
+        } else {
+          card.classList.add('dimmed');
+          card.classList.remove('highlighted');
+        }
+      });
+    }
+
+    function resetDiag() {
+      Object.keys(answers).forEach(k => delete answers[k]);
+      document.querySelectorAll('.diag-opt').forEach(b => b.classList.remove('selected'));
+      document.getElementById('q2').style.display = 'none';
+      hideResult();
+      document.querySelectorAll('.format-card').forEach(card => {
+        card.classList.remove('highlighted', 'dimmed');
+      });
+    }
+  </script>
+</body>
+</html>

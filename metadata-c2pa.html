@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C2PA Assertion Spec — TRACE Metadata Standard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #F2EEE8; --ink: #1A1A1A; --mid: #888880;
+      --rule: #D8D4CC; --green: #1B5E35; --paper: #FAFAF7;
+    }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      background: var(--cream); color: var(--ink);
+      font-family: 'DM Sans', sans-serif; line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--ink); display: flex; align-items: center;
+      justify-content: space-between; padding: 0 32px; height: 48px;
+    }
+    .nav-wordmark { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--cream); letter-spacing: 0.18em; text-decoration: none; }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: #888; text-decoration: none; transition: color 0.15s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--cream); }
+
+    .layout { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; padding-top: 48px; }
+    .sidebar {
+      position: sticky; top: 48px; height: calc(100vh - 48px);
+      overflow-y: auto; background: var(--ink); padding: 32px 0;
+    }
+    .sb-head { padding: 0 24px 24px; border-bottom: 1px solid #333; margin-bottom: 16px; }
+    .sb-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: #666; margin-bottom: 6px; }
+    .sb-title { font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; color: var(--cream); line-height: 1.2; }
+    .sb-version { font-family: 'DM Mono', monospace; font-size: 9px; color: #555; margin-top: 4px; }
+    .sb-nav { padding: 0 12px; }
+    .sb-nav a { display: block; padding: 6px 12px; font-size: 12px; color: #888; text-decoration: none; border-radius: 2px; transition: all 0.15s; }
+    .sb-nav a:hover { color: var(--cream); background: #2a2a2a; }
+    .sb-nav-section { padding: 14px 12px 4px; font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: #555; }
+
+    .page-header { padding: 56px 56px 48px; border-bottom: 1px solid var(--rule); }
+    .breadcrumb { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mid); margin-bottom: 20px; }
+    .breadcrumb a { color: var(--mid); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .page-title { font-family: 'Fraunces', serif; font-weight: 900; font-size: clamp(36px, 5vw, 60px); line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .status-row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+    .status-pill { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; padding: 4px 10px; border: 1px solid var(--rule); color: var(--mid); }
+    .page-lead { font-size: 15px; line-height: 1.75; color: #444; max-width: 580px; }
+
+    .spec-section { padding: 48px 56px; border-bottom: 1px solid var(--rule); }
+    .section-label { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mid); margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+    h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: 26px; margin-bottom: 16px; line-height: 1.2; }
+    h3 { font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; margin-bottom: 12px; margin-top: 32px; }
+    p { font-size: 14px; line-height: 1.75; color: #444; margin-bottom: 16px; }
+    p:last-child { margin-bottom: 0; }
+    code { font-family: 'DM Mono', monospace; font-size: 12px; background: #E8E4DC; padding: 2px 5px; border-radius: 2px; color: var(--ink); }
+    a { color: var(--ink); }
+
+    .code-block { background: #141410; border-radius: 3px; overflow: hidden; margin: 20px 0; }
+    .code-block-label { background: #222; padding: 8px 16px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #666; display: flex; justify-content: space-between; align-items: center; }
+    .code-block pre { padding: 20px; overflow-x: auto; font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.7; color: #D4D0C8; }
+    .copy-btn { background: none; border: 1px solid #444; color: #888; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.08em; padding: 3px 8px; cursor: pointer; transition: all 0.15s; }
+    .copy-btn:hover { border-color: #888; color: #ccc; }
+    .tok-key { color: #81C784; }
+    .tok-str { color: #F9A825; }
+    .tok-num { color: #64B5F6; }
+    .tok-bool { color: #F48FB1; }
+    .tok-null { color: #90A4AE; }
+    .tok-cmt { color: #546E7A; font-style: italic; }
+    .tok-hi { color: #CE93D8; }
+
+    .prop-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 20px 0; }
+    .prop-table th { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); text-align: left; padding: 8px 12px; border-bottom: 2px solid var(--ink); background: var(--paper); }
+    .prop-table td { padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+    .prop-table tr:last-child td { border-bottom: none; }
+    .prop-table tr:hover td { background: var(--paper); }
+    .prop-name { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--ink); }
+    .prop-desc { font-size: 13px; color: #444; line-height: 1.55; }
+    .badge { display: inline-block; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.06em; padding: 2px 6px; border-radius: 2px; }
+    .badge-req { background: #1B1A10; color: #C8B400; }
+    .badge-opt { background: #101A10; color: #4CAF50; }
+
+    .assertion-label {
+      background: var(--ink); color: var(--cream); padding: 20px 24px; margin: 20px 0;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .al-label { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: #666; margin-bottom: 4px; }
+    .al-value { font-family: 'DM Mono', monospace; font-size: 18px; color: #CE93D8; }
+    .al-note { font-size: 12px; color: #888; max-width: 280px; text-align: right; }
+
+    /* C2PA diagram */
+    .manifest-diagram {
+      background: var(--paper); border: 1px solid var(--rule); padding: 28px;
+      margin: 20px 0;
+    }
+    .md-title { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mid); margin-bottom: 16px; }
+    .md-box {
+      border: 1px solid var(--rule); padding: 14px 16px; margin-bottom: 4px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: white; font-size: 13px;
+    }
+    .md-box.highlighted { border-color: var(--ink); border-width: 2px; background: var(--ink); color: var(--cream); }
+    .md-box-label { font-family: 'DM Mono', monospace; font-size: 11px; }
+    .md-box.highlighted .md-box-label { color: #CE93D8; }
+    .md-box-note { font-size: 11px; color: #888; }
+    .md-box.highlighted .md-box-note { color: #666; }
+    .md-indent { margin-left: 24px; }
+    .md-arrow { font-size: 12px; color: var(--mid); margin: 0 0 4px 24px; }
+
+    .note-block { background: var(--paper); border: 1px solid var(--rule); border-left: 3px solid var(--mid); padding: 14px 18px; margin: 20px 0; font-size: 13px; line-height: 1.65; color: #555; }
+    .note-block strong { color: var(--ink); }
+    .warn-block { background: #FFF8E8; border: 1px solid #D4B060; border-left: 3px solid #B08020; padding: 14px 18px; margin: 20px 0; font-size: 13px; line-height: 1.65; color: #5A4000; }
+
+    .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 20px 0; }
+    .tool-card { background: var(--cream); padding: 24px; }
+    .tool-card:hover { background: var(--paper); }
+    .tc-name { font-family: 'Fraunces', serif; font-weight: 700; font-size: 16px; margin-bottom: 6px; }
+    .tc-type { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mid); margin-bottom: 10px; }
+    .tc-desc { font-size: 13px; color: #555; line-height: 1.55; }
+    .tc-url { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--mid); margin-top: 10px; }
+
+    .filetypes { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+    .filetype { font-family: 'DM Mono', monospace; font-size: 11px; padding: 4px 10px; background: var(--ink); color: var(--cream); border-radius: 2px; }
+
+    footer { padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--rule); }
+    .footer-left { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--mid); }
+    .footer-left span { color: var(--ink); font-weight: 500; }
+    .footer-right { font-size: 12px; color: var(--mid); }
+    .footer-right a { color: var(--mid); text-decoration: none; }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; }
+      .spec-section, .page-header { padding: 40px 24px; }
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .tool-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/" class="nav-wordmark">TRACE</a>
+    <div class="nav-links">
+      <a href="/standard">The Standard</a>
+      <a href="/metadata" class="active">Implement</a>
+      <a href="/foundation">Foundation</a>
+      <a href="/resources">Resources</a>
+      <a href="https://github.com/zirnhelt/curated-podcast-generator">GitHub</a>
+    </div>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sb-head">
+        <div class="sb-tag">Format 03</div>
+        <div class="sb-title">C2PA Assertion Spec</div>
+        <div class="sb-version">v1.0 · Draft · May 2026</div>
+      </div>
+      <nav class="sb-nav">
+        <div class="sb-nav-section">On this page</div>
+        <a href="#overview">Overview</a>
+        <a href="#c2pa-background">What is C2PA?</a>
+        <a href="#assertion-type">Assertion Type</a>
+        <a href="#assertion-schema">Assertion Schema</a>
+        <a href="#manifest">Full Manifest Example</a>
+        <a href="#file-types">Supported File Types</a>
+        <a href="#tools">Implementation Tools</a>
+        <a href="#verification">Verification</a>
+        <a href="#relationship">Relationship to JSON-LD</a>
+        <a href="#changelog">Change Log</a>
+        <div class="sb-nav-section">Other Formats</div>
+        <a href="/metadata/json-ld">JSON-LD →</a>
+        <a href="/metadata/xml">XML Namespace →</a>
+        <a href="/metadata">← All Formats</a>
+      </nav>
+    </aside>
+
+    <main>
+      <div class="page-header" id="overview">
+        <div class="breadcrumb"><a href="/">TRACE</a> / <a href="/metadata">Metadata</a> / C2PA</div>
+        <h1 class="page-title">C2PA Assertion<br>Specification</h1>
+        <div class="status-row">
+          <span class="status-pill">v1.0 Draft</span>
+          <span class="status-pill">May 2026</span>
+          <span class="status-pill">Assertion: trace.assessment</span>
+        </div>
+        <p class="page-lead">The C2PA format embeds a TRACE assessment as a cryptographically signed assertion inside a media file. Unlike page-level or feed-level metadata, C2PA credentials travel with the file — surviving download, re-hosting, and platform migration. This is the durability-first format for long-lived or high-stakes content.</p>
+      </div>
+
+      <!-- C2PA Background -->
+      <div class="spec-section" id="c2pa-background">
+        <div class="section-label">Background</div>
+        <h2>What is C2PA?</h2>
+        <p>The <strong>Coalition for Content Provenance and Authenticity</strong> (C2PA) is an open technical standard for attaching verifiable provenance data to media files. It was developed by Adobe, Microsoft, BBC, Intel, Sony, and Truepic, and is now maintained by a working group under the Joint Development Foundation.</p>
+        <p>C2PA works by embedding a <em>manifest</em> into a file's binary data. The manifest contains <em>assertions</em> — structured data blocks that describe facts about the content. The manifest is signed with a cryptographic certificate so that any modification to the file after signing can be detected.</p>
+        <p>TRACE defines a custom assertion type — <code>trace.assessment</code> — that producers add to a C2PA manifest alongside standard assertions like AI generation disclosure (<code>c2pa.ai.generative_training_and_inference</code>), thumbnail, and exif data.</p>
+
+        <div class="manifest-diagram">
+          <div class="md-title">C2PA Manifest Structure</div>
+          <div class="md-box"><span class="md-box-label">C2PA Manifest</span><span class="md-box-note">Embedded in file binary</span></div>
+          <div class="md-arrow">├─</div>
+          <div class="md-indent">
+            <div class="md-box"><span class="md-box-label">claim_generator</span><span class="md-box-note">Tool that created this manifest</span></div>
+          </div>
+          <div class="md-arrow">├─</div>
+          <div class="md-indent">
+            <div class="md-box"><span class="md-box-label">assertions[ ]</span><span class="md-box-note">One or more data blocks</span></div>
+          </div>
+          <div class="md-arrow">│&nbsp;&nbsp;├─</div>
+          <div class="md-indent md-indent">
+            <div class="md-box"><span class="md-box-label">c2pa.ai.generative_training_and_inference</span><span class="md-box-note">Standard AI disclosure</span></div>
+          </div>
+          <div class="md-arrow">│&nbsp;&nbsp;├─</div>
+          <div class="md-indent md-indent">
+            <div class="md-box"><span class="md-box-label">c2pa.exif</span><span class="md-box-note">Standard EXIF metadata</span></div>
+          </div>
+          <div class="md-arrow">│&nbsp;&nbsp;└─</div>
+          <div class="md-indent md-indent">
+            <div class="md-box highlighted"><span class="md-box-label">trace.assessment</span><span class="md-box-note">← TRACE assertion</span></div>
+          </div>
+          <div class="md-arrow">└─</div>
+          <div class="md-indent">
+            <div class="md-box"><span class="md-box-label">signature</span><span class="md-box-note">Cryptographic certificate chain</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Assertion Type -->
+      <div class="spec-section" id="assertion-type">
+        <div class="section-label">Assertion Type</div>
+        <h2>The trace.assessment Label</h2>
+        <p>C2PA identifies assertion types by label string. The TRACE assertion label is:</p>
+
+        <div class="assertion-label">
+          <div>
+            <div class="al-label">C2PA Assertion Label</div>
+            <div class="al-value">trace.assessment</div>
+          </div>
+          <div class="al-note">This label uniquely identifies all TRACE accountability assertions across any C2PA manifest.</div>
+        </div>
+
+        <p>Label naming follows C2PA conventions: a vendor-domain prefix (<code>trace</code>) followed by a period and a descriptive noun (<code>assessment</code>). The label is case-sensitive and must be used exactly as shown.</p>
+
+        <div class="note-block">
+          <strong>Registration:</strong> The <code>trace.assessment</code> assertion type is submitted for registration with the C2PA Assertion Registry. Until registration is confirmed, it functions as a custom assertion with the full label as identifier. Custom assertions are fully supported by all C2PA-compliant tools.
+        </div>
+      </div>
+
+      <!-- Assertion Schema -->
+      <div class="spec-section" id="assertion-schema">
+        <div class="section-label">Assertion Schema</div>
+        <h2>Data Fields in trace.assessment</h2>
+        <p>The <code>data</code> object of a <code>trace.assessment</code> assertion carries the TRACE assessment payload. Field names and semantics are identical to the <a href="/metadata/json-ld">JSON-LD specification</a>; the structure is the same data model in a different container.</p>
+
+        <div class="code-block">
+          <div class="code-block-label"><span>Assertion data object</span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+          <pre>{
+  <span class="tok-cmt">// Assertion identification</span>
+  <span class="tok-key">"specVersion"</span>:          <span class="tok-str">"1.0"</span>,
+  <span class="tok-key">"@context"</span>:             <span class="tok-str">"https://tracestandard.org/schema/v1"</span>,
+
+  <span class="tok-cmt">// Content identification</span>
+  <span class="tok-key">"contentTitle"</span>:          <span class="tok-str">"string, required"</span>,
+  <span class="tok-key">"contentType"</span>:           <span class="tok-str">"podcast|article|video|image|audio|document|other"</span>,
+
+  <span class="tok-cmt">// Producer and community</span>
+  <span class="tok-key">"producer"</span>:              <span class="tok-str">"string, required"</span>,
+  <span class="tok-key">"communityRepresented"</span>:  <span class="tok-str">"string, required"</span>,
+
+  <span class="tok-cmt">// AI disclosure</span>
+  <span class="tok-key">"aiGenerated"</span>:           <span class="tok-bool">boolean</span>,
+  <span class="tok-key">"aiTools"</span>:               [<span class="tok-str">"string"</span>],
+  <span class="tok-key">"aiRole"</span>:                <span class="tok-str">"primary|partial|assisted|none"</span>,
+
+  <span class="tok-cmt">// Assessment metadata</span>
+  <span class="tok-key">"assessmentDate"</span>:        <span class="tok-str">"YYYY-MM-DD, required"</span>,
+  <span class="tok-key">"assessedBy"</span>:            <span class="tok-str">"self|third-party|name"</span>,
+  <span class="tok-key">"nextReviewDate"</span>:        <span class="tok-str">"YYYY-MM-DD"</span>,
+
+  <span class="tok-cmt">// Track and disqualification</span>
+  <span class="tok-key">"track"</span>:                 <span class="tok-str">"A|B, required"</span>,
+  <span class="tok-key">"disqualified"</span>:          <span class="tok-bool">boolean, required</span>,
+  <span class="tok-key">"disqualifierTriggered"</span>: <span class="tok-str">"DQ1|DQ2"</span>,
+
+  <span class="tok-cmt">// Scores (omit when disqualified)</span>
+  <span class="tok-key">"scores"</span>: {
+    <span class="tok-key">"transparency"</span>:         { <span class="tok-key">"score"</span>: <span class="tok-num">int</span>, <span class="tok-key">"max"</span>: <span class="tok-num">int</span> },
+    <span class="tok-key">"sourceIntegrity"</span>:      { <span class="tok-key">"score"</span>: <span class="tok-num">int</span>, <span class="tok-key">"max"</span>: <span class="tok-num">int</span> },
+    <span class="tok-key">"displacement"</span>:         { <span class="tok-key">"score"</span>: <span class="tok-num">int</span>, <span class="tok-key">"max"</span>: <span class="tok-num">int</span> },
+    <span class="tok-key">"consentAttribution"</span>:   { <span class="tok-key">"score"</span>: <span class="tok-num">int</span>, <span class="tok-key">"max"</span>: <span class="tok-num">int</span> },
+    <span class="tok-key">"benefitFlow"</span>:           { <span class="tok-key">"score"</span>: <span class="tok-num">int</span>, <span class="tok-key">"max"</span>: <span class="tok-num">int</span> },
+    <span class="tok-key">"accountability"</span>:        { <span class="tok-key">"score"</span>: <span class="tok-num">int</span>, <span class="tok-key">"max"</span>: <span class="tok-num">int</span> },
+    <span class="tok-key">"governanceDurability"</span>:  { <span class="tok-key">"score"</span>: <span class="tok-num">int</span>, <span class="tok-key">"max"</span>: <span class="tok-num">int</span> }
+    <span class="tok-cmt">// governanceDurability: Track B only</span>
+  },
+
+  <span class="tok-cmt">// Totals and verdict (omit when disqualified)</span>
+  <span class="tok-key">"totalScore"</span>:            <span class="tok-num">integer, required</span>,
+  <span class="tok-key">"maxScore"</span>:              <span class="tok-num">integer, required</span>,
+  <span class="tok-key">"verdict"</span>:               <span class="tok-str">"string, required — see verdict values"</span>,
+
+  <span class="tok-cmt">// References</span>
+  <span class="tok-key">"cardURL"</span>:               <span class="tok-str">"URI to TRACE scorecard"</span>
+}</pre>
+        </div>
+
+        <table class="prop-table">
+          <thead><tr><th>Field</th><th>Status</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td class="prop-name">specVersion</td><td><span class="badge badge-req">required</span></td><td class="prop-desc">Always <code>"1.0"</code> for this version. Used by consumers to handle schema evolution.</td></tr>
+            <tr><td class="prop-name">@context</td><td><span class="badge badge-req">required</span></td><td class="prop-desc">Must be <code>"https://tracestandard.org/schema/v1"</code>. Links this assertion to the canonical schema.</td></tr>
+            <tr><td class="prop-name">contentTitle</td><td><span class="badge badge-req">required</span></td><td class="prop-desc">Title of the content. May differ from the file name.</td></tr>
+            <tr><td class="prop-name">producer</td><td><span class="badge badge-req">required</span></td><td class="prop-desc">Producer name as a string. In C2PA, producer identity is also typically captured in the manifest's <code>claim_generator</code> and ingredient fields; this field is the TRACE-specific version.</td></tr>
+            <tr><td class="prop-name">communityRepresented</td><td><span class="badge badge-req">required</span></td><td class="prop-desc">Free-text description of the community the content is about or from.</td></tr>
+            <tr><td class="prop-name">assessmentDate</td><td><span class="badge badge-req">required</span></td><td class="prop-desc">ISO 8601 date: <code>YYYY-MM-DD</code>. Should be close to the manifest signing date.</td></tr>
+            <tr><td class="prop-name">track</td><td><span class="badge badge-req">required</span></td><td class="prop-desc"><code>"A"</code> or <code>"B"</code>.</td></tr>
+            <tr><td class="prop-name">disqualified</td><td><span class="badge badge-req">required</span></td><td class="prop-desc"><code>true</code> or <code>false</code>. When <code>true</code>, omit <code>scores</code>, <code>totalScore</code>, <code>maxScore</code>, and <code>verdict</code>.</td></tr>
+            <tr><td class="prop-name">totalScore, maxScore</td><td><span class="badge badge-req">required</span></td><td class="prop-desc">Required when <code>disqualified</code> is <code>false</code>.</td></tr>
+            <tr><td class="prop-name">verdict</td><td><span class="badge badge-req">required</span></td><td class="prop-desc">Required when <code>disqualified</code> is <code>false</code>. See <a href="/metadata/json-ld#verdicts">Verdict Values</a>.</td></tr>
+            <tr><td class="prop-name">scores, aiGenerated, aiTools, aiRole, assessedBy, nextReviewDate, disqualifierTriggered, cardURL</td><td><span class="badge badge-opt">optional</span></td><td class="prop-desc">Same semantics as JSON-LD spec. Include as many as are applicable.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Full Manifest -->
+      <div class="spec-section" id="manifest">
+        <div class="section-label">Full Manifest Example</div>
+        <h2>Complete C2PA Manifest with TRACE Assertion</h2>
+        <p>This example shows how a <code>trace.assessment</code> assertion sits alongside standard C2PA assertions in a full manifest. The format shown is C2PA JUMBF (the binary format) represented as its JSON equivalent for readability.</p>
+        <div class="code-block">
+          <div class="code-block-label"><span>c2pa-manifest-with-trace.json — JSON representation</span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+          <pre>{
+  <span class="tok-key">"claim_generator"</span>: <span class="tok-str">"Cariboo Signals Publishing Tool/1.0"</span>,
+  <span class="tok-key">"format"</span>: <span class="tok-str">"audio/mpeg"</span>,
+  <span class="tok-key">"title"</span>: <span class="tok-str">"Ep 12: Water Rights on the Chilcotin"</span>,
+
+  <span class="tok-key">"assertions"</span>: [
+
+    <span class="tok-cmt">// Standard C2PA AI generation disclosure</span>
+    {
+      <span class="tok-key">"label"</span>: <span class="tok-str">"c2pa.ai.generative_training_and_inference"</span>,
+      <span class="tok-key">"data"</span>: {
+        <span class="tok-key">"dataTypes"</span>: [
+          { <span class="tok-key">"type"</span>: <span class="tok-str">"trainedAlgorithmicData"</span> }
+        ]
+      }
+    },
+
+    <span class="tok-cmt">// Standard C2PA creation info</span>
+    {
+      <span class="tok-key">"label"</span>: <span class="tok-str">"c2pa.created"</span>,
+      <span class="tok-key">"data"</span>: {
+        <span class="tok-key">"dateTime"</span>: <span class="tok-str">"2026-05-15T09:00:00-07:00"</span>,
+        <span class="tok-key">"actors"</span>: [{ <span class="tok-key">"name"</span>: <span class="tok-str">"Cariboo Signals"</span> }]
+      }
+    },
+
+    <span class="tok-cmt">// ─── TRACE assertion ──────────────────────────────────</span>
+    {
+      <span class="tok-key">"label"</span>: <span class="tok-hi">"trace.assessment"</span>,
+      <span class="tok-key">"data"</span>: {
+        <span class="tok-key">"specVersion"</span>: <span class="tok-str">"1.0"</span>,
+        <span class="tok-key">"@context"</span>: <span class="tok-str">"https://tracestandard.org/schema/v1"</span>,
+        <span class="tok-key">"contentTitle"</span>: <span class="tok-str">"Ep 12: Water Rights on the Chilcotin"</span>,
+        <span class="tok-key">"contentType"</span>: <span class="tok-str">"podcast"</span>,
+        <span class="tok-key">"producer"</span>: <span class="tok-str">"Cariboo Signals"</span>,
+        <span class="tok-key">"communityRepresented"</span>: <span class="tok-str">"Tsilhqot'in Nation; rural Cariboo, BC"</span>,
+        <span class="tok-key">"aiGenerated"</span>: <span class="tok-bool">true</span>,
+        <span class="tok-key">"aiTools"</span>: [<span class="tok-str">"Claude"</span>, <span class="tok-str">"ElevenLabs"</span>],
+        <span class="tok-key">"aiRole"</span>: <span class="tok-str">"partial"</span>,
+        <span class="tok-key">"assessmentDate"</span>: <span class="tok-str">"2026-05-15"</span>,
+        <span class="tok-key">"assessedBy"</span>: <span class="tok-str">"self"</span>,
+        <span class="tok-key">"track"</span>: <span class="tok-str">"A"</span>,
+        <span class="tok-key">"disqualified"</span>: <span class="tok-bool">false</span>,
+        <span class="tok-key">"scores"</span>: {
+          <span class="tok-key">"transparency"</span>:       { <span class="tok-key">"score"</span>: <span class="tok-num">3</span>, <span class="tok-key">"max"</span>: <span class="tok-num">4</span> },
+          <span class="tok-key">"sourceIntegrity"</span>:    { <span class="tok-key">"score"</span>: <span class="tok-num">2</span>, <span class="tok-key">"max"</span>: <span class="tok-num">3</span> },
+          <span class="tok-key">"displacement"</span>:       { <span class="tok-key">"score"</span>: <span class="tok-num">2</span>, <span class="tok-key">"max"</span>: <span class="tok-num">2</span> },
+          <span class="tok-key">"consentAttribution"</span>: { <span class="tok-key">"score"</span>: <span class="tok-num">3</span>, <span class="tok-key">"max"</span>: <span class="tok-num">4</span> },
+          <span class="tok-key">"benefitFlow"</span>:        { <span class="tok-key">"score"</span>: <span class="tok-num">3</span>, <span class="tok-key">"max"</span>: <span class="tok-num">5</span> },
+          <span class="tok-key">"accountability"</span>:     { <span class="tok-key">"score"</span>: <span class="tok-num">2</span>, <span class="tok-key">"max"</span>: <span class="tok-num">2</span> }
+        },
+        <span class="tok-key">"totalScore"</span>: <span class="tok-num">15</span>,
+        <span class="tok-key">"maxScore"</span>: <span class="tok-num">20</span>,
+        <span class="tok-key">"verdict"</span>: <span class="tok-str">"Sound"</span>,
+        <span class="tok-key">"cardURL"</span>: <span class="tok-str">"https://tracestandard.org/cards/cariboo-ep12"</span>
+      }
+    }
+    <span class="tok-cmt">// ─────────────────────────────────────────────────────</span>
+
+  ],
+
+  <span class="tok-key">"signature"</span>: {
+    <span class="tok-key">"alg"</span>: <span class="tok-str">"Es256"</span>,
+    <span class="tok-cmt">// ... certificate chain truncated for brevity</span>
+  }
+}</pre>
+        </div>
+        <div class="warn-block">
+          <strong>Important:</strong> The JSON above is a human-readable representation. Actual C2PA manifests are embedded in JUMBF (JPEG Universal Metadata Box Format) binary within the file. Use the C2PA tools listed below — do not attempt to hand-edit binary files.
+        </div>
+      </div>
+
+      <!-- File Types -->
+      <div class="spec-section" id="file-types">
+        <div class="section-label">Supported File Types</div>
+        <h2>Where C2PA Can Be Embedded</h2>
+        <p>C2PA manifests can be embedded in a growing list of file types. Support varies by tool. Confirmed types:</p>
+
+        <div class="filetypes">
+          <span class="filetype">JPEG / JPEG XL</span>
+          <span class="filetype">PNG</span>
+          <span class="filetype">WebP</span>
+          <span class="filetype">HEIC / HEIF</span>
+          <span class="filetype">GIF</span>
+          <span class="filetype">MP4</span>
+          <span class="filetype">MOV</span>
+          <span class="filetype">AVI</span>
+          <span class="filetype">MP3</span>
+          <span class="filetype">M4A</span>
+          <span class="filetype">WAV</span>
+          <span class="filetype">FLAC</span>
+          <span class="filetype">PDF</span>
+          <span class="filetype">SVG</span>
+          <span class="filetype">TIFF</span>
+          <span class="filetype">DNG</span>
+        </div>
+
+        <div class="note-block">
+          <strong>Audio for podcasts:</strong> MP3 and M4A (AAC) are supported. The TRACE assertion can be embedded in the audio file directly, so the accountability data is carried in the enclosure file itself — not just the feed or show page. This is the most durable option for podcast episodes.
+        </div>
+      </div>
+
+      <!-- Tools -->
+      <div class="spec-section" id="tools">
+        <div class="section-label">Implementation Tools</div>
+        <h2>Adding a TRACE Assertion to a File</h2>
+        <p>Several tools support adding C2PA manifests with custom assertions. The TRACE assertion's <code>data</code> object is valid JSON, so any tool that accepts custom assertion data can embed it.</p>
+
+        <div class="tool-grid">
+          <div class="tool-card">
+            <div class="tc-type">CLI · Open Source</div>
+            <div class="tc-name">c2patool</div>
+            <div class="tc-desc">The official open-source C2PA command-line tool from Contentauth. Accepts a JSON manifest file; supports all file types; runs on macOS, Linux, and Windows. Best choice for scripted or batch workflows.</div>
+            <div class="tc-url">github.com/contentauth/c2patool</div>
+          </div>
+          <div class="tool-card">
+            <div class="tc-type">Rust SDK · Open Source</div>
+            <div class="tc-name">c2pa-rs</div>
+            <div class="tc-desc">The reference C2PA library in Rust, with Python and JavaScript bindings. Use to build TRACE assertion embedding directly into a publishing pipeline or CMS. Supports all manifest features including custom assertions.</div>
+            <div class="tc-url">github.com/contentauth/c2pa-rs</div>
+          </div>
+          <div class="tool-card">
+            <div class="tc-type">Web App · Adobe</div>
+            <div class="tc-name">Content Credentials</div>
+            <div class="tc-desc">Adobe's web-based Content Credentials tool. Supports basic manifest creation for images. Does not currently support arbitrary custom assertion data — use c2patool for TRACE assertions.</div>
+            <div class="tc-url">contentcredentials.org</div>
+          </div>
+          <div class="tool-card">
+            <div class="tc-type">JavaScript SDK · Open Source</div>
+            <div class="tc-name">c2pa-node / c2pa-js</div>
+            <div class="tc-desc">JavaScript bindings to c2pa-rs. Use to embed TRACE assertions in a Node.js publishing workflow, or verify assertions in a browser-side reader. Supports custom assertion data via the <code>customAssertions</code> field.</div>
+            <div class="tc-url">github.com/contentauth/c2pa-node</div>
+          </div>
+        </div>
+
+        <h3>Using c2patool to add a TRACE assertion</h3>
+        <div class="code-block">
+          <div class="code-block-label"><span>trace-manifest.json — input to c2patool</span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+          <pre>{
+  <span class="tok-key">"claim_generator"</span>: <span class="tok-str">"MyPublishingTool/1.0"</span>,
+  <span class="tok-key">"assertions"</span>: [
+    {
+      <span class="tok-key">"label"</span>: <span class="tok-str">"trace.assessment"</span>,
+      <span class="tok-key">"data"</span>: {
+        <span class="tok-key">"specVersion"</span>: <span class="tok-str">"1.0"</span>,
+        <span class="tok-key">"@context"</span>: <span class="tok-str">"https://tracestandard.org/schema/v1"</span>,
+        <span class="tok-key">"contentTitle"</span>: <span class="tok-str">"Ep 12: Water Rights on the Chilcotin"</span>,
+        <span class="tok-key">"producer"</span>: <span class="tok-str">"Cariboo Signals"</span>,
+        <span class="tok-key">"communityRepresented"</span>: <span class="tok-str">"Tsilhqot'in Nation; rural Cariboo"</span>,
+        <span class="tok-key">"track"</span>: <span class="tok-str">"A"</span>,
+        <span class="tok-key">"disqualified"</span>: <span class="tok-bool">false</span>,
+        <span class="tok-key">"totalScore"</span>: <span class="tok-num">15</span>,
+        <span class="tok-key">"maxScore"</span>: <span class="tok-num">20</span>,
+        <span class="tok-key">"verdict"</span>: <span class="tok-str">"Sound"</span>,
+        <span class="tok-key">"assessmentDate"</span>: <span class="tok-str">"2026-05-15"</span>
+      }
+    }
+  ]
+}</pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-label"><span>c2patool command</span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+          <pre><span class="tok-cmt"># Embed the TRACE assertion into an audio file</span>
+c2patool episode-12.mp3 \
+  --manifest trace-manifest.json \
+  --signer-path my-cert.pem \
+  --signer-alg Es256 \
+  --output episode-12-signed.mp3</pre>
+        </div>
+      </div>
+
+      <!-- Verification -->
+      <div class="spec-section" id="verification">
+        <div class="section-label">Verification</div>
+        <h2>Reading and Verifying TRACE Assertions</h2>
+        <p>A TRACE assertion in a C2PA manifest can be read and cryptographically verified by any C2PA-compatible tool. Verification confirms both that the assertion data is intact and that the signing certificate is trusted.</p>
+
+        <table class="prop-table">
+          <thead><tr><th>Tool</th><th>Type</th><th>What it verifies</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="prop-name">c2patool verify</td>
+              <td>CLI</td>
+              <td class="prop-desc">Full manifest verification including certificate chain, assertion integrity, and all assertion labels and data. Outputs JSON.</td>
+            </tr>
+            <tr>
+              <td class="prop-name">contentcredentials.org/verify</td>
+              <td>Web app</td>
+              <td class="prop-desc">Upload a file to verify its manifest. Displays all assertions including custom types. No account required.</td>
+            </tr>
+            <tr>
+              <td class="prop-name">c2pa-js in browser</td>
+              <td>SDK</td>
+              <td class="prop-desc">Verify and display C2PA assertions client-side. Use to build a TRACE badge reader directly into a web page. Query by assertion label <code>"trace.assessment"</code> to extract TRACE-specific data.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">
+          <div class="code-block-label"><span>Extracting trace.assessment via c2patool</span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+          <pre><span class="tok-cmt"># Read all assertions from a file</span>
+c2patool episode-12-signed.mp3 --show-manifest
+
+<span class="tok-cmt"># Output includes a block like:</span>
+{
+  <span class="tok-key">"label"</span>: <span class="tok-str">"trace.assessment"</span>,
+  <span class="tok-key">"data"</span>: {
+    <span class="tok-key">"verdict"</span>: <span class="tok-str">"Sound"</span>,
+    <span class="tok-key">"totalScore"</span>: <span class="tok-num">15</span>,
+    ...
+  }
+}</pre>
+        </div>
+      </div>
+
+      <!-- Relationship to JSON-LD -->
+      <div class="spec-section" id="relationship">
+        <div class="section-label">Relationship to JSON-LD</div>
+        <h2>Using C2PA and JSON-LD Together</h2>
+        <p>The C2PA assertion and the JSON-LD block are not alternatives — they are complementary. The data model is identical; only the container differs. A recommended pattern for podcast episodes:</p>
+
+        <table class="prop-table">
+          <thead><tr><th>Layer</th><th>Format</th><th>Where</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="prop-name">Episode page</td>
+              <td>JSON-LD</td>
+              <td>HTML <code>&lt;head&gt;</code></td>
+              <td class="prop-desc">Search indexing, human-readable verification, linking to scorecard</td>
+            </tr>
+            <tr>
+              <td class="prop-name">RSS feed</td>
+              <td>XML namespace</td>
+              <td><code>&lt;item&gt;</code> element</td>
+              <td class="prop-desc">Podcast app display, feed aggregator indexing</td>
+            </tr>
+            <tr>
+              <td class="prop-name">Audio file</td>
+              <td>C2PA assertion</td>
+              <td>MP3 / M4A binary</td>
+              <td class="prop-desc">Durable, tamper-evident, travels with the file</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="note-block">
+          <strong>Consistency requirement:</strong> When both formats are used for the same piece of content, the score, verdict, track, and assessment date must match across all representations. A consumer that finds conflicting data between a JSON-LD page and a C2PA assertion should treat the discrepancy as a data integrity issue.
+        </div>
+      </div>
+
+      <div class="spec-section" id="changelog">
+        <div class="section-label">Change Log</div>
+        <h2>Version History</h2>
+        <table class="prop-table">
+          <thead><tr><th>Version</th><th>Date</th><th>Status</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td class="prop-name">1.0</td><td>May 2026</td><td><span class="badge badge-opt">Draft</span></td><td class="prop-desc">Initial draft. Assertion label defined. Submission to C2PA Assertion Registry pending.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <footer>
+        <div class="footer-left"><span>TRACE</span> — C2PA Assertion Specification v1.0 Draft · May 2026</div>
+        <div class="footer-right"><a href="https://github.com/zirnhelt/curated-podcast-generator">github.com/zirnhelt/curated-podcast-generator</a></div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    function copyBlock(btn) {
+      const pre = btn.closest('.code-block').querySelector('pre');
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = 'Copied';
+        setTimeout(() => btn.textContent = orig, 1500);
+      });
+    }
+  </script>
+</body>
+</html>
