@@ -3,661 +3,1222 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JSON-LD Spec — TRACE Metadata Standard</title>
+  <title>JSON-LD Metadata — TRACE Standard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --cream: #F2EEE8; --ink: #1A1A1A; --mid: #888880;
-      --rule: #D8D4CC; --green: #1B5E35; --paper: #FAFAF7;
-      --amber: #7A4A00; --red: #7A1A1A;
+      --cream: #F2EEE8;
+      --ink: #1A1A1A;
+      --mid: #888880;
+      --rule: #D8D4CC;
+      --green: #1B5E35;
+      --paper: #FAFAF7;
     }
-    html { font-size: 16px; scroll-behavior: smooth; }
+
+    html { scroll-behavior: smooth; }
+
     body {
-      background: var(--cream); color: var(--ink);
-      font-family: 'DM Sans', sans-serif; font-weight: 400;
-      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.6;
     }
+
+    /* ── NAV ── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: var(--ink); display: flex; align-items: center;
-      justify-content: space-between; padding: 0 32px; height: 48px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      background: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      z-index: 1000;
     }
-    .nav-wordmark { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--cream); letter-spacing: 0.18em; text-decoration: none; }
-    .nav-links { display: flex; gap: 28px; }
-    .nav-links a { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: #888; text-decoration: none; transition: color 0.15s; }
-    .nav-links a:hover, .nav-links a.active { color: var(--cream); }
 
-    .layout { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; padding-top: 48px; }
+    .nav-wordmark {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      color: var(--cream);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
 
-    /* Sidebar */
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #888;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--cream);
+    }
+
+    /* ── PROPOSAL NOTICE ── */
+    .proposal-notice {
+      position: fixed;
+      top: 48px;
+      left: 0;
+      right: 0;
+      background: #F5E6C8;
+      border-bottom: 1px solid #D4B896;
+      padding: 9px 32px;
+      text-align: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: #5C3D1E;
+      z-index: 999;
+    }
+
+    /* ── LAYOUT ── */
+    .layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 0;
+      min-height: 100vh;
+      margin-top: 84px;
+    }
+
+    /* ── SIDEBAR ── */
     .sidebar {
-      position: sticky; top: 48px; height: calc(100vh - 48px);
-      overflow-y: auto; background: var(--ink);
-      padding: 32px 0; display: flex; flex-direction: column;
+      position: sticky;
+      top: 84px;
+      align-self: start;
+      background: var(--ink);
+      color: var(--cream);
+      padding: 24px;
+      height: calc(100vh - 84px);
+      overflow-y: auto;
     }
-    .sb-head {
-      padding: 0 24px 24px; border-bottom: 1px solid #333; margin-bottom: 16px;
-    }
-    .sb-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: #666; margin-bottom: 6px; }
-    .sb-title { font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; color: var(--cream); line-height: 1.2; }
-    .sb-version { font-family: 'DM Mono', monospace; font-size: 9px; color: #555; margin-top: 4px; }
-    .sb-nav { padding: 0 12px; }
-    .sb-nav a {
-      display: block; padding: 6px 12px; font-size: 12px;
-      color: #888; text-decoration: none; border-radius: 2px;
-      transition: color 0.15s, background 0.15s;
-    }
-    .sb-nav a:hover { color: var(--cream); background: #2a2a2a; }
-    .sb-nav a.active { color: var(--cream); }
-    .sb-nav-section { padding: 14px 12px 4px; font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: #555; }
 
-    /* Main content */
-    .main { padding: 0; }
+    .sidebar-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #666;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
 
-    .page-header {
-      padding: 56px 56px 48px;
+    .sidebar-nav {
+      list-style: none;
+    }
+
+    .sidebar-nav a {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #888;
+      text-decoration: none;
+      display: block;
+      padding: 8px 0;
+      border-bottom: 1px solid #333;
+      transition: color 0.15s;
+    }
+
+    .sidebar-nav a:hover,
+    .sidebar-nav a.active {
+      color: var(--cream);
+    }
+
+    /* ── MAIN CONTENT ── */
+    .content {
+      padding: 48px;
+      border-left: 1px solid var(--rule);
+      min-width: 0;
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--mid);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    /* ── SECTIONS ── */
+    .section-overview {
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 48px;
+    }
+
+    .section {
+      margin-top: 48px;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 48px;
+    }
+
+    .section-last {
+      margin-top: 48px;
+      padding-bottom: 48px;
+    }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: #888;
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── HERO TITLE ── */
+    .hero-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      font-size: 52px;
+      letter-spacing: -0.03em;
+      line-height: 0.95;
+      color: var(--ink);
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      color: #555;
+      max-width: 540px;
+      margin-top: 16px;
+      line-height: 1.6;
+    }
+
+    .context-block {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      padding: 16px 20px;
+      display: inline-block;
+      margin-top: 16px;
+      line-height: 1.7;
+      color: var(--ink);
+    }
+
+    /* ── TABLES ── */
+    .table-wrapper {
+      overflow-x: auto;
+      border: 1px solid var(--rule);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead tr {
+      background: var(--ink);
+    }
+
+    thead th {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--cream);
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 400;
+    }
+
+    tbody tr {
       border-bottom: 1px solid var(--rule);
     }
-    .breadcrumb {
-      font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--mid); margin-bottom: 20px;
-    }
-    .breadcrumb a { color: var(--mid); text-decoration: none; }
-    .breadcrumb a:hover { color: var(--ink); }
-    .page-title {
-      font-family: 'Fraunces', serif; font-weight: 900;
-      font-size: clamp(36px, 5vw, 60px); line-height: 0.95;
-      letter-spacing: -0.02em; margin-bottom: 20px;
-    }
-    .status-row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
-    .status-pill {
-      font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em;
-      padding: 4px 10px; border: 1px solid var(--rule); color: var(--mid);
-    }
-    .page-lead { font-size: 15px; line-height: 1.75; color: #444; max-width: 580px; }
 
-    /* Sections */
-    .spec-section { padding: 48px 56px; border-bottom: 1px solid var(--rule); }
-    .section-label {
-      font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
-      letter-spacing: 0.16em; text-transform: uppercase; color: var(--mid);
-      margin-bottom: 28px; display: flex; align-items: center; gap: 12px;
-    }
-    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
-    h2 {
-      font-family: 'Fraunces', serif; font-weight: 700; font-size: 26px;
-      margin-bottom: 16px; line-height: 1.2;
-    }
-    h3 {
-      font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px;
-      margin-bottom: 12px; margin-top: 32px;
-    }
-    p { font-size: 14px; line-height: 1.75; color: #444; margin-bottom: 16px; }
-    p:last-child { margin-bottom: 0; }
-    code {
-      font-family: 'DM Mono', monospace; font-size: 12px;
-      background: #E8E4DC; padding: 2px 5px; border-radius: 2px; color: var(--ink);
+    tbody tr:last-child {
+      border-bottom: none;
     }
 
-    /* Code blocks */
-    .code-block {
-      background: #141410; border-radius: 3px; overflow: hidden;
-      margin: 20px 0; position: relative;
+    tbody td {
+      padding: 14px 16px;
+      vertical-align: top;
     }
-    .code-block-label {
-      background: #222; padding: 8px 16px;
-      font-family: 'DM Mono', monospace; font-size: 10px;
-      letter-spacing: 0.1em; text-transform: uppercase; color: #666;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .code-block pre {
-      padding: 20px; overflow-x: auto; font-family: 'DM Mono', monospace;
-      font-size: 12px; line-height: 1.7; color: #D4D0C8;
-    }
-    .copy-btn {
-      background: none; border: 1px solid #444; color: #888;
-      font-family: 'DM Mono', monospace; font-size: 9px;
-      letter-spacing: 0.08em; padding: 3px 8px; cursor: pointer;
-      transition: all 0.15s;
-    }
-    .copy-btn:hover { border-color: #888; color: #ccc; }
-    .tok-key { color: #81C784; }
-    .tok-str { color: #F9A825; }
-    .tok-num { color: #64B5F6; }
-    .tok-bool { color: #F48FB1; }
-    .tok-null { color: #90A4AE; }
-    .tok-cmt { color: #546E7A; font-style: italic; }
 
-    /* Property table */
-    .prop-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 20px 0; }
-    .prop-table th {
-      font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--mid); text-align: left;
-      padding: 8px 12px; border-bottom: 2px solid var(--ink); background: var(--paper);
+    .td-field {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--ink);
       white-space: nowrap;
     }
-    .prop-table td { padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
-    .prop-table tr:last-child td { border-bottom: none; }
-    .prop-table tr:hover td { background: var(--paper); }
-    .prop-name { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--ink); white-space: nowrap; }
-    .prop-type { font-family: 'DM Mono', monospace; font-size: 11px; color: #666; white-space: nowrap; }
+
+    .td-type {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--mid);
+      white-space: nowrap;
+    }
+
+    .td-desc {
+      font-size: 13px;
+      color: #444;
+      line-height: 1.6;
+    }
+
+    .td-desc code {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      padding: 1px 4px;
+      color: var(--ink);
+    }
+
     .badge {
-      display: inline-block; font-family: 'DM Mono', monospace; font-size: 9px;
-      letter-spacing: 0.06em; padding: 2px 6px; border-radius: 2px;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 3px 8px;
+      display: inline-block;
+      white-space: nowrap;
     }
-    .badge-req { background: #1B1A10; color: #C8B400; }
-    .badge-opt { background: #101A10; color: #4CAF50; }
-    .badge-b { background: #101018; color: #90CAF9; }
-    .prop-desc { font-size: 13px; color: #444; line-height: 1.55; }
 
-    /* Verdict table */
-    .verdict-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
-      background: var(--rule); border: 1px solid var(--rule); margin: 20px 0;
+    .badge-required {
+      background: var(--green);
+      color: var(--cream);
     }
-    .verdict-col { background: var(--cream); padding: 20px 24px; }
-    .verdict-col h4 { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); margin-bottom: 12px; }
-    .verdict-item { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid var(--rule); font-size: 13px; }
-    .verdict-item:last-child { border-bottom: none; }
-    .verdict-range { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--mid); }
 
-    /* Note */
-    .note-block { background: var(--paper); border: 1px solid var(--rule); border-left: 3px solid var(--mid); padding: 14px 18px; margin: 20px 0; font-size: 13px; line-height: 1.65; color: #555; }
-    .note-block strong { color: var(--ink); }
-    .warn-block { background: #FFF8E8; border: 1px solid #D4B060; border-left: 3px solid #B08020; padding: 14px 18px; margin: 20px 0; font-size: 13px; line-height: 1.65; color: #5A4000; }
+    .badge-optional {
+      background: var(--rule);
+      color: var(--mid);
+    }
 
-    footer { padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--rule); }
-    .footer-left { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--mid); }
-    .footer-left span { color: var(--ink); font-weight: 500; }
-    .footer-right { font-size: 12px; color: var(--mid); }
-    .footer-right a { color: var(--mid); text-decoration: none; }
+    /* ── SCORES SECTION ── */
+    .scores-intro {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
 
-    @media (max-width: 900px) {
-      .layout { grid-template-columns: 1fr; }
-      .sidebar { position: static; height: auto; }
-      .spec-section, .page-header { padding: 40px 24px; }
-      nav { padding: 0 20px; }
-      .nav-links { display: none; }
+    .scores-intro code {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      padding: 1px 4px;
+      color: var(--ink);
+    }
+
+    .scores-tables {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .scores-table-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--mid);
+      margin-bottom: 12px;
+    }
+
+    .scores-table-wrapper {
+      overflow-x: auto;
+      border: 1px solid var(--rule);
+    }
+
+    .scores-table td {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+    }
+
+    .scores-table .td-key {
+      font-weight: 500;
+      color: var(--ink);
+      width: 40px;
+    }
+
+    .scores-table .td-cat {
+      color: #444;
+    }
+
+    .scores-table .td-max {
+      color: var(--mid);
+      text-align: right;
+    }
+
+    .scores-table .td-total {
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .scores-table tbody tr.total-row {
+      border-top: 2px solid var(--rule);
+      background: var(--paper);
+    }
+
+    /* ── VERDICT SECTION ── */
+    .verdict-tables {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .verdict-table-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--mid);
+      margin-bottom: 12px;
+    }
+
+    .verdict-table-wrapper {
+      overflow-x: auto;
+      border: 1px solid var(--rule);
+    }
+
+    .verdict-table td {
+      font-size: 13px;
+      color: #444;
+    }
+
+    .verdict-table .td-verdict {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .verdict-table .td-score {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--mid);
+      text-align: center;
+    }
+
+    .verdict-row-exemplary td:first-child {
+      border-left: 3px solid var(--green);
+    }
+
+    .verdict-row-sound td:first-child {
+      border-left: 3px solid var(--ink);
+    }
+
+    .verdict-row-developing td:first-child {
+      border-left: 3px solid #8B5E00;
+    }
+
+    .verdict-row-noncompliant td:first-child {
+      border-left: 3px solid #8B1A1A;
+    }
+
+    .verdict-note {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      border-left: 2px solid var(--ink);
+      padding-left: 16px;
+      margin-top: 24px;
+      color: #444;
+      line-height: 1.6;
+    }
+
+    /* ── CODE BLOCKS ── */
+    .code-block-wrapper {
+      position: relative;
+    }
+
+    .code-block-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #888;
+      margin-bottom: 8px;
+    }
+
+    pre.code-block {
+      background: var(--ink);
+      color: #E8E4DE;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      padding: 24px;
+      overflow-x: auto;
+      position: relative;
+      border-radius: 0;
+      tab-size: 2;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: transparent;
+      border: 1px solid #444;
+      color: #888;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .copy-btn:hover {
+      border-color: #888;
+      color: var(--cream);
+    }
+
+    .example-block {
+      margin-bottom: 32px;
+    }
+
+    .example-block:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ── EMBEDDING SECTION ── */
+    .embed-intro {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .embed-intro code {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      padding: 1px 4px;
+      color: var(--ink);
+    }
+
+    .note-box {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--ink);
+      padding: 16px 20px;
+      font-size: 13px;
+      color: #444;
+      line-height: 1.6;
+      margin-top: 24px;
+    }
+
+    /* ── VALIDATION SECTION ── */
+    .validation-intro {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--rule);
+    }
+
+    .tool-card {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      padding: 20px 24px;
+    }
+
+    .tool-card-name {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .tool-card-url {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--mid);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .tool-card-desc {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .tool-card-coming {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mid);
+      background: var(--rule);
+      padding: 2px 8px;
+      display: inline-block;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 32px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--rule);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--mid);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-left {
+      line-height: 1.6;
+    }
+
+    .footer-left strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .footer-right a {
+      color: var(--mid);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-right a:hover {
+      color: var(--ink);
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 1023px) {
+      .sidebar {
+        display: none;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .content {
+        padding: 24px;
+        border-left: none;
+      }
+
+      .hero-title {
+        font-size: 36px;
+      }
+
+      pre.code-block {
+        font-size: 11px;
+      }
+
+      .scores-tables {
+        grid-template-columns: 1fr;
+      }
+
+      .verdict-tables {
+        grid-template-columns: 1fr;
+      }
+
+      .tool-grid {
+        grid-template-columns: 1fr;
+      }
+
+      footer {
+        padding: 24px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        padding: 0 16px;
+      }
+
+      .nav-links {
+        gap: 16px;
+      }
+
+      .proposal-notice {
+        padding: 9px 16px;
+        font-size: 10px;
+      }
     }
   </style>
 </head>
 <body>
+
+  <!-- NAV -->
   <nav>
     <a href="/" class="nav-wordmark">TRACE</a>
-    <div class="nav-links">
-      <a href="/standard">The Standard</a>
-      <a href="/metadata" class="active">Implement</a>
-      <a href="/foundation">Foundation</a>
-      <a href="/resources">Resources</a>
-      <a href="https://github.com/zirnhelt/curated-podcast-generator">GitHub</a>
-    </div>
+    <ul class="nav-links">
+      <li><a href="/#standard">The Standard</a></li>
+      <li><a href="/scorecard">Scorecard</a></li>
+      <li><a href="/policy-brief">Policy Brief</a></li>
+      <li><a href="/compact">Compact</a></li>
+      <li><a href="/metadata" class="active">Metadata</a></li>
+    </ul>
   </nav>
 
+  <!-- PROPOSAL NOTICE -->
+  <div class="proposal-notice">
+    PROPOSAL — No institutional endorsement or formal adoption. Independent work by Cariboo Signals, open for critique and community input.
+  </div>
+
+  <!-- LAYOUT -->
   <div class="layout">
+
+    <!-- SIDEBAR -->
     <aside class="sidebar">
-      <div class="sb-head">
-        <div class="sb-tag">Format 01</div>
-        <div class="sb-title">JSON-LD Spec</div>
-        <div class="sb-version">v1.0 · Draft · May 2026</div>
-      </div>
-      <nav class="sb-nav">
-        <div class="sb-nav-section">On this page</div>
-        <a href="#overview">Overview</a>
-        <a href="#context">Context &amp; Type</a>
-        <a href="#schema">Schema Reference</a>
-        <a href="#scores">Scores Object</a>
-        <a href="#verdicts">Verdict Values</a>
-        <a href="#examples">Examples</a>
-        <a href="#embedding">Embedding in HTML</a>
-        <a href="#validation">Validation</a>
-        <a href="#changelog">Change Log</a>
-        <div class="sb-nav-section">Other Formats</div>
-        <a href="/metadata/xml">XML Namespace →</a>
-        <a href="/metadata/c2pa">C2PA Assertion →</a>
-        <a href="/metadata">← All Formats</a>
-      </nav>
+      <div class="sidebar-label">TRACE / Metadata / JSON-LD</div>
+      <ul class="sidebar-nav">
+        <li><a href="#overview">— Overview</a></li>
+        <li><a href="#properties">— Properties</a></li>
+        <li><a href="#scores">— Scores object</a></li>
+        <li><a href="#verdicts">— Verdict values</a></li>
+        <li><a href="#examples">— Examples</a></li>
+        <li><a href="#embedding">— Embedding</a></li>
+        <li><a href="#validation">— Validation</a></li>
+      </ul>
     </aside>
 
-    <main class="main">
-      <div class="page-header" id="overview">
-        <div class="breadcrumb"><a href="/">TRACE</a> / <a href="/metadata">Metadata</a> / JSON-LD</div>
-        <h1 class="page-title">JSON-LD<br>Specification</h1>
-        <div class="status-row">
-          <span class="status-pill">v1.0 Draft</span>
-          <span class="status-pill">May 2026</span>
-          <span class="status-pill">Schema: tracestandard.org/schema/v1</span>
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+      <!-- OVERVIEW -->
+      <section class="section-overview" id="overview">
+        <div class="breadcrumb">Metadata / JSON-LD</div>
+        <h1 class="hero-title">JSON-LD</h1>
+        <p class="hero-subtitle">Embed TRACE assessment data as structured JSON-LD in your HTML. Readable by search engines, CMS platforms, and any JSON-LD processor. The lowest-friction way to add TRACE metadata to web-published content.</p>
+        <div class="context-block">
+          @context: https://tracestandard.org/schema/v1<br>
+          @type: TraceAssessment
         </div>
-        <p class="page-lead">The JSON-LD format embeds a TRACE assessment as structured linked data in the <code>&lt;head&gt;</code> of a web page or as a field in an API response. It is indexed by search engines, readable without tooling, and requires no dependencies beyond a script tag.</p>
-      </div>
+      </section>
 
-      <!-- Context & Type -->
-      <div class="spec-section" id="context">
-        <div class="section-label">Context &amp; Type</div>
-        <h2>Declaring a TRACE Assessment</h2>
-        <p>All TRACE JSON-LD objects must declare the schema context and the <code>TRACEAssessment</code> type. The context URL is the canonical location of the schema definition.</p>
-
-        <div class="code-block">
-          <div class="code-block-label">
-            <span>Minimal valid declaration</span>
-            <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
-          </div>
-          <pre><span class="tok-key">"@context"</span>: <span class="tok-str">"https://tracestandard.org/schema/v1"</span>,
-<span class="tok-key">"@type"</span>:    <span class="tok-str">"TRACEAssessment"</span></pre>
+      <!-- PROPERTIES -->
+      <section class="section" id="properties">
+        <div class="section-label">Property Reference</div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="td-field">@context</td>
+                <td class="td-type">string</td>
+                <td><span class="badge badge-required">Required</span></td>
+                <td class="td-desc">Must be exactly <code>"https://tracestandard.org/schema/v1"</code></td>
+              </tr>
+              <tr>
+                <td class="td-field">@type</td>
+                <td class="td-type">string</td>
+                <td><span class="badge badge-required">Required</span></td>
+                <td class="td-desc">Must be exactly <code>"TraceAssessment"</code></td>
+              </tr>
+              <tr>
+                <td class="td-field">project</td>
+                <td class="td-type">string</td>
+                <td><span class="badge badge-required">Required</span></td>
+                <td class="td-desc">The name of the content project being assessed</td>
+              </tr>
+              <tr>
+                <td class="td-field">track</td>
+                <td class="td-type">"A" | "B"</td>
+                <td><span class="badge badge-required">Required</span></td>
+                <td class="td-desc">Track A (community insider) or Track B (external/institutional)</td>
+              </tr>
+              <tr>
+                <td class="td-field">verdict</td>
+                <td class="td-type">"Exemplary" | "Sound" | "Developing" | "Non-Compliant"</td>
+                <td><span class="badge badge-required">Required</span></td>
+                <td class="td-desc">The assessment verdict</td>
+              </tr>
+              <tr>
+                <td class="td-field">totalScore</td>
+                <td class="td-type">integer</td>
+                <td><span class="badge badge-required">Required</span></td>
+                <td class="td-desc">Total points scored</td>
+              </tr>
+              <tr>
+                <td class="td-field">maxScore</td>
+                <td class="td-type">integer</td>
+                <td><span class="badge badge-required">Required</span></td>
+                <td class="td-desc">Maximum possible points (20 for Track A, 35 for Track B)</td>
+              </tr>
+              <tr>
+                <td class="td-field">assessedDate</td>
+                <td class="td-type">ISO 8601 date</td>
+                <td><span class="badge badge-required">Required</span></td>
+                <td class="td-desc">Date the assessment was completed (YYYY-MM-DD)</td>
+              </tr>
+              <tr>
+                <td class="td-field">assessorName</td>
+                <td class="td-type">string</td>
+                <td><span class="badge badge-optional">Optional</span></td>
+                <td class="td-desc">Name of the person or organization who conducted the assessment</td>
+              </tr>
+              <tr>
+                <td class="td-field">assessorURL</td>
+                <td class="td-type">URL</td>
+                <td><span class="badge badge-optional">Optional</span></td>
+                <td class="td-desc">URL for the assessor's profile or organization page</td>
+              </tr>
+              <tr>
+                <td class="td-field">scores</td>
+                <td class="td-type">object</td>
+                <td><span class="badge badge-optional">Optional</span></td>
+                <td class="td-desc">Per-category score breakdown (see Scores Object below)</td>
+              </tr>
+              <tr>
+                <td class="td-field">improvementPlan</td>
+                <td class="td-type">string</td>
+                <td><span class="badge badge-optional">Optional</span></td>
+                <td class="td-desc">URL or brief description of the improvement plan (required for Developing verdict)</td>
+              </tr>
+              <tr>
+                <td class="td-field">nextReviewDate</td>
+                <td class="td-type">ISO 8601 date</td>
+                <td><span class="badge badge-optional">Optional</span></td>
+                <td class="td-desc">Planned date for next assessment</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+      </section>
 
-        <p>The schema does not currently extend a Schema.org type but is designed to coexist with <code>schema:CreativeWork</code> in the same JSON-LD block. If embedding alongside Schema.org, declare both contexts in an array:</p>
-        <div class="code-block">
-          <div class="code-block-label"><span>Co-embedding with Schema.org</span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
-          <pre><span class="tok-key">"@context"</span>: [
-  <span class="tok-str">"https://schema.org"</span>,
-  <span class="tok-str">"https://tracestandard.org/schema/v1"</span>
-],
-<span class="tok-key">"@type"</span>: [<span class="tok-str">"CreativeWork"</span>, <span class="tok-str">"TRACEAssessment"</span>]</pre>
-        </div>
-      </div>
-
-      <!-- Schema Reference -->
-      <div class="spec-section" id="schema">
-        <div class="section-label">Schema Reference</div>
-        <h2>Property Definitions</h2>
-        <p>Properties marked <span class="badge badge-req">required</span> must be present in all valid assessments. Properties marked <span class="badge badge-b">Track B only</span> apply only when <code>track</code> is <code>"B"</code>.</p>
-
-        <table class="prop-table">
-          <thead>
-            <tr>
-              <th>Property</th>
-              <th>Type</th>
-              <th>Status</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="prop-name">@context</span></td>
-              <td><span class="prop-type">URI string</span></td>
-              <td><span class="badge badge-req">required</span></td>
-              <td class="prop-desc">Must be <code>"https://tracestandard.org/schema/v1"</code> or an array including it.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">@type</span></td>
-              <td><span class="prop-type">string</span></td>
-              <td><span class="badge badge-req">required</span></td>
-              <td class="prop-desc">Must be <code>"TRACEAssessment"</code> or an array including it.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">contentTitle</span></td>
-              <td><span class="prop-type">string</span></td>
-              <td><span class="badge badge-req">required</span></td>
-              <td class="prop-desc">Title or descriptive name of the content being assessed.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">contentURL</span></td>
-              <td><span class="prop-type">URI</span></td>
-              <td><span class="badge badge-opt">optional</span></td>
-              <td class="prop-desc">Canonical URL of the content. Recommended when the assessment is embedded in a different page from the content itself.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">contentType</span></td>
-              <td><span class="prop-type">enum</span></td>
-              <td><span class="badge badge-opt">optional</span></td>
-              <td class="prop-desc">One of: <code>podcast</code>, <code>article</code>, <code>video</code>, <code>image</code>, <code>audio</code>, <code>document</code>, <code>series</code>, <code>other</code>.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">producer</span></td>
-              <td><span class="prop-type">string</span></td>
-              <td><span class="badge badge-req">required</span></td>
-              <td class="prop-desc">Name of the individual, outlet, or organization that produced the content.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">producerURL</span></td>
-              <td><span class="prop-type">URI</span></td>
-              <td><span class="badge badge-opt">optional</span></td>
-              <td class="prop-desc">Home page or profile URL of the producer.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">communityRepresented</span></td>
-              <td><span class="prop-type">string</span></td>
-              <td><span class="badge badge-req">required</span></td>
-              <td class="prop-desc">Free-text description of the community or communities the content is about, from, or produced on behalf of.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">aiGenerated</span></td>
-              <td><span class="prop-type">boolean</span></td>
-              <td><span class="badge badge-opt">optional</span></td>
-              <td class="prop-desc">Whether AI tools played a role in generating the content. Omit only if genuinely unknown; prefer <code>false</code> over omission when no AI was used.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">aiTools</span></td>
-              <td><span class="prop-type">string[]</span></td>
-              <td><span class="badge badge-opt">optional</span></td>
-              <td class="prop-desc">List of AI tools or systems used. Relevant only when <code>aiGenerated</code> is <code>true</code>. Example: <code>["Claude", "ElevenLabs"]</code>.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">aiRole</span></td>
-              <td><span class="prop-type">enum</span></td>
-              <td><span class="badge badge-opt">optional</span></td>
-              <td class="prop-desc">One of: <code>primary</code> (AI wrote the content), <code>partial</code> (AI wrote portions), <code>assisted</code> (AI helped with research or editing), <code>none</code>.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">assessmentDate</span></td>
-              <td><span class="prop-type">date (ISO 8601)</span></td>
-              <td><span class="badge badge-req">required</span></td>
-              <td class="prop-desc">Date the assessment was completed. Format: <code>YYYY-MM-DD</code>.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">assessedBy</span></td>
-              <td><span class="prop-type">string</span></td>
-              <td><span class="badge badge-opt">optional</span></td>
-              <td class="prop-desc">Who conducted the assessment. Use <code>"self"</code> for self-assessment, <code>"third-party"</code> for independent review, or a name/organization.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">nextReviewDate</span></td>
-              <td><span class="prop-type">date (ISO 8601)</span></td>
-              <td><span class="badge badge-opt">optional</span></td>
-              <td class="prop-desc">Recommended date for reassessment. Useful for ongoing projects where conditions may change.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">track</span></td>
-              <td><span class="prop-type">enum</span></td>
-              <td><span class="badge badge-req">required</span></td>
-              <td class="prop-desc">One of: <code>"A"</code> (Community-Insider) or <code>"B"</code> (External/Institutional).</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">disqualified</span></td>
-              <td><span class="prop-type">boolean</span></td>
-              <td><span class="badge badge-req">required</span></td>
-              <td class="prop-desc">Whether a disqualifier (DQ1 or DQ2) was triggered. If <code>true</code>, score and verdict fields should be omitted.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">disqualifierTriggered</span></td>
-              <td><span class="prop-type">enum</span></td>
-              <td><span class="badge badge-opt">optional</span></td>
-              <td class="prop-desc">Which disqualifier applied. One of: <code>"DQ1"</code> (authorship misrepresentation), <code>"DQ2"</code> (unconsented attribution). Omit when <code>disqualified</code> is <code>false</code>.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">scores</span></td>
-              <td><span class="prop-type">object</span></td>
-              <td><span class="badge badge-opt">optional</span></td>
-              <td class="prop-desc">Category-level scores. See <a href="#scores">Scores Object</a> below. Omit when <code>disqualified</code> is <code>true</code>.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">totalScore</span></td>
-              <td><span class="prop-type">integer</span></td>
-              <td><span class="badge badge-req">required</span></td>
-              <td class="prop-desc">Total points awarded. Must be ≥ 0 and ≤ <code>maxScore</code>. Omit when <code>disqualified</code> is <code>true</code>.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">maxScore</span></td>
-              <td><span class="prop-type">integer</span></td>
-              <td><span class="badge badge-req">required</span></td>
-              <td class="prop-desc">Maximum possible score for this track. Must be <code>20</code> for Track A or <code>35</code> for Track B. Omit when <code>disqualified</code> is <code>true</code>.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">verdict</span></td>
-              <td><span class="prop-type">enum</span></td>
-              <td><span class="badge badge-req">required</span></td>
-              <td class="prop-desc">See <a href="#verdicts">Verdict Values</a>. Omit when <code>disqualified</code> is <code>true</code>; use <code>"Disqualified"</code> if you prefer to include it.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">cardURL</span></td>
-              <td><span class="prop-type">URI</span></td>
-              <td><span class="badge badge-opt">optional</span></td>
-              <td class="prop-desc">URL of the shareable TRACE scorecard generated by the assessment tool.</td>
-            </tr>
-            <tr>
-              <td><span class="prop-name">frameworkVersion</span></td>
-              <td><span class="prop-type">string</span></td>
-              <td><span class="badge badge-opt">optional</span></td>
-              <td class="prop-desc">Version of the TRACE framework used for assessment. Current value: <code>"1.0"</code>.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Scores Object -->
-      <div class="spec-section" id="scores">
+      <!-- SCORES OBJECT -->
+      <section class="section" id="scores">
         <div class="section-label">Scores Object</div>
-        <h2>Category Score Structure</h2>
-        <p>The <code>scores</code> property is an object where each key is a category name and each value is a <code>ScoreObject</code> with two integer fields: <code>score</code> (points awarded) and <code>max</code> (maximum for that category).</p>
+        <p class="scores-intro">The <code>scores</code> property is an object with category identifiers as keys. Each value is an object with <code>score</code> and <code>max</code> properties.</p>
 
-        <div class="code-block">
-          <div class="code-block-label"><span>ScoreObject structure</span></div>
-          <pre>{ <span class="tok-key">"score"</span>: <span class="tok-num">integer</span>, <span class="tok-key">"max"</span>: <span class="tok-num">integer</span> }</pre>
+        <div class="code-block-wrapper">
+          <pre class="code-block" id="scores-structure-code">"scores": {
+  "T": { "score": 3, "max": 4 },
+  "R": { "score": 3, "max": 4 },
+  ...
+}</pre>
+          <button class="copy-btn" onclick="copyCode('scores-structure-code', this)">Copy</button>
         </div>
 
-        <table class="prop-table">
-          <thead>
-            <tr><th>Category key</th><th>Track A max</th><th>Track B max</th><th>Notes</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><span class="prop-name">transparency</span></td><td>4</td><td>7</td><td class="prop-desc">Track B max is higher due to the Funding &amp; Motivation Disclosure sub-criterion.</td></tr>
-            <tr><td><span class="prop-name">sourceIntegrity</span></td><td>3</td><td>4</td><td class="prop-desc">Track B includes a Compensation criterion not scored at Track A scale.</td></tr>
-            <tr><td><span class="prop-name">displacement</span></td><td>2</td><td>5</td><td class="prop-desc">Track B adds an Investment in Community Creator Capacity criterion.</td></tr>
-            <tr><td><span class="prop-name">consentAttribution</span></td><td>4</td><td>4</td><td class="prop-desc">Equal across tracks. May be reduced if N/A applied (document in notes).</td></tr>
-            <tr><td><span class="prop-name">benefitFlow</span></td><td>5</td><td>6</td><td class="prop-desc">Track B's Archive Ownership sub-criterion is worth 2 points vs Track A's 1.</td></tr>
-            <tr><td><span class="prop-name">accountability</span></td><td>2</td><td>4</td><td class="prop-desc">Track B adds an Editorial Authority criterion.</td></tr>
-            <tr><td><span class="prop-name">governanceDurability</span></td><td>N/A</td><td>5</td><td class="prop-desc"><span class="badge badge-b">Track B only</span> Must be omitted for Track A assessments.</td></tr>
-          </tbody>
-        </table>
+        <div class="scores-tables">
+          <div class="scores-table-group">
+            <div class="scores-table-label">Track A — 6 categories</div>
+            <div class="scores-table-wrapper">
+              <table class="scores-table">
+                <thead>
+                  <tr>
+                    <th>Key</th>
+                    <th>Category</th>
+                    <th style="text-align:right;">Max</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="td-key">T</td>
+                    <td class="td-cat">Transparency</td>
+                    <td class="td-max">4</td>
+                  </tr>
+                  <tr>
+                    <td class="td-key">R</td>
+                    <td class="td-cat">Representation</td>
+                    <td class="td-max">4</td>
+                  </tr>
+                  <tr>
+                    <td class="td-key">A</td>
+                    <td class="td-cat">Accountability</td>
+                    <td class="td-max">3</td>
+                  </tr>
+                  <tr>
+                    <td class="td-key">C</td>
+                    <td class="td-cat">Consent</td>
+                    <td class="td-max">4</td>
+                  </tr>
+                  <tr>
+                    <td class="td-key">E</td>
+                    <td class="td-cat">Engagement</td>
+                    <td class="td-max">3</td>
+                  </tr>
+                  <tr>
+                    <td class="td-key">B</td>
+                    <td class="td-cat">Community Benefit</td>
+                    <td class="td-max">2</td>
+                  </tr>
+                  <tr class="total-row">
+                    <td class="td-key"></td>
+                    <td class="td-total">Total</td>
+                    <td class="td-max td-total">20</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
 
-        <div class="note-block">
-          <strong>N/A handling:</strong> When <code>consentAttribution</code> sub-criteria are scored N/A (no living people represented), include the score as if N/A = 2 points, but add a <code>consentAttributionNote</code> string property to the <code>scores</code> object documenting the rationale. Example: <code>"consentAttributionNote": "No living individuals identified or represented in this content."</code>
+          <div class="scores-table-group">
+            <div class="scores-table-label">Track B — 7 categories</div>
+            <div class="scores-table-wrapper">
+              <table class="scores-table">
+                <thead>
+                  <tr>
+                    <th>Key</th>
+                    <th>Category</th>
+                    <th style="text-align:right;">Max</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="td-key">T</td>
+                    <td class="td-cat">Transparency</td>
+                    <td class="td-max">6</td>
+                  </tr>
+                  <tr>
+                    <td class="td-key">R</td>
+                    <td class="td-cat">Representation</td>
+                    <td class="td-max">6</td>
+                  </tr>
+                  <tr>
+                    <td class="td-key">A</td>
+                    <td class="td-cat">Accountability</td>
+                    <td class="td-max">5</td>
+                  </tr>
+                  <tr>
+                    <td class="td-key">C</td>
+                    <td class="td-cat">Consent</td>
+                    <td class="td-max">6</td>
+                  </tr>
+                  <tr>
+                    <td class="td-key">E</td>
+                    <td class="td-cat">Engagement</td>
+                    <td class="td-max">5</td>
+                  </tr>
+                  <tr>
+                    <td class="td-key">S</td>
+                    <td class="td-cat">Structural Benefit</td>
+                    <td class="td-max">4</td>
+                  </tr>
+                  <tr>
+                    <td class="td-key">D</td>
+                    <td class="td-cat">Data Rights</td>
+                    <td class="td-max">3</td>
+                  </tr>
+                  <tr class="total-row">
+                    <td class="td-key"></td>
+                    <td class="td-total">Total</td>
+                    <td class="td-max td-total">35</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <!-- Verdicts -->
-      <div class="spec-section" id="verdicts">
+      <!-- VERDICT VALUES -->
+      <section class="section" id="verdicts">
         <div class="section-label">Verdict Values</div>
-        <h2>Allowed Verdict Strings</h2>
-        <p>The <code>verdict</code> field must contain one of the strings below, depending on track and score. Use exact casing as shown.</p>
-        <div class="verdict-grid">
-          <div class="verdict-col">
-            <h4>Track A Verdicts (max 20)</h4>
-            <div class="verdict-item"><span>Disqualified</span><span class="verdict-range">DQ triggered</span></div>
-            <div class="verdict-item"><span>Needs Work</span><span class="verdict-range">0–5</span></div>
-            <div class="verdict-item"><span>Developing</span><span class="verdict-range">6–11</span></div>
-            <div class="verdict-item"><span>Sound</span><span class="verdict-range">12–16</span></div>
-            <div class="verdict-item"><span>Exemplary</span><span class="verdict-range">17–20</span></div>
+
+        <div class="verdict-tables">
+          <div class="verdict-table-group">
+            <div class="verdict-table-label">Track A thresholds</div>
+            <div class="verdict-table-wrapper">
+              <table class="verdict-table">
+                <thead>
+                  <tr>
+                    <th>Verdict</th>
+                    <th style="text-align:center;">Min Score</th>
+                    <th style="text-align:center;">Max Score</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="verdict-row-exemplary">
+                    <td class="td-verdict">Exemplary</td>
+                    <td class="td-score">18</td>
+                    <td class="td-score">20</td>
+                  </tr>
+                  <tr class="verdict-row-sound">
+                    <td class="td-verdict">Sound</td>
+                    <td class="td-score">14</td>
+                    <td class="td-score">17</td>
+                  </tr>
+                  <tr class="verdict-row-developing">
+                    <td class="td-verdict">Developing</td>
+                    <td class="td-score">10</td>
+                    <td class="td-score">13</td>
+                  </tr>
+                  <tr class="verdict-row-noncompliant">
+                    <td class="td-verdict">Non-Compliant</td>
+                    <td class="td-score">0</td>
+                    <td class="td-score">9</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div class="verdict-col">
-            <h4>Track B Verdicts (max 35)</h4>
-            <div class="verdict-item"><span>Disqualified</span><span class="verdict-range">DQ triggered</span></div>
-            <div class="verdict-item"><span>Extractive</span><span class="verdict-range">0–10</span></div>
-            <div class="verdict-item"><span>High Risk</span><span class="verdict-range">11–18</span></div>
-            <div class="verdict-item"><span>Conditional</span><span class="verdict-range">19–25</span></div>
-            <div class="verdict-item"><span>Defensible</span><span class="verdict-range">26–31</span></div>
-            <div class="verdict-item"><span>Community-Serving</span><span class="verdict-range">32–35</span></div>
+
+          <div class="verdict-table-group">
+            <div class="verdict-table-label">Track B thresholds</div>
+            <div class="verdict-table-wrapper">
+              <table class="verdict-table">
+                <thead>
+                  <tr>
+                    <th>Verdict</th>
+                    <th style="text-align:center;">Min Score</th>
+                    <th style="text-align:center;">Max Score</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="verdict-row-exemplary">
+                    <td class="td-verdict">Exemplary</td>
+                    <td class="td-score">31</td>
+                    <td class="td-score">35</td>
+                  </tr>
+                  <tr class="verdict-row-sound">
+                    <td class="td-verdict">Sound</td>
+                    <td class="td-score">24</td>
+                    <td class="td-score">30</td>
+                  </tr>
+                  <tr class="verdict-row-developing">
+                    <td class="td-verdict">Developing</td>
+                    <td class="td-score">17</td>
+                    <td class="td-score">23</td>
+                  </tr>
+                  <tr class="verdict-row-noncompliant">
+                    <td class="td-verdict">Non-Compliant</td>
+                    <td class="td-score">0</td>
+                    <td class="td-score">16</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Examples -->
-      <div class="spec-section" id="examples">
+        <p class="verdict-note">The <code>verdict</code> field must exactly match one of the four strings above. Parsers should be case-sensitive.</p>
+      </section>
+
+      <!-- EXAMPLES -->
+      <section class="section" id="examples">
         <div class="section-label">Examples</div>
-        <h2>Complete Assessment Objects</h2>
 
-        <h3>Example 1 — Track A self-assessment, podcast episode</h3>
-        <div class="code-block">
-          <div class="code-block-label"><span>Track A · podcast episode · minimal fields</span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
-          <pre>{
-  <span class="tok-key">"@context"</span>: <span class="tok-str">"https://tracestandard.org/schema/v1"</span>,
-  <span class="tok-key">"@type"</span>: <span class="tok-str">"TRACEAssessment"</span>,
-  <span class="tok-key">"contentTitle"</span>: <span class="tok-str">"Episode 12: Water Rights on the Chilcotin"</span>,
-  <span class="tok-key">"contentURL"</span>: <span class="tok-str">"https://cariboosignals.ca/episodes/12"</span>,
-  <span class="tok-key">"contentType"</span>: <span class="tok-str">"podcast"</span>,
-  <span class="tok-key">"producer"</span>: <span class="tok-str">"Cariboo Signals"</span>,
-  <span class="tok-key">"producerURL"</span>: <span class="tok-str">"https://cariboosignals.ca"</span>,
-  <span class="tok-key">"communityRepresented"</span>: <span class="tok-str">"Rural Cariboo region, BC; Tsilhqot'in Nation"</span>,
-  <span class="tok-key">"aiGenerated"</span>: <span class="tok-bool">true</span>,
-  <span class="tok-key">"aiTools"</span>: [<span class="tok-str">"Claude"</span>, <span class="tok-str">"ElevenLabs"</span>],
-  <span class="tok-key">"aiRole"</span>: <span class="tok-str">"partial"</span>,
-  <span class="tok-key">"assessmentDate"</span>: <span class="tok-str">"2026-05-15"</span>,
-  <span class="tok-key">"assessedBy"</span>: <span class="tok-str">"self"</span>,
-  <span class="tok-key">"track"</span>: <span class="tok-str">"A"</span>,
-  <span class="tok-key">"disqualified"</span>: <span class="tok-bool">false</span>,
-  <span class="tok-key">"totalScore"</span>: <span class="tok-num">15</span>,
-  <span class="tok-key">"maxScore"</span>: <span class="tok-num">20</span>,
-  <span class="tok-key">"verdict"</span>: <span class="tok-str">"Sound"</span>,
-  <span class="tok-key">"frameworkVersion"</span>: <span class="tok-str">"1.0"</span>
-}</pre>
+        <div class="example-block">
+          <div class="code-block-label">Example 1 — Minimal (Track A)</div>
+          <div class="code-block-wrapper">
+            <pre class="code-block" id="example-1-code">&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://tracestandard.org/schema/v1",
+  "@type": "TraceAssessment",
+  "project": "Cariboo Signals — The Ranching Episode",
+  "track": "A",
+  "verdict": "Sound",
+  "totalScore": 15,
+  "maxScore": 20,
+  "assessedDate": "2026-05-28"
+}
+&lt;/script&gt;</pre>
+            <button class="copy-btn" onclick="copyCode('example-1-code', this)">Copy</button>
+          </div>
         </div>
 
-        <h3>Example 2 — Track A with full scores</h3>
-        <div class="code-block">
-          <div class="code-block-label"><span>Track A · full scores object</span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
-          <pre>{
-  <span class="tok-key">"@context"</span>: <span class="tok-str">"https://tracestandard.org/schema/v1"</span>,
-  <span class="tok-key">"@type"</span>: <span class="tok-str">"TRACEAssessment"</span>,
-  <span class="tok-key">"contentTitle"</span>: <span class="tok-str">"Episode 12: Water Rights on the Chilcotin"</span>,
-  <span class="tok-key">"producer"</span>: <span class="tok-str">"Cariboo Signals"</span>,
-  <span class="tok-key">"communityRepresented"</span>: <span class="tok-str">"Rural Cariboo region, BC; Tsilhqot'in Nation"</span>,
-  <span class="tok-key">"aiGenerated"</span>: <span class="tok-bool">true</span>,
-  <span class="tok-key">"aiTools"</span>: [<span class="tok-str">"Claude"</span>, <span class="tok-str">"ElevenLabs"</span>],
-  <span class="tok-key">"aiRole"</span>: <span class="tok-str">"partial"</span>,
-  <span class="tok-key">"assessmentDate"</span>: <span class="tok-str">"2026-05-15"</span>,
-  <span class="tok-key">"assessedBy"</span>: <span class="tok-str">"self"</span>,
-  <span class="tok-key">"nextReviewDate"</span>: <span class="tok-str">"2026-11-15"</span>,
-  <span class="tok-key">"track"</span>: <span class="tok-str">"A"</span>,
-  <span class="tok-key">"disqualified"</span>: <span class="tok-bool">false</span>,
-  <span class="tok-key">"scores"</span>: {
-    <span class="tok-key">"transparency"</span>:       { <span class="tok-key">"score"</span>: <span class="tok-num">3</span>, <span class="tok-key">"max"</span>: <span class="tok-num">4</span> },
-    <span class="tok-key">"sourceIntegrity"</span>:    { <span class="tok-key">"score"</span>: <span class="tok-num">2</span>, <span class="tok-key">"max"</span>: <span class="tok-num">3</span> },
-    <span class="tok-key">"displacement"</span>:       { <span class="tok-key">"score"</span>: <span class="tok-num">2</span>, <span class="tok-key">"max"</span>: <span class="tok-num">2</span> },
-    <span class="tok-key">"consentAttribution"</span>: { <span class="tok-key">"score"</span>: <span class="tok-num">3</span>, <span class="tok-key">"max"</span>: <span class="tok-num">4</span> },
-    <span class="tok-key">"benefitFlow"</span>:        { <span class="tok-key">"score"</span>: <span class="tok-num">3</span>, <span class="tok-key">"max"</span>: <span class="tok-num">5</span> },
-    <span class="tok-key">"accountability"</span>:     { <span class="tok-key">"score"</span>: <span class="tok-num">2</span>, <span class="tok-key">"max"</span>: <span class="tok-num">2</span> }
+        <div class="example-block">
+          <div class="code-block-label">Example 2 — Full with scores (Track A)</div>
+          <div class="code-block-wrapper">
+            <pre class="code-block" id="example-2-code">&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://tracestandard.org/schema/v1",
+  "@type": "TraceAssessment",
+  "project": "Cariboo Signals — The Ranching Episode",
+  "track": "A",
+  "verdict": "Sound",
+  "totalScore": 15,
+  "maxScore": 20,
+  "assessedDate": "2026-05-28",
+  "assessorName": "Cariboo Signals",
+  "assessorURL": "https://cariboosignals.ca",
+  "scores": {
+    "T": { "score": 3, "max": 4 },
+    "R": { "score": 3, "max": 4 },
+    "A": { "score": 2, "max": 3 },
+    "C": { "score": 4, "max": 4 },
+    "E": { "score": 2, "max": 3 },
+    "B": { "score": 1, "max": 2 }
   },
-  <span class="tok-key">"totalScore"</span>: <span class="tok-num">15</span>,
-  <span class="tok-key">"maxScore"</span>: <span class="tok-num">20</span>,
-  <span class="tok-key">"verdict"</span>: <span class="tok-str">"Sound"</span>,
-  <span class="tok-key">"cardURL"</span>: <span class="tok-str">"https://tracestandard.org/cards/cariboo-ep12"</span>,
-  <span class="tok-key">"frameworkVersion"</span>: <span class="tok-str">"1.0"</span>
-}</pre>
+  "improvementPlan": "https://cariboosignals.ca/trace-improvement-plan",
+  "nextReviewDate": "2026-11-28"
+}
+&lt;/script&gt;</pre>
+            <button class="copy-btn" onclick="copyCode('example-2-code', this)">Copy</button>
+          </div>
         </div>
 
-        <h3>Example 3 — Track B with disqualifier</h3>
-        <div class="code-block">
-          <div class="code-block-label"><span>Track B · disqualified assessment</span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
-          <pre>{
-  <span class="tok-key">"@context"</span>: <span class="tok-str">"https://tracestandard.org/schema/v1"</span>,
-  <span class="tok-key">"@type"</span>: <span class="tok-str">"TRACEAssessment"</span>,
-  <span class="tok-key">"contentTitle"</span>: <span class="tok-str">"Our Community: A Documentary Series"</span>,
-  <span class="tok-key">"contentType"</span>: <span class="tok-str">"video"</span>,
-  <span class="tok-key">"producer"</span>: <span class="tok-str">"Example Broadcaster"</span>,
-  <span class="tok-key">"communityRepresented"</span>: <span class="tok-str">"Urban youth, Metro Vancouver"</span>,
-  <span class="tok-key">"assessmentDate"</span>: <span class="tok-str">"2026-05-20"</span>,
-  <span class="tok-key">"assessedBy"</span>: <span class="tok-str">"third-party"</span>,
-  <span class="tok-key">"track"</span>: <span class="tok-str">"B"</span>,
-  <span class="tok-key">"disqualified"</span>: <span class="tok-bool">true</span>,
-  <span class="tok-key">"disqualifierTriggered"</span>: <span class="tok-str">"DQ2"</span>,
-  <span class="tok-key">"frameworkVersion"</span>: <span class="tok-str">"1.0"</span>
-  <span class="tok-cmt">// score and verdict omitted — disqualified assessments do not receive scores</span>
-}</pre>
+        <div class="example-block">
+          <div class="code-block-label">Example 3 — Track B, Disqualified/Non-Compliant</div>
+          <div class="code-block-wrapper">
+            <pre class="code-block" id="example-3-code">&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://tracestandard.org/schema/v1",
+  "@type": "TraceAssessment",
+  "project": "Example External Documentary Series",
+  "track": "B",
+  "verdict": "Non-Compliant",
+  "totalScore": 12,
+  "maxScore": 35,
+  "assessedDate": "2026-05-28",
+  "assessorName": "External Production Co.",
+  "scores": {
+    "T": { "score": 4, "max": 6 },
+    "R": { "score": 3, "max": 6 },
+    "A": { "score": 1, "max": 5 },
+    "C": { "score": 2, "max": 6 },
+    "E": { "score": 1, "max": 5 },
+    "S": { "score": 1, "max": 4 },
+    "D": { "score": 0, "max": 3 }
+  },
+  "improvementPlan": "Remediation plan in development. Publication paused."
+}
+&lt;/script&gt;</pre>
+            <button class="copy-btn" onclick="copyCode('example-3-code', this)">Copy</button>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <!-- Embedding -->
-      <div class="spec-section" id="embedding">
-        <div class="section-label">Embedding in HTML</div>
-        <h2>Adding TRACE Metadata to a Web Page</h2>
-        <p>Place the JSON-LD object in a <code>&lt;script type="application/ld+json"&gt;</code> tag inside the page's <code>&lt;head&gt;</code>. Multiple JSON-LD blocks are permitted on the same page.</p>
-        <div class="code-block">
-          <div class="code-block-label"><span>HTML embedding pattern</span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
-          <pre>&lt;head&gt;
-  &lt;meta charset="UTF-8"&gt;
-  &lt;title&gt;Episode 12: Water Rights on the Chilcotin&lt;/title&gt;
+      <!-- EMBEDDING -->
+      <section class="section" id="embedding">
+        <div class="section-label">HTML Embedding Pattern</div>
+        <p class="embed-intro">Place the script tag in the <code>&lt;head&gt;</code> of the HTML page that hosts the content. One tag per page — if a page contains multiple assessed items, embed the assessment for the primary item.</p>
 
-  &lt;!-- TRACE Assessment --&gt;
+        <div class="code-block-wrapper">
+          <pre class="code-block" id="embedding-code">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;title&gt;Article Title&lt;/title&gt;
+
+  &lt;!-- TRACE assessment metadata --&gt;
   &lt;script type="application/ld+json"&gt;
   {
     "@context": "https://tracestandard.org/schema/v1",
-    "@type": "TRACEAssessment",
-    "contentTitle": "Episode 12: Water Rights on the Chilcotin",
-    "producer": "Cariboo Signals",
-    "communityRepresented": "Cariboo region, BC",
+    "@type": "TraceAssessment",
+    "project": "Your Project Name",
     "track": "A",
-    "disqualified": false,
+    "verdict": "Sound",
     "totalScore": 15,
     "maxScore": 20,
-    "verdict": "Sound",
-    "assessmentDate": "2026-05-15"
+    "assessedDate": "2026-05-28"
   }
   &lt;/script&gt;
-&lt;/head&gt;</pre>
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;!-- page content --&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+          <button class="copy-btn" onclick="copyCode('embedding-code', this)">Copy</button>
         </div>
 
-        <div class="warn-block">
-          <strong>CMS note:</strong> Many CMS platforms (WordPress, Ghost, Webflow) allow injecting HTML into the <code>&lt;head&gt;</code> via a "custom code" or "header scripts" field. The JSON-LD block can be added there without plugin support. For per-post assessments, use a custom field and template the values in.
+        <div class="note-box">
+          Multiple JSON-LD blocks on a single page are valid. Place TRACE data in its own block rather than merging with other schema.org types.
         </div>
-      </div>
+      </section>
 
-      <!-- Validation -->
-      <div class="spec-section" id="validation">
-        <div class="section-label">Validation</div>
-        <h2>Checking Your Implementation</h2>
-        <p>A TRACE JSON-LD validator is forthcoming at <code>tracestandard.org/validate</code>. In the meantime, use these tools to catch structural issues:</p>
-        <table class="prop-table">
-          <thead><tr><th>Tool</th><th>What it checks</th><th>URL</th></tr></thead>
-          <tbody>
-            <tr>
-              <td class="prop-name">JSON-LD Playground</td>
-              <td class="prop-desc">Parses and validates JSON-LD syntax; expands the context graph</td>
-              <td class="prop-desc"><code>json-ld.org/playground</code></td>
-            </tr>
-            <tr>
-              <td class="prop-name">Google Rich Results Test</td>
-              <td class="prop-desc">Confirms structured data is detectable from a live URL or code snippet</td>
-              <td class="prop-desc"><code>search.google.com/test/rich-results</code></td>
-            </tr>
-            <tr>
-              <td class="prop-name">Schema Markup Validator</td>
-              <td class="prop-desc">Schema.org validator; catches malformed JSON and missing required fields against known types</td>
-              <td class="prop-desc"><code>validator.schema.org</code></td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- VALIDATION -->
+      <section class="section-last" id="validation">
+        <div class="section-label">Validation Tools</div>
+        <p class="validation-intro">Use these tools to verify your JSON-LD is well-formed before publishing.</p>
 
-        <div class="note-block">
-          <strong>Required field check:</strong> A valid non-disqualified TRACE JSON-LD object must include: <code>@context</code>, <code>@type</code>, <code>contentTitle</code>, <code>producer</code>, <code>communityRepresented</code>, <code>assessmentDate</code>, <code>track</code>, <code>disqualified</code>, <code>totalScore</code>, <code>maxScore</code>, and <code>verdict</code>. Disqualified assessments omit the last three.
+        <div class="tool-grid">
+          <div class="tool-card">
+            <div class="tool-card-name">Google Rich Results Test</div>
+            <span class="tool-card-url">search.google.com/test/rich-results</span>
+            <p class="tool-card-desc">Validates structured data and previews how Google parses it.</p>
+          </div>
+          <div class="tool-card">
+            <div class="tool-card-name">JSON-LD Playground</div>
+            <span class="tool-card-url">json-ld.org/playground</span>
+            <p class="tool-card-desc">Interactive JSON-LD parser and validator.</p>
+          </div>
+          <div class="tool-card">
+            <div class="tool-card-name">Schema.org Validator</div>
+            <span class="tool-card-url">validator.schema.org</span>
+            <p class="tool-card-desc">Checks schema.org-compatible structured data.</p>
+          </div>
+          <div class="tool-card">
+            <div class="tool-card-name">TRACE Validator <span class="tool-card-coming">Coming soon</span></div>
+            <span class="tool-card-url">tracestandard.org/validate</span>
+            <p class="tool-card-desc">Will validate TRACE-specific schema rules and thresholds.</p>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <!-- Changelog -->
-      <div class="spec-section" id="changelog">
-        <div class="section-label">Change Log</div>
-        <h2>Version History</h2>
-        <table class="prop-table">
-          <thead><tr><th>Version</th><th>Date</th><th>Status</th><th>Changes</th></tr></thead>
-          <tbody>
-            <tr>
-              <td class="prop-name">1.0</td>
-              <td class="prop-type">May 2026</td>
-              <td><span class="badge badge-opt">Draft</span></td>
-              <td class="prop-desc">Initial draft. All fields defined. Schema context published. Awaiting community review.</td>
-            </tr>
-          </tbody>
-        </table>
-        <p style="margin-top:16px;">To propose changes, open an issue at <a href="https://github.com/zirnhelt/curated-podcast-generator" style="color:var(--ink);">github.com/zirnhelt/curated-podcast-generator</a>.</p>
-      </div>
-
+      <!-- FOOTER -->
       <footer>
-        <div class="footer-left"><span>TRACE</span> — JSON-LD Specification v1.0 Draft · May 2026</div>
-        <div class="footer-right"><a href="https://github.com/zirnhelt/curated-podcast-generator">github.com/zirnhelt/curated-podcast-generator</a></div>
+        <div class="footer-left">
+          <strong>TRACE</strong> — Content Accountability Standard · Built on the Community Content Compact · Cariboo Signals, May 2026
+        </div>
+        <div class="footer-right">
+          <a href="https://github.com/zirnhelt/trace" target="_blank" rel="noopener">github.com/zirnhelt/trace</a>
+        </div>
       </footer>
+
     </main>
   </div>
 
   <script>
-    function copyBlock(btn) {
-      const pre = btn.closest('.code-block').querySelector('pre');
-      navigator.clipboard.writeText(pre.innerText).then(() => {
-        const orig = btn.textContent;
-        btn.textContent = 'Copied';
-        setTimeout(() => btn.textContent = orig, 1500);
+    function copyCode(id, btn) {
+      var pre = document.getElementById(id);
+      var text = pre.textContent;
+      navigator.clipboard.writeText(text).then(function() {
+        var original = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(function() {
+          btn.textContent = original;
+        }, 1500);
+      }).catch(function() {
+        btn.textContent = 'Error';
+        setTimeout(function() {
+          btn.textContent = 'Copy';
+        }, 1500);
       });
     }
   </script>
+
 </body>
 </html>
