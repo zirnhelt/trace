@@ -501,12 +501,12 @@
         <button class="track-btn active" data-track="A" id="trackBtnA" onclick="selectTrack('A')">
           <div class="tb-name">Track A</div>
           <div class="tb-desc">Community-insider, non-commercial, self-funded</div>
-          <div class="tb-pts">6 categories · 20 points</div>
+          <div class="tb-pts">6 categories · 21 points</div>
         </button>
         <button class="track-btn" data-track="B" id="trackBtnB" onclick="selectTrack('B')">
           <div class="tb-name">Track B</div>
           <div class="tb-desc">External, institutional, commercial, or mixed</div>
-          <div class="tb-pts">7 categories · 35 points</div>
+          <div class="tb-pts">7 categories · 38 points</div>
         </button>
       </div>
     </div>
@@ -596,21 +596,22 @@
     const TRACKS = {
       A: {
         label: 'Track A — Community Insider',
-        max: 20,
+        max: 21,
         thresholds: [
-          { min: 18, label: 'Exemplary', cls: 'exemplary', desc: 'Meets the TRACE standard in full. Community endorsement warranted. Suitable for public accountability card publication.' },
-          { min: 14, label: 'Sound', cls: 'sound', desc: 'Meets the standard with minor gaps. A written improvement plan is recommended before publication.' },
-          { min: 10, label: 'Developing', cls: 'developing', desc: 'Significant gaps identified. Remediation required before publication. Specific criteria below threshold must be addressed.' },
+          { min: 19, label: 'Exemplary', cls: 'exemplary', desc: 'Meets the TRACE standard in full. Community endorsement warranted. Suitable for public accountability card publication.' },
+          { min: 15, label: 'Sound', cls: 'sound', desc: 'Meets the standard with minor gaps. A written improvement plan is recommended before publication.' },
+          { min: 11, label: 'Developing', cls: 'developing', desc: 'Significant gaps identified. Remediation required before publication. Specific criteria below threshold must be addressed.' },
           { min: 0,  label: 'Non-Compliant', cls: 'noncompliant', desc: 'Does not meet the TRACE standard. Substantial revision required. Consider pausing publication until conditions are met.' },
         ],
         categories: [
           {
-            id: 'T', name: 'Transparency', max: 4,
+            id: 'T', name: 'Transparency', max: 5,
             criteria: [
               { id: 'T1', max: 1, text: 'Production method is disclosed at point of encounter — including whether AI, automated tools, or human production were used' },
               { id: 'T2', max: 1, text: 'All contributors and their roles are clearly credited in the content itself' },
               { id: 'T3', max: 1, text: 'Funding source and organizational affiliation are stated' },
               { id: 'T4', max: 1, text: 'A corrections policy exists and is accessible to community members' },
+              { id: 'T5', max: 1, text: 'Factual verification practices are disclosed — including whether claims are checked before publication and whether corrections are issued when errors are found' },
             ]
           },
           {
@@ -656,22 +657,24 @@
       },
       B: {
         label: 'Track B — External / Institutional',
-        max: 35,
+        max: 38,
         thresholds: [
-          { min: 31, label: 'Exemplary', cls: 'exemplary', desc: 'Meets the TRACE standard in full. Community endorsement warranted. Suitable for public accountability card publication.' },
-          { min: 24, label: 'Sound', cls: 'sound', desc: 'Meets the standard with minor gaps. A written improvement plan is recommended for next publication cycle.' },
-          { min: 17, label: 'Developing', cls: 'developing', desc: 'Significant gaps identified. Remediation required before publication. Specific criteria below threshold must be addressed.' },
+          { min: 34, label: 'Exemplary', cls: 'exemplary', desc: 'Meets the TRACE standard in full. Community endorsement warranted. Suitable for public accountability card publication.' },
+          { min: 26, label: 'Sound', cls: 'sound', desc: 'Meets the standard with minor gaps. A written improvement plan is recommended for next publication cycle.' },
+          { min: 18, label: 'Developing', cls: 'developing', desc: 'Significant gaps identified. Remediation required before publication. Specific criteria below threshold must be addressed.' },
           { min: 0,  label: 'Non-Compliant', cls: 'noncompliant', desc: 'Does not meet the TRACE standard. Substantial revision required. Consider pausing publication until conditions are met.' },
         ],
         categories: [
           {
-            id: 'T', name: 'Transparency', max: 6,
+            id: 'T', name: 'Transparency', max: 8,
             criteria: [
               { id: 'T1', max: 2, text: 'AI use is disclosed, including the nature and extent of AI involvement in production' },
               { id: 'T2', max: 1, text: 'Full editorial team, contractors, and institutional affiliation are publicly disclosed' },
               { id: 'T3', max: 1, text: 'All funding sources are disclosed, including indirect funding and platform relationships' },
               { id: 'T4', max: 1, text: 'Conflicts of interest are declared' },
               { id: 'T5', max: 1, text: 'A formal corrections policy with a stated response timeline is published' },
+              { id: 'T6', max: 1, text: 'Factual verification practices are documented — including pre-publication fact-checking procedures and a public record of corrections issued' },
+              { id: 'T7', max: 1, text: 'The labor conditions of AI tools, data annotation services, and content moderation platforms used in production have been assessed' },
             ]
           },
           {
@@ -712,12 +715,13 @@
             ]
           },
           {
-            id: 'S', name: 'Structural Benefit', max: 4,
+            id: 'S', name: 'Structural Benefit', max: 5,
             criteria: [
               { id: 'S1', max: 1, text: 'A portion of revenue is contractually committed to the community' },
               { id: 'S2', max: 1, text: 'The community co-owns or holds rights to the content archive' },
               { id: 'S3', max: 1, text: 'The community retains the audience relationship and subscriber or listener data' },
               { id: 'S4', max: 1, text: 'The partnership includes capacity-building for community journalists' },
+              { id: 'S5', max: 1, text: 'The community has meaningful input into how this content is algorithmically distributed — reach is not entirely controlled by external platform logic' },
             ]
           },
           {
