@@ -2,6 +2,10 @@ name = "crimson-voice-eada"
 main = "worker.js"
 compatibility_date = "2026-05-22"
 
+[[routes]]
+pattern = "tracestandard.org"
+custom_domain = true
+
 [[rules]]
 type = "Text"
 globs = ["**/*.html"]

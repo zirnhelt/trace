@@ -3,7 +3,7 @@
 > **PROPOSAL — No institutional endorsement or formal adoption.**
 > This is an independent proposal developed through [Cariboo Signals](https://cariboosignals.ca). It has no backing from any journalism organization, standards body, funder, or government. It is published openly for critique, adaptation, and community input. Nothing here represents an adopted standard.
 
-**v1.0 · May 2026**
+**v1.1 · May 2026**
 
 TRACE is a framework for evaluating whether content about a community meets minimum conditions of accountability. It addresses a structural gap: communities are routinely the subjects of content they didn't commission, don't control, and can't correct — and the proliferation of AI-generated content has made this problem dramatically worse.
 
@@ -29,27 +29,27 @@ TRACE gives communities and producers a shared language and a measurable standar
 
 TRACE uses two scoring tracks based on who is producing the content and why.
 
-### Track A — Community Insider (20 points)
+### Track A — Community Insider (21 points)
 
 For content produced by community members themselves: self-funded, non-commercial, insider perspective. Six categories: Transparency, Representation, Accountability, Consent, Engagement, Community Benefit.
 
 | Score | Verdict |
 |-------|---------|
-| 18–20 | Exemplary |
-| 14–17 | Sound |
-| 10–13 | Developing |
-| 0–9 | Non-Compliant |
+| 19–21 | Exemplary |
+| 15–18 | Sound |
+| 11–14 | Developing |
+| 0–10 | Non-Compliant |
 
-### Track B — External / Institutional (35 points)
+### Track B — External / Institutional (38 points)
 
 For content produced by external organizations, commercial outlets, platforms, researchers, or AI operators about a community. Seven categories: adds Structural Benefit and Data Rights to the Track A categories, with more rigorous requirements across the board — especially around AI disclosure, community editorial authority, and data sovereignty.
 
 | Score | Verdict |
 |-------|---------|
-| 31–35 | Exemplary |
-| 24–30 | Sound |
-| 17–23 | Developing |
-| 0–16 | Non-Compliant |
+| 34–38 | Exemplary |
+| 26–33 | Sound |
+| 18–25 | Developing |
+| 0–17 | Non-Compliant |
 
 ---
 
@@ -71,13 +71,13 @@ TRACE was developed through [Cariboo Signals](https://cariboosignals.ca), a comm
 
 ## How to Cite
 
-> Cariboo Signals. (2026). *TRACE Content Accountability Standard, v1.0*. https://tracestandard.org
+> Cariboo Signals. (2026). *TRACE Content Accountability Standard, v1.1*. https://tracestandard.org
 
 **APA:**
-Cariboo Signals. (2026). *TRACE Content Accountability Standard* (Version 1.0). https://tracestandard.org
+Cariboo Signals. (2026). *TRACE Content Accountability Standard* (Version 1.1). https://tracestandard.org
 
 **Chicago:**
-Cariboo Signals. "TRACE Content Accountability Standard." Version 1.0. May 2026. https://tracestandard.org.
+Cariboo Signals. "TRACE Content Accountability Standard." Version 1.1. May 2026. https://tracestandard.org.
 
 ---
 
