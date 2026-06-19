@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr-CA">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TRACE Scorecard — Assessment Tool</title>
+  <title>Fiche d'évaluation TRACE — Outil d'évaluation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
@@ -464,30 +464,30 @@
 </head>
 <body>
 
-  <div class="proposal-notice">PROPOSAL &mdash; No institutional endorsement or formal adoption. Independent work by Cariboo Signals, open for critique and community input.</div>
+  <div class="proposal-notice">PROPOSITION &mdash; Aucune approbation institutionnelle ni adoption formelle. Travail indépendant de Cariboo Signals, ouvert à la critique et aux contributions communautaires.</div>
 
   <nav>
-    <a href="/" class="nav-wordmark">TRACE</a>
+    <a href="/fr" class="nav-wordmark">TRACE</a>
     <div class="nav-links">
-      <a href="/#standard">The Standard</a>
-      <a href="/scorecard" class="active">Scorecard</a>
-      <a href="/policy-brief">Policy Brief</a>
-      <a href="/compact">Compact</a>
-      <a href="/metadata">Metadata</a>
-      <a href="/fr/scorecard" style="color:#666;border-left:1px solid #444;padding-left:20px;margin-left:8px;">FR</a>
+      <a href="/fr/#norme">La norme</a>
+      <a href="/fr/scorecard" class="active">Fiche d'évaluation</a>
+      <a href="/fr/policy-brief">Mémoire</a>
+      <a href="/fr/compact">Pacte</a>
+      <a href="/fr/metadata">Métadonnées</a>
+      <a href="/scorecard" style="color:#666;border-left:1px solid #444;padding-left:20px;margin-left:8px;">EN</a>
     </div>
   </nav>
 
   <div class="page-hero">
-    <div class="page-eyebrow">Assessment Tool</div>
-    <h1 class="page-title">TRACE<br>Scorecard</h1>
-    <p class="page-sub">Score any content project against the TRACE standard. Answer each criterion honestly. Takes about ten minutes. Results in a shareable accountability card.</p>
+    <div class="page-eyebrow">Outil d'évaluation</div>
+    <h1 class="page-title">Fiche<br>d'évaluation</h1>
+    <p class="page-sub">Évaluez tout projet de contenu selon la norme TRACE. Répondez honnêtement à chaque critère. Prend environ dix minutes. Produit une fiche de responsabilité partageable.</p>
   </div>
 
   <div class="score-bar" id="scoreBar">
     <div class="sb-left">
       <div class="sb-score"><span id="totalScore">0</span></div>
-      <div class="sb-of">/ <span id="totalMax">20</span> points</div>
+      <div class="sb-of">/ <span id="totalMax">21</span> points</div>
       <div class="sb-progress"><div class="sb-progress-fill" id="progressFill"></div></div>
     </div>
     <div class="sb-right">
@@ -497,66 +497,66 @@
 
   <div class="track-section">
     <div style="padding: 32px 0 24px;">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--mid);margin-bottom:16px;">Select Track</div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--mid);margin-bottom:16px;">Choisir une voie</div>
       <div class="track-selector">
         <button class="track-btn active" data-track="A" id="trackBtnA" onclick="selectTrack('A')">
-          <div class="tb-name">Track A</div>
-          <div class="tb-desc">Community-insider, non-commercial, self-funded</div>
-          <div class="tb-pts">6 categories · 21 points</div>
+          <div class="tb-name">Voie A</div>
+          <div class="tb-desc">Perspective communautaire interne, non commerciale, autofinancée</div>
+          <div class="tb-pts">6 catégories · 21 points</div>
         </button>
         <button class="track-btn" data-track="B" id="trackBtnB" onclick="selectTrack('B')">
-          <div class="tb-name">Track B</div>
-          <div class="tb-desc">External, institutional, commercial, or mixed</div>
-          <div class="tb-pts">7 categories · 38 points</div>
+          <div class="tb-name">Voie B</div>
+          <div class="tb-desc">Externe, institutionnel, commercial ou mixte</div>
+          <div class="tb-pts">7 catégories · 38 points</div>
         </button>
       </div>
     </div>
   </div>
 
   <div class="project-section">
-    <label for="projectName">Project Name</label>
-    <input type="text" id="projectName" placeholder="e.g. Cariboo Signals — The Ranching Episode" />
+    <label for="projectName">Nom du projet</label>
+    <input type="text" id="projectName" placeholder="ex. : Cariboo Signals — L'épisode ranching" />
   </div>
 
   <div id="formSections"></div>
 
   <div class="results-section" id="resultsSection">
-    <div class="section-label">Accountability Card</div>
+    <div class="section-label">Fiche de responsabilité</div>
     <div class="accountability-card" id="accountabilityCard">
       <div class="ac-header">
         <div class="ac-header-left">
-          <div class="ac-project" id="cardProject">Untitled Project</div>
-          <div class="ac-track" id="cardTrack">TRACK A — COMMUNITY INSIDER · TRACE ASSESSMENT</div>
+          <div class="ac-project" id="cardProject">Projet sans titre</div>
+          <div class="ac-track" id="cardTrack">VOIE A — PERSPECTIVE COMMUNAUTAIRE INTERNE · ÉVALUATION TRACE</div>
         </div>
         <div class="ac-verdict-badge" id="cardVerdictBadge">—</div>
       </div>
       <div class="ac-categories" id="cardCategories"></div>
       <div class="ac-total">
-        <div class="ac-total-label">Total Score</div>
+        <div class="ac-total-label">Score total</div>
         <div>
           <span class="ac-total-score" id="cardTotalScore">0</span>
-          <span class="ac-total-max">/ <span id="cardTotalMax">20</span></span>
+          <span class="ac-total-max">/ <span id="cardTotalMax">21</span></span>
         </div>
       </div>
       <div class="ac-verdict-desc" id="cardVerdictDesc"></div>
       <div class="ac-stamp">
-        <span>TRACE Content Accountability Standard</span>
+        <span>Norme de responsabilité de contenu TRACE</span>
         <span id="cardDate"></span>
       </div>
     </div>
-    <button class="generate-btn" onclick="generateCard()">Regenerate Card</button>
-    <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+    <button class="generate-btn" onclick="generateCard()">Régénérer la fiche</button>
+    <button class="print-btn" onclick="window.print()">Imprimer / Enregistrer en PDF</button>
   </div>
 
   <div class="meta-section" id="metaSection">
-    <div class="section-label">Embed This Assessment</div>
-    <p class="meta-intro">Make your TRACE assessment machine-readable. Paste these snippets into your content so platforms, feeds, and archives can read accountability data automatically.</p>
+    <div class="section-label">Intégrer cette évaluation</div>
+    <p class="meta-intro">Rendez votre évaluation TRACE lisible par machine. Collez ces extraits dans votre contenu pour que les plateformes, flux et archives puissent lire les données de responsabilité automatiquement.</p>
 
     <div class="meta-block">
       <div class="meta-block-header">
         <div class="meta-block-title">JSON-LD</div>
-        <div class="meta-block-sub">Paste into your HTML &lt;head&gt;</div>
-        <button class="meta-copy-btn" onclick="copyMeta('metaJsonld', this)">Copy</button>
+        <div class="meta-block-sub">Coller dans le &lt;head&gt; de votre HTML</div>
+        <button class="meta-copy-btn" onclick="copyMeta('metaJsonld', this)">Copier</button>
       </div>
       <pre class="meta-code" id="metaJsonld"></pre>
     </div>
@@ -564,29 +564,29 @@
     <div class="meta-block">
       <div class="meta-block-header">
         <div class="meta-block-title">XML · RSS / Atom</div>
-        <div class="meta-block-sub">Add to your podcast feed's &lt;channel&gt; or &lt;item&gt;</div>
-        <button class="meta-copy-btn" onclick="copyMeta('metaXml', this)">Copy</button>
+        <div class="meta-block-sub">Ajouter au &lt;channel&gt; ou &lt;item&gt; de votre flux de baladodiffusion</div>
+        <button class="meta-copy-btn" onclick="copyMeta('metaXml', this)">Copier</button>
       </div>
       <pre class="meta-code" id="metaXml"></pre>
     </div>
 
     <div class="meta-block">
       <div class="meta-block-header">
-        <div class="meta-block-title">C2PA Manifest</div>
-        <div class="meta-block-sub">Use with c2patool to embed in MP3 or M4A files</div>
-        <button class="meta-copy-btn" onclick="copyMeta('metaC2pa', this)">Copy</button>
+        <div class="meta-block-title">Manifeste C2PA</div>
+        <div class="meta-block-sub">Utiliser avec c2patool pour intégrer dans des fichiers MP3 ou M4A</div>
+        <button class="meta-copy-btn" onclick="copyMeta('metaC2pa', this)">Copier</button>
       </div>
       <pre class="meta-code" id="metaC2pa"></pre>
     </div>
 
-    <a href="/metadata" class="meta-docs-link">Format documentation →</a>
+    <a href="/fr/metadata" class="meta-docs-link">Documentation des formats →</a>
   </div>
 
   <footer>
     <div class="footer-left">
-      <span>TRACE</span> — Content Accountability Standard &nbsp;·&nbsp;
-      Built on the Community Content Compact &nbsp;·&nbsp;
-      Cariboo Signals, May 2026
+      <span>TRACE</span> — Norme de responsabilité de contenu &nbsp;·&nbsp;
+      Fondée sur le Pacte de contenu communautaire &nbsp;·&nbsp;
+      Cariboo Signals, mai 2026
     </div>
     <div class="footer-right">
       <a href="/">tracestandard.org</a>
@@ -596,141 +596,141 @@
   <script>
     const TRACKS = {
       A: {
-        label: 'Track A — Community Insider',
+        label: 'Voie A — Perspective communautaire interne',
         max: 21,
         thresholds: [
-          { min: 19, label: 'Exemplary', cls: 'exemplary', desc: 'Meets the TRACE standard in full. Community endorsement warranted. Suitable for public accountability card publication.' },
-          { min: 15, label: 'Sound', cls: 'sound', desc: 'Meets the standard with minor gaps. A written improvement plan is recommended before publication.' },
-          { min: 11, label: 'Developing', cls: 'developing', desc: 'Significant gaps identified. Remediation required before publication. Specific criteria below threshold must be addressed.' },
-          { min: 0,  label: 'Non-Compliant', cls: 'noncompliant', desc: 'Does not meet the TRACE standard. Substantial revision required. Consider pausing publication until conditions are met.' },
+          { min: 19, label: 'Exemplaire', cls: 'exemplary', desc: 'Répond pleinement à la norme TRACE. L\'aval de la communauté est justifié. Convient à la publication d\'une fiche de responsabilité publique.' },
+          { min: 15, label: 'Solide', cls: 'sound', desc: 'Répond à la norme avec des lacunes mineures. Un plan d\'amélioration écrit est recommandé avant la publication.' },
+          { min: 11, label: 'En développement', cls: 'developing', desc: 'Des lacunes importantes ont été relevées. Une remédiation est requise avant publication. Les critères spécifiques sous le seuil doivent être traités.' },
+          { min: 0,  label: 'Non conforme', cls: 'noncompliant', desc: 'Ne répond pas à la norme TRACE. Une révision substantielle est requise. Envisager de suspendre la publication jusqu\'à ce que les conditions soient remplies.' },
         ],
         categories: [
           {
-            id: 'T', name: 'Transparency', max: 5,
+            id: 'T', name: 'Transparence', max: 5,
             criteria: [
-              { id: 'T1', max: 1, text: 'Production method is disclosed at point of encounter — including whether AI, automated tools, or human production were used' },
-              { id: 'T2', max: 1, text: 'All contributors and their roles are clearly credited in the content itself' },
-              { id: 'T3', max: 1, text: 'Funding source and organizational affiliation are stated' },
-              { id: 'T4', max: 1, text: 'A corrections policy exists and is accessible to community members' },
-              { id: 'T5', max: 1, text: 'Factual verification practices are disclosed — including whether claims are checked before publication and whether corrections are issued when errors are found' },
+              { id: 'T1', max: 1, text: 'La méthode de production est divulguée au point de rencontre — notamment si l\'IA, des outils automatisés ou une production humaine ont été utilisés' },
+              { id: 'T2', max: 1, text: 'Tous les contributeurs et leurs rôles sont clairement crédités dans le contenu même' },
+              { id: 'T3', max: 1, text: 'La source de financement et l\'affiliation organisationnelle sont indiquées' },
+              { id: 'T4', max: 1, text: 'Une politique de corrections existe et est accessible aux membres de la communauté' },
+              { id: 'T5', max: 1, text: 'Les pratiques de vérification factuelle sont divulguées — notamment si les affirmations sont vérifiées avant publication et si des corrections sont émises lorsque des erreurs sont trouvées' },
             ]
           },
           {
-            id: 'R', name: 'Representation', max: 4,
+            id: 'R', name: 'Représentation', max: 4,
             criteria: [
-              { id: 'R1', max: 2, text: 'Content reflects the actual demographic and cultural diversity of the community — not a simplified or convenient version' },
-              { id: 'R2', max: 1, text: 'Multiple perspectives within the community are represented, not just prominent or accessible voices' },
-              { id: 'R3', max: 1, text: 'No single spokesperson or perspective is positioned as speaking for the whole community' },
+              { id: 'R1', max: 2, text: 'Le contenu reflète la diversité démographique et culturelle réelle de la communauté — et non une version simplifiée ou commode' },
+              { id: 'R2', max: 1, text: 'Plusieurs perspectives au sein de la communauté sont représentées, pas seulement les voix proéminentes ou accessibles' },
+              { id: 'R3', max: 1, text: 'Aucun porte-parole unique ni perspective unique ne se présente comme parlant au nom de toute la communauté' },
             ]
           },
           {
-            id: 'A', name: 'Accountability', max: 3,
+            id: 'A', name: 'Autonomie', max: 3,
             criteria: [
-              { id: 'A1', max: 1, text: 'A named, reachable contact exists and is published for community feedback and corrections' },
-              { id: 'A2', max: 1, text: 'The feedback mechanism is accessible to non-technically-literate community members' },
-              { id: 'A3', max: 1, text: 'Community feedback has resulted in at least one documented change to published content' },
+              { id: 'A1', max: 1, text: 'Un contact nommé et joignable existe et est publié pour les commentaires et corrections de la communauté' },
+              { id: 'A2', max: 1, text: 'Le mécanisme de rétroaction est accessible aux membres de la communauté sans littératie numérique avancée' },
+              { id: 'A3', max: 1, text: 'La rétroaction communautaire a entraîné au moins une modification documentée du contenu publié' },
             ]
           },
           {
-            id: 'C', name: 'Consent', max: 4,
+            id: 'C', name: 'Consentement', max: 4,
             criteria: [
-              { id: 'C1', max: 2, text: 'No statements are attributed to named living individuals without verified, on-record consent' },
-              { id: 'C2', max: 1, text: 'Cultural knowledge and creative expression are used only with community authorization' },
-              { id: 'C3', max: 1, text: 'Consent can be revoked, with a documented removal process' },
+              { id: 'C1', max: 2, text: 'Aucune déclaration n\'est attribuée à des personnes vivantes nommées sans leur consentement vérifié et consigné' },
+              { id: 'C2', max: 1, text: 'Les savoirs culturels et les expressions créatives ne sont utilisés qu\'avec l\'autorisation de la communauté' },
+              { id: 'C3', max: 1, text: 'Le consentement peut être révoqué, avec un processus de retrait documenté' },
             ]
           },
           {
             id: 'E', name: 'Engagement', max: 3,
             criteria: [
-              { id: 'E1', max: 1, text: 'Content does not directly displace community creators already doing this work' },
-              { id: 'E2', max: 1, text: 'Community collaborators are credited and compensated fairly for their contributions' },
-              { id: 'E3', max: 1, text: 'Community members retain meaningful creative authority over their own representations' },
+              { id: 'E1', max: 1, text: 'Le contenu ne supplante pas directement les créateurs communautaires qui font déjà ce travail' },
+              { id: 'E2', max: 1, text: 'Les collaborateurs communautaires sont crédités et rémunérés équitablement pour leurs contributions' },
+              { id: 'E3', max: 1, text: 'Les membres de la communauté conservent une autorité créative significative sur leurs propres représentations' },
             ]
           },
           {
-            id: 'B', name: 'Community Benefit', max: 2,
+            id: 'B', name: 'Bénéfice communautaire', max: 2,
             criteria: [
-              { id: 'B1', max: 1, text: 'Community members can access and use the content without restriction' },
-              { id: 'B2', max: 1, text: 'Revenue or substantive outputs return documented benefit to the community' },
+              { id: 'B1', max: 1, text: 'Les membres de la communauté peuvent accéder au contenu et l\'utiliser sans restriction' },
+              { id: 'B2', max: 1, text: 'Les revenus ou les résultats substantiels retournent un bénéfice documenté à la communauté' },
             ]
           },
         ]
       },
       B: {
-        label: 'Track B — External / Institutional',
+        label: 'Voie B — Externe / Institutionnel',
         max: 38,
         thresholds: [
-          { min: 34, label: 'Exemplary', cls: 'exemplary', desc: 'Meets the TRACE standard in full. Community endorsement warranted. Suitable for public accountability card publication.' },
-          { min: 26, label: 'Sound', cls: 'sound', desc: 'Meets the standard with minor gaps. A written improvement plan is recommended for next publication cycle.' },
-          { min: 18, label: 'Developing', cls: 'developing', desc: 'Significant gaps identified. Remediation required before publication. Specific criteria below threshold must be addressed.' },
-          { min: 0,  label: 'Non-Compliant', cls: 'noncompliant', desc: 'Does not meet the TRACE standard. Substantial revision required. Consider pausing publication until conditions are met.' },
+          { min: 34, label: 'Exemplaire', cls: 'exemplary', desc: 'Répond pleinement à la norme TRACE. L\'aval de la communauté est justifié. Convient à la publication d\'une fiche de responsabilité publique.' },
+          { min: 26, label: 'Solide', cls: 'sound', desc: 'Répond à la norme avec des lacunes mineures. Un plan d\'amélioration écrit est recommandé pour le prochain cycle de publication.' },
+          { min: 18, label: 'En développement', cls: 'developing', desc: 'Des lacunes importantes ont été relevées. Une remédiation est requise avant publication. Les critères spécifiques sous le seuil doivent être traités.' },
+          { min: 0,  label: 'Non conforme', cls: 'noncompliant', desc: 'Ne répond pas à la norme TRACE. Une révision substantielle est requise. Envisager de suspendre la publication jusqu\'à ce que les conditions soient remplies.' },
         ],
         categories: [
           {
-            id: 'T', name: 'Transparency', max: 8,
+            id: 'T', name: 'Transparence', max: 8,
             criteria: [
-              { id: 'T1', max: 2, text: 'AI use is disclosed, including the nature and extent of AI involvement in production' },
-              { id: 'T2', max: 1, text: 'Full editorial team, contractors, and institutional affiliation are publicly disclosed' },
-              { id: 'T3', max: 1, text: 'All funding sources are disclosed, including indirect funding and platform relationships' },
-              { id: 'T4', max: 1, text: 'Conflicts of interest are declared' },
-              { id: 'T5', max: 1, text: 'A formal corrections policy with a stated response timeline is published' },
-              { id: 'T6', max: 1, text: 'Factual verification practices are documented — including pre-publication fact-checking procedures and a public record of corrections issued' },
-              { id: 'T7', max: 1, text: 'The labor conditions of AI tools, data annotation services, and content moderation platforms used in production have been assessed' },
+              { id: 'T1', max: 2, text: 'L\'utilisation de l\'IA est divulguée, notamment la nature et l\'étendue de son implication dans la production' },
+              { id: 'T2', max: 1, text: 'L\'équipe éditoriale complète, les contractuels et l\'affiliation institutionnelle sont divulgués publiquement' },
+              { id: 'T3', max: 1, text: 'Toutes les sources de financement sont divulguées, y compris le financement indirect et les relations avec les plateformes' },
+              { id: 'T4', max: 1, text: 'Les conflits d\'intérêts sont déclarés' },
+              { id: 'T5', max: 1, text: 'Une politique formelle de corrections avec un délai de réponse indiqué est publiée' },
+              { id: 'T6', max: 1, text: 'Les pratiques de vérification factuelle sont documentées — notamment les procédures de vérification avant publication et un registre public des corrections émises' },
+              { id: 'T7', max: 1, text: 'Les conditions de travail des outils d\'IA, des services d\'annotation de données et des plateformes de modération de contenu utilisées dans la production ont été évaluées' },
             ]
           },
           {
-            id: 'R', name: 'Representation', max: 6,
+            id: 'R', name: 'Représentation', max: 6,
             criteria: [
-              { id: 'R1', max: 2, text: 'Community members had meaningful input on scope, framing, and key editorial decisions' },
-              { id: 'R2', max: 2, text: 'Content reflects the community\'s actual demographic and cultural diversity' },
-              { id: 'R3', max: 1, text: 'No reductive, stereotyped, or simplified portrayal of the community' },
-              { id: 'R4', max: 1, text: 'The community\'s own terminology, place names, and naming conventions are used throughout' },
+              { id: 'R1', max: 2, text: 'Des membres de la communauté ont eu une contribution significative sur la portée, l\'angle et les décisions éditoriales clés' },
+              { id: 'R2', max: 2, text: 'Le contenu reflète la diversité démographique et culturelle réelle de la communauté' },
+              { id: 'R3', max: 1, text: 'Aucune représentation réductrice, stéréotypée ou simplifiée de la communauté' },
+              { id: 'R4', max: 1, text: 'La terminologie propre à la communauté, les noms de lieux et les conventions de dénomination sont utilisés tout au long' },
             ]
           },
           {
-            id: 'A', name: 'Accountability', max: 5,
+            id: 'A', name: 'Autonomie', max: 5,
             criteria: [
-              { id: 'A1', max: 1, text: 'A named accountability officer or editorial contact is publicly identified' },
-              { id: 'A2', max: 1, text: 'A feedback mechanism is accessible and does not require technical literacy' },
-              { id: 'A3', max: 1, text: 'The community can formally request correction or removal of published content' },
-              { id: 'A4', max: 1, text: 'A response timeline for community concerns is publicly published' },
-              { id: 'A5', max: 1, text: 'At least one community representative holds editorial review authority' },
+              { id: 'A1', max: 1, text: 'Un responsable nommé de la responsabilité ou un contact éditorial est identifié publiquement' },
+              { id: 'A2', max: 1, text: 'Un mécanisme de rétroaction est accessible et ne requiert pas de littératie numérique avancée' },
+              { id: 'A3', max: 1, text: 'La communauté peut formellement demander la correction ou le retrait du contenu publié' },
+              { id: 'A4', max: 1, text: 'Un délai de réponse aux préoccupations communautaires est publié publiquement' },
+              { id: 'A5', max: 1, text: 'Au moins un représentant communautaire détient une autorité de révision éditoriale' },
             ]
           },
           {
-            id: 'C', name: 'Consent', max: 6,
+            id: 'C', name: 'Consentement', max: 6,
             criteria: [
-              { id: 'C1', max: 2, text: 'Explicit written consent is on file for all attributed statements from named individuals' },
-              { id: 'C2', max: 2, text: 'No synthetic or AI-generated statements are attributed to named individuals' },
-              { id: 'C3', max: 1, text: 'Use of cultural knowledge, traditional practices, or community-origin creative work is authorized' },
-              { id: 'C4', max: 1, text: 'Consent can be revoked with a clear and accessible process' },
+              { id: 'C1', max: 2, text: 'Le consentement écrit explicite est conservé pour toutes les déclarations attribuées à des personnes nommées' },
+              { id: 'C2', max: 2, text: 'Aucune déclaration synthétique ou générée par l\'IA n\'est attribuée à des personnes nommées' },
+              { id: 'C3', max: 1, text: 'L\'utilisation de savoirs culturels, de pratiques traditionnelles ou de travaux créatifs d\'origine communautaire est autorisée' },
+              { id: 'C4', max: 1, text: 'Le consentement peut être révoqué avec un processus clair et accessible' },
             ]
           },
           {
             id: 'E', name: 'Engagement', max: 5,
             criteria: [
-              { id: 'E1', max: 1, text: 'Existing community creators were identified and their work was not displaced' },
-              { id: 'E2', max: 2, text: 'Active collaboration with community creators was meaningfully pursued' },
-              { id: 'E3', max: 1, text: 'Community creators receive fair compensation and full public credit' },
-              { id: 'E4', max: 1, text: 'The community holds a meaningful creative veto over its own representation' },
+              { id: 'E1', max: 1, text: 'Les créateurs communautaires existants ont été identifiés et leur travail n\'a pas été supplanté' },
+              { id: 'E2', max: 2, text: 'Une collaboration active avec les créateurs communautaires a été poursuivie de manière significative' },
+              { id: 'E3', max: 1, text: 'Les créateurs communautaires reçoivent une rémunération équitable et un crédit public complet' },
+              { id: 'E4', max: 1, text: 'La communauté détient un droit de veto créatif significatif sur sa propre représentation' },
             ]
           },
           {
-            id: 'S', name: 'Structural Benefit', max: 5,
+            id: 'S', name: 'Bénéfice structurel', max: 5,
             criteria: [
-              { id: 'S1', max: 1, text: 'A portion of revenue is contractually committed to the community' },
-              { id: 'S2', max: 1, text: 'The community co-owns or holds rights to the content archive' },
-              { id: 'S3', max: 1, text: 'The community retains the audience relationship and subscriber or listener data' },
-              { id: 'S4', max: 1, text: 'The partnership includes capacity-building for community journalists' },
-              { id: 'S5', max: 1, text: 'The community has meaningful input into how this content is algorithmically distributed — reach is not entirely controlled by external platform logic' },
+              { id: 'S1', max: 1, text: 'Une part des revenus est contractuellement engagée envers la communauté' },
+              { id: 'S2', max: 1, text: 'La communauté co-détient ou détient des droits sur les archives de contenu' },
+              { id: 'S3', max: 1, text: 'La communauté conserve la relation avec l\'audience et les données des abonnés ou auditeurs' },
+              { id: 'S4', max: 1, text: 'Le partenariat comprend le renforcement des capacités pour les journalistes communautaires' },
+              { id: 'S5', max: 1, text: 'La communauté a une contribution significative sur la façon dont ce contenu est distribué algorithmiquement — la portée n\'est pas entièrement contrôlée par la logique des plateformes externes' },
             ]
           },
           {
-            id: 'D', name: 'Data Rights', max: 3,
+            id: 'D', name: 'Droits sur les données', max: 3,
             criteria: [
-              { id: 'D1', max: 1, text: 'Community content is not used for AI training without explicit opt-in consent' },
-              { id: 'D2', max: 1, text: 'Data collected about community members is disclosed, minimized, and accessible to them' },
-              { id: 'D3', max: 1, text: 'Community members can request deletion of their data' },
+              { id: 'D1', max: 1, text: 'Le contenu communautaire n\'est pas utilisé pour l\'entraînement d\'IA sans consentement explicite' },
+              { id: 'D2', max: 1, text: 'Les données collectées sur les membres de la communauté sont divulguées, minimisées et accessibles à ceux-ci' },
+              { id: 'D3', max: 1, text: 'Les membres de la communauté peuvent demander la suppression de leurs données' },
             ]
           },
         ]
@@ -791,11 +791,10 @@
           section.appendChild(row);
         });
 
-        // Generate card button at end of last category
         if (cat.id === track.categories[track.categories.length - 1].id) {
           const genRow = document.createElement('div');
           genRow.style.cssText = 'padding: 32px 0;';
-          genRow.innerHTML = '<button class="generate-btn" onclick="generateCard()">Generate Accountability Card →</button>';
+          genRow.innerHTML = '<button class="generate-btn" onclick="generateCard()">Générer la fiche de responsabilité →</button>';
           section.appendChild(genRow);
         }
 
@@ -805,7 +804,6 @@
 
     function setScore(critId, val, btn) {
       scores[critId] = val;
-      // update button states for this criterion
       btn.closest('.score-selector').querySelectorAll('.score-btn').forEach(b => {
         b.classList.toggle('selected', parseInt(b.dataset.val) === val);
       });
@@ -847,11 +845,11 @@
     function generateCard() {
       const track = TRACKS[currentTrack];
       const total = parseInt(document.getElementById('totalScore').textContent);
-      const projectName = document.getElementById('projectName').value.trim() || 'Untitled Project';
+      const projectName = document.getElementById('projectName').value.trim() || 'Projet sans titre';
       const verdict = getVerdict(total, track.thresholds);
 
       document.getElementById('cardProject').textContent = projectName;
-      document.getElementById('cardTrack').textContent = track.label.toUpperCase() + ' · TRACE ASSESSMENT';
+      document.getElementById('cardTrack').textContent = track.label.toUpperCase() + ' · ÉVALUATION TRACE';
       document.getElementById('cardTotalScore').textContent = total;
       document.getElementById('cardTotalMax').textContent = track.max;
 
@@ -879,7 +877,7 @@
       });
 
       const now = new Date();
-      document.getElementById('cardDate').textContent = now.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+      document.getElementById('cardDate').textContent = now.toLocaleDateString('fr-CA', { year: 'numeric', month: 'long', day: 'numeric' });
 
       document.getElementById('resultsSection').classList.add('visible');
       generateMetadata();
@@ -893,7 +891,7 @@
     function generateMetadata() {
       const track = TRACKS[currentTrack];
       const total = parseInt(document.getElementById('totalScore').textContent);
-      const projectName = document.getElementById('projectName').value.trim() || 'Untitled Project';
+      const projectName = document.getElementById('projectName').value.trim() || 'Projet sans titre';
       const verdict = getVerdict(total, track.thresholds);
       const today = new Date().toISOString().split('T')[0];
 
@@ -954,9 +952,9 @@ ${scoreLines}
 
     function copyMeta(id, btn) {
       navigator.clipboard.writeText(document.getElementById(id).textContent).then(() => {
-        btn.textContent = 'Copied';
+        btn.textContent = 'Copié';
         btn.classList.add('copied');
-        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+        setTimeout(() => { btn.textContent = 'Copier'; btn.classList.remove('copied'); }, 1500);
       });
     }
 

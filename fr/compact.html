@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le Pacte de contenu communautaire — TRACE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:   #F2EEE8;
+      --ink:     #1A1A1A;
+      --mid:     #888880;
+      --rule:    #D8D4CC;
+      --green:   #1B5E35;
+      --paper:   #FAFAF7;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--ink);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 48px;
+    }
+    .nav-wordmark {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px; font-weight: 500;
+      color: var(--cream); letter-spacing: 0.18em;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      font-size: 11px; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 0.1em; color: #888; text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--cream); }
+
+    .proposal-notice {
+      position: fixed; top: 48px; left: 0; right: 0; z-index: 99;
+      background: #F5E6C8; border-bottom: 1px solid #D4B896;
+      padding: 9px 32px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+      color: #5C3D1E; text-align: center;
+    }
+
+    .page-hero {
+      padding: 164px 48px 72px;
+      border-bottom: 1px solid var(--rule);
+      max-width: 900px;
+    }
+    .page-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--mid);
+      margin-bottom: 20px;
+    }
+    .page-title {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: clamp(36px, 6vw, 64px);
+      line-height: 1.05; letter-spacing: -0.02em;
+      color: var(--ink); margin-bottom: 24px;
+    }
+    .page-sub {
+      font-family: 'Fraunces', serif; font-style: italic; font-weight: 300;
+      font-size: clamp(16px, 2vw, 20px); line-height: 1.5;
+      color: #555; max-width: 620px;
+    }
+
+    .doc-body {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 0;
+      max-width: 1100px;
+    }
+    .doc-nav {
+      padding: 48px 32px 48px 48px;
+      position: sticky; top: 84px; height: fit-content;
+      border-right: 1px solid var(--rule);
+    }
+    .doc-nav-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--mid);
+      margin-bottom: 16px;
+    }
+    .doc-nav-links { display: flex; flex-direction: column; gap: 10px; }
+    .doc-nav-links a {
+      font-size: 12px; color: var(--mid); text-decoration: none;
+      transition: color 0.15s;
+    }
+    .doc-nav-links a:hover { color: var(--ink); }
+
+    .doc-content { padding: 48px 64px 96px 48px; }
+
+    .doc-section { margin-bottom: 64px; }
+    .doc-section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--mid);
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .doc-section-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--rule);
+    }
+    .doc-section h2 {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: clamp(22px, 2.8vw, 30px);
+      line-height: 1.15; color: var(--ink);
+      margin-bottom: 24px;
+    }
+    .doc-section h3 {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: 18px; line-height: 1.2; color: var(--ink);
+      margin-top: 32px; margin-bottom: 12px;
+    }
+    .doc-section p {
+      font-size: 15px; line-height: 1.8; color: #333;
+      max-width: 680px;
+    }
+    .doc-section p + p { margin-top: 16px; }
+
+    .condition-block {
+      border-top: 1px solid var(--rule);
+      padding: 28px 0;
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    .condition-block:last-of-type { border-bottom: 1px solid var(--rule); }
+    .cb-letter {
+      font-family: 'Fraunces', serif; font-weight: 900;
+      font-size: 44px; line-height: 1; color: var(--ink);
+      opacity: 0.12;
+    }
+    .cb-content {}
+    .cb-word {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: 17px; color: var(--ink); margin-bottom: 8px;
+    }
+    .cb-desc { font-size: 15px; line-height: 1.75; color: #444; max-width: 580px; }
+
+    .compact-questions {
+      background: var(--paper); border: 1px solid var(--rule);
+      padding: 32px; max-width: 640px; margin-top: 8px;
+    }
+    .cq-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--mid);
+      margin-bottom: 20px;
+    }
+    .cq-list { list-style: none; }
+    .cq-list li {
+      font-family: 'Fraunces', serif; font-weight: 300;
+      font-size: 16px; line-height: 1.4; color: var(--ink);
+      padding: 14px 0; border-bottom: 1px solid var(--rule);
+      display: flex; gap: 16px; align-items: baseline;
+    }
+    .cq-list li:last-child { border-bottom: none; }
+    .cq-num {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      color: var(--mid); flex-shrink: 0; padding-top: 3px;
+    }
+
+    .doc-callout {
+      background: var(--ink); color: var(--cream);
+      padding: 32px; max-width: 640px; margin: 32px 0;
+    }
+    .doc-callout p {
+      font-family: 'Fraunces', serif; font-style: italic; font-weight: 300;
+      font-size: clamp(17px, 2vw, 20px); line-height: 1.5;
+      color: var(--cream); max-width: none;
+    }
+
+    .doc-colophon {
+      border-top: 1px solid var(--rule);
+      padding: 32px 0;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; color: var(--mid);
+      line-height: 1.6;
+    }
+
+    footer {
+      padding: 32px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid var(--rule);
+    }
+    .footer-left {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      color: var(--mid); letter-spacing: 0.06em;
+    }
+    .footer-left span { color: var(--ink); font-weight: 500; }
+    .footer-right { font-size: 12px; color: var(--mid); }
+    .footer-right a { color: var(--mid); text-decoration: none; }
+    .footer-right a:hover { color: var(--ink); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .page-hero { padding: 88px 24px 48px; }
+      .doc-body { grid-template-columns: 1fr; }
+      .doc-nav { display: none; }
+      .doc-content { padding: 40px 24px 64px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="proposal-notice">PROPOSITION &mdash; Aucune approbation institutionnelle ni adoption formelle. Travail indépendant de Cariboo Signals, ouvert à la critique et aux contributions communautaires.</div>
+
+  <nav>
+    <a href="/fr" class="nav-wordmark">TRACE</a>
+    <div class="nav-links">
+      <a href="/fr/#norme">La norme</a>
+      <a href="/fr/scorecard">Fiche d'évaluation</a>
+      <a href="/fr/policy-brief">Mémoire</a>
+      <a href="/fr/compact" class="active">Pacte</a>
+      <a href="/fr/metadata">Métadonnées</a>
+      <a href="/compact" style="color:#666;border-left:1px solid #444;padding-left:20px;margin-left:8px;">EN</a>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-eyebrow">Document fondateur</div>
+    <h1 class="page-title">Le Pacte de contenu<br>communautaire</h1>
+    <p class="page-sub">Un énoncé de principes pour une production éthique de contenu, développé par Cariboo Signals, un projet de journalisme communautaire au service de la Colombie-Britannique rurale.</p>
+  </div>
+
+  <div class="doc-body">
+    <nav class="doc-nav">
+      <div class="doc-nav-label">Sections</div>
+      <div class="doc-nav-links">
+        <a href="#preambule">Préambule</a>
+        <a href="#structure">La structure du problème</a>
+        <a href="#conditions">Les cinq conditions</a>
+        <a href="#questions">Quatre questions</a>
+        <a href="#engagement">Un engagement</a>
+        <a href="#v11">Notes v1.1</a>
+      </div>
+    </nav>
+
+    <div class="doc-content">
+
+      <div class="doc-section" id="preambule">
+        <div class="doc-section-label">Préambule</div>
+        <p>Toute communauté a une histoire. La question de savoir qui raconte cette histoire — et selon quelles conditions — n'a jamais été neutre.</p>
+        <p>Pendant la majeure partie de l'histoire des médias, les communautés étaient des sujets de contenu : cataloguées par des ethnographes, profilees par des journalistes, documentées par des cinéastes, le tout sans avoir leur mot à dire sur le cadrage, la publication ou la correction. La relation était extractive par conception. Ce qui était prélevé s'appelait « le registre public ». Ce qui restait s'appelait « la couverture ».</p>
+        <p>Les outils ont changé. La structure, non.</p>
+        <p>L'IA permet désormais à n'importe quel opérateur, depuis n'importe où, de produire du contenu culturellement spécifique sur n'importe quelle communauté à un coût quasi nul et à une échelle pratiquement infinie. Ce qui était autrefois limité par l'économie de la production est devenu illimité. Ce sur quoi les communautés pouvaient autrefois compter — que l'éthique du journalisme professionnel lierait au moins les producteurs les plus importants — ne tient plus lorsque les producteurs dominants sont des plateformes, des algorithmes et des systèmes automatisés fonctionnant sans reddition de comptes professionnelle.</p>
+
+        <div class="doc-callout">
+          <p>« Les communautés sont les sujets d'un contenu qu'elles n'ont pas commandé, qu'elles ne contrôlent pas et qu'elles ne peuvent pas corriger. Ce n'est pas nouveau. Ce qui est nouveau, c'est l'échelle. »</p>
+        </div>
+
+        <p>Le Pacte de contenu communautaire est notre réponse. Il ne s'agit pas d'une plainte contre le présent. C'est un ensemble de conditions pour un meilleur arrangement — suffisamment précis pour être testé, suffisamment public pour être appliqué par les communautés qu'il protège.</p>
+      </div>
+
+      <div class="doc-section" id="structure">
+        <div class="doc-section-label">La structure du problème</div>
+        <h2>Les bonnes intentions ne sont pas l'obstacle.</h2>
+        <p>La plupart des producteurs de contenu communautaire croient faire quelque chose de précieux. Ils se trompent souvent non pas parce qu'ils sont malhonnêtes, mais parce que les structures d'incitation de la production de contenu sont mal alignées avec le bénéfice communautaire d'une manière qui persiste indépendamment des intentions individuelles.</p>
+        <p>Trois désalignements structurels définissent le problème :</p>
+
+        <h3>1. Le financement par projet produit des pilotes, pas des infrastructures.</h3>
+        <p>Le journalisme communautaire exige des relations soutenues. Les relations soutenues exigent des investissements soutenus. La plupart des bailleurs de fonds offrent des subventions par projet — des interventions ponctuelles qui produisent un produit, génèrent un rapport, puis se terminent. Les communautés se retrouvent sans les capacités ni les archives. Le bailleur de fonds passe à autre chose. La communauté reste, sans les outils pour continuer ce qui a été entrepris en son nom.</p>
+
+        <h3>2. L'extraction est capitalisée à une échelle incompatible.</h3>
+        <p>Un journal communautaire emploie deux personnes et connaît les noms des personnes qu'il couvre. Une plateforme ou un opérateur d'IA produit du contenu sur cette communauté à partir d'une ferme de serveurs dotée de milliers d'employés. L'économie de la production de contenu s'est découplée de l'économie du bénéfice communautaire. La vitesse et le volume sont récompensés; les relations et la responsabilité, non. Il n'existe pas de correction de marché pour cela. Les communautés les plus touchées sont celles qui ont le moins de pouvoir de marché.</p>
+
+        <h3>3. La responsabilité est optionnelle pour tous, sauf pour les journalistes.</h3>
+        <p>Les codes d'éthique du journalisme lient les journalistes professionnels par des normes professionnelles et un emploi organisationnel. Ils ne s'étendent pas aux ONG, aux plateformes, aux opérateurs d'IA, aux chercheurs ou aux producteurs indépendants — la majorité des entités qui produisent désormais du contenu sur des communautés à grande échelle. Les communautés n'ont aucun mécanisme pour invoquer des normes de responsabilité parce qu'il n'existe pas de normes partagées auxquelles ces producteurs se sont engagés. L'écart n'est pas technique. Il est politique. Le combler exige que les producteurs acceptent des obligations qu'ils n'ont actuellement pas.</p>
+      </div>
+
+      <div class="doc-section" id="conditions">
+        <div class="doc-section-label">Les cinq conditions</div>
+        <h2>Ce sont des minimums, pas des aspirations.</h2>
+        <p>La norme TRACE identifie cinq conditions que tout contenu sur une communauté doit remplir pour être considéré comme responsable. Les atteindre est réalisable. La plupart des échecs à les atteindre sont des choix, pas des accidents.</p>
+
+        <div style="margin-top: 32px;">
+          <div class="condition-block">
+            <div class="cb-letter">T</div>
+            <div class="cb-content">
+              <div class="cb-word">Transparence</div>
+              <p class="cb-desc">Les communautés ont le droit de savoir qui a créé le contenu, comment et pourquoi — au point de rencontre. Pas dans une politique de confidentialité. Pas dans un document de conditions d'utilisation. Au point de rencontre, en langage clair. La divulgation n'est pas un fardeau pour les producteurs. C'est une condition préalable à la confiance qui donne sa valeur au contenu. Un producteur qui ne peut pas divulguer ses méthodes devrait se demander si ses méthodes sont défendables.</p>
+            </div>
+          </div>
+          <div class="condition-block">
+            <div class="cb-letter">R</div>
+            <div class="cb-content">
+              <div class="cb-word">Représentation</div>
+              <p class="cb-desc">Une communauté n'est pas son porte-parole le plus en vue, sa caractéristique la plus stéréotypée ou son récit le plus commode. Le contenu qui prétend représenter une communauté doit refléter sa diversité et sa complexité réelles — pas la version qui voyage bien sur les plateformes, pas la version qui confirme les hypothèses antérieures du producteur, pas la version la plus facile à produire. La responsabilité d'une représentation fidèle incombe au producteur. Elle ne peut pas être remplie en citant une seule source locale.</p>
+            </div>
+          </div>
+          <div class="condition-block">
+            <div class="cb-letter">A</div>
+            <div class="cb-content">
+              <div class="cb-word">Autonomie</div>
+              <p class="cb-desc">« Laissez un commentaire » n'est pas de l'autonomie communautaire. L'autonomie signifie un mécanisme de rétroaction réel doté d'un véritable pouvoir de changer les résultats — pas simplement un formulaire de commentaires qui produit l'apparence de la réactivité sans la substance. Cela signifie une personne réelle avec un nom réel qui peut être rejointe par un membre de la communauté avec une plainte, et qui a une véritable autorité pour modifier les résultats. Cela signifie un dossier documenté des changements apportés en réponse aux retours communautaires. Si personne dans l'organisation productrice ne peut être relevé de ses fonctions à cause des retours de la communauté, le mécanisme d'autonomie est du théâtre.</p>
+            </div>
+          </div>
+          <div class="condition-block">
+            <div class="cb-letter">C</div>
+            <div class="cb-content">
+              <div class="cb-word">Consentement</div>
+              <p class="cb-desc">Les déclarations attribuées, les savoirs culturels et l'expression créative appartiennent aux personnes et aux communautés qui les ont produits. Les utiliser sans consentement n'est pas de l'« inspiration » ni une « référence » ni un « usage équitable dans l'intérêt public ». C'est de l'appropriation. La norme est un consentement explicite, éclairé et révocable. Pas un consentement implicite. Pas le silence traité comme un accord. Pas un consentement obtenu dans des conditions de dépendance ou de déséquilibre. Cela s'applique avec une force particulière aux personnes vivantes, aux dirigeants communautaires et aux détenteurs de savoirs traditionnels, dont la voix attribuée a un poids qui dépasse leurs paroles individuelles.</p>
+            </div>
+          </div>
+          <div class="condition-block">
+            <div class="cb-letter">E</div>
+            <div class="cb-content">
+              <div class="cb-word">Engagement</div>
+              <p class="cb-desc">Le contenu qui concurrence, déplace ou se substitue aux créateurs humains qui font déjà ce travail dans la communauté a une obligation particulière envers cette communauté. Le minimum est une évaluation honnête de la concurrence — une comptabilité sincère visant à déterminer si ce contenu rend plus difficile pour les créateurs communautaires de se maintenir. La norme plus exigeante est la collaboration active dans laquelle les créateurs existants conservent une autorité créative significative. L'objectif n'est pas l'interdiction de la production externe. C'est l'élimination de la dynamique dans laquelle les producteurs externes bénéficient de l'histoire d'une communauté tandis que les conteurs de la communauté sont appauvris par la concurrence.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="questions">
+        <div class="doc-section-label">Quatre questions</div>
+        <h2>Pour tout partenariat de contenu, par écrit, avant qu'il commence.</h2>
+        <p>Les problèmes structurels de la production de contenu communautaire sont souvent verrouillés au stade du contrat — non pas parce que quelqu'un a l'intention de nuire, mais parce que les questions qui révéleraient le préjudice ne sont pas posées. Ces quatre questions doivent recevoir une réponse écrite avant que tout partenariat de contenu se poursuive. Si elles ne peuvent pas y répondre clairement et par écrit, c'est en soi une réponse.</p>
+
+        <div class="compact-questions">
+          <div class="cq-label">Quatre questions pour tout partenariat de contenu</div>
+          <ul class="cq-list">
+            <li>
+              <span class="cq-num">01</span>
+              <span><strong>Qui est propriétaire du produit?</strong> Le contenu lui-même — qui détient les droits d'auteur, qui contrôle la distribution, qui décide quand il est publié, modifié ou retiré. Si la réponse est « le partenaire externe », demandez pourquoi.</span>
+            </li>
+            <li>
+              <span class="cq-num">02</span>
+              <span><strong>Qui est propriétaire de la relation avec le public?</strong> Les lecteurs, auditeurs ou spectateurs développés grâce à ce contenu — appartiennent-ils au média communautaire ou à la plateforme du partenaire externe? Les données des abonnés, les listes de courriels, les audiences sociales : qui les détient à la fin du partenariat?</span>
+            </li>
+            <li>
+              <span class="cq-num">03</span>
+              <span><strong>Qui est propriétaire des archives?</strong> Ce qui advient du contenu après la fin du partenariat. La communauté conserve-t-elle l'accès à sa propre histoire, dans des formats qu'elle peut utiliser, sans paiement continu à une plateforme qui contrôle les archives?</span>
+            </li>
+            <li>
+              <span class="cq-num">04</span>
+              <span><strong>La communauté détient-elle l'autorité éditoriale finale?</strong> La communauté peut-elle opposer son veto à un contenu qu'elle juge inexact, préjudiciable ou mal représentatif — et ce veto a-t-il un effet réel, et non pas seulement l'effet de produire une déclaration de désaccord qui s'exécute parallèlement au contenu original?</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="doc-section" id="engagement">
+        <div class="doc-section-label">Un engagement</div>
+        <h2>Ce que l'adhésion signifie.</h2>
+        <p>Les communautés qui adhèrent au Pacte de contenu communautaire s'engagent à trois choses : appliquer ses principes dans leur propre production; les exiger dans les partenariats qu'elles contractent; et les invoquer publiquement lorsque le contenu sur leur communauté ne répond pas à la norme.</p>
+        <p>Les producteurs qui adhèrent au Pacte de contenu communautaire s'engagent à trois choses : divulguer pleinement leurs méthodes; respecter les cinq conditions TRACE dans le contenu sur toute communauté qui a adhéré au Pacte; et accepter la responsabilité lorsqu'ils n'y parviennent pas — non pas en émettant des déclarations, mais en changeant le contenu, la pratique ou la relation.</p>
+        <p>Le Pacte n'est pas un instrument juridique. Il ne crée pas de droits exécutoires ni de responsabilité professionnelle. C'est une déclaration partagée de ce qu'exige une production éthique de contenu, rendue publique et suffisamment précise pour que les communautés puissent l'utiliser comme norme d'attente, et que les producteurs qui n'y satisfont pas ne puissent pas prétendre qu'ils ne savaient pas ce qui était attendu.</p>
+        <p>La responsabilité sans conséquence est du théâtre. La conséquence que rend disponible le Pacte est réputationnelle : un producteur qui y adhère et ne respecte pas ses conditions doit répondre du registre public de cette adhésion. Ce n'est pas une petite chose. C'est souvent la seule chose accessible aux communautés aux ressources juridiques et financières limitées. Nous avons construit cette norme pour qu'elle soit utilisable avec ce que les communautés ont réellement.</p>
+
+        <div class="doc-colophon">
+          Le Pacte de contenu communautaire a été développé par Cariboo Signals, avec la Norme de responsabilité de contenu TRACE.<br>
+          Version 1.1 &nbsp;·&nbsp; Mai 2026 &nbsp;·&nbsp; Ouvert à l'adhésion communautaire
+        </div>
+      </div>
+
+      <div class="doc-section" id="v11">
+        <div class="doc-section-label">Notes v1.1</div>
+        <h2>Lacunes identifiées, lacunes en cours.</h2>
+        <p>La norme TRACE est un cadre évolutif. La version 1.1 ajoute trois éléments évalués — les pratiques de vérification des faits, l'évaluation du travail caché et la gouvernance de la distribution algorithmique — informés par des lacunes identifiées à travers l'encyclique <em>Magnifica Humanitas</em> (Léon XIV, mai 2026). Deux domaines supplémentaires ont été soulevés qui se situent en dehors du cadre d'évaluation actuel.</p>
+
+        <h3>Distribution algorithmique — note pour la Voie A</h3>
+        <p>TRACE évalue si une communauté conserve sa relation avec son public et ses données d'abonnés (Voie B, S3). Ce qu'elle n'évalue pas, pour les producteurs communautaires internes opérant sur la Voie A, c'est la gouvernance de la façon dont le contenu atteint ce public. Un producteur peut posséder sa liste d'abonnés tout en cédant toute découverte à un algorithme qui supprime systématiquement le contenu spécifique à la communauté. Ce n'est pas un échec de propriété — c'est un échec de gouvernance de la portée.</p>
+        <p>Les producteurs communautaires internes utilisant la Voie A devraient, à titre de pratique d'amélioration continue, documenter leur relation avec les plateformes et les algorithmes par lesquels leur contenu est distribué, et envisager si les membres de la communauté ont une voix dans la façon dont cette portée est façonnée. Ce n'est pas encore un critère évalué sur la Voie A; il est offert ici comme un domaine d'attention explicite en attendant un développement ultérieur.</p>
+
+        <h3>Empreinte environnementale — note aspirationnelle</h3>
+        <p>La production de contenu assisté par IA entraîne des coûts énergétiques, hydriques et carboniques largement invisibles pour les producteurs et les communautés que leur contenu dessert. <em>Magnifica Humanitas</em> signale cela explicitement (paragraphes 101–109). TRACE n'évalue actuellement pas l'empreinte environnementale — l'accent de la norme est mis sur la responsabilité communautaire plutôt que sur l'impact écologique, et ajouter cette dimension sans une portée soigneuse risque de rendre la Voie B inopérable pour les producteurs institutionnels plus petits.</p>
+        <p>Cela est noté ici comme un domaine de développement futur. Les producteurs utilisant des outils d'IA dans la production de contenu sont encouragés à divulguer les coûts environnementaux connus parallèlement à leurs divulgations d'utilisation de l'IA (Voie B, T1), même si aucun critère évalué ne l'exige actuellement.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-left">
+      <span>TRACE</span> — Norme de responsabilité de contenu &nbsp;·&nbsp;
+      Fondée sur le Pacte de contenu communautaire &nbsp;·&nbsp;
+      Cariboo Signals, mai 2026
+    </div>
+    <div class="footer-right">
+      <a href="/fr">tracestandard.org</a>
+    </div>
+  </footer>
+
+</body>
+</html>

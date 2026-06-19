@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qui a le droit de raconter l'histoire d'une communauté? — Mémoire TRACE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:   #F2EEE8;
+      --ink:     #1A1A1A;
+      --mid:     #888880;
+      --rule:    #D8D4CC;
+      --green:   #1B5E35;
+      --paper:   #FAFAF7;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--ink);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 48px;
+    }
+    .nav-wordmark {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px; font-weight: 500;
+      color: var(--cream); letter-spacing: 0.18em;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      font-size: 11px; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 0.1em; color: #888; text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--cream); }
+
+    .proposal-notice {
+      position: fixed; top: 48px; left: 0; right: 0; z-index: 99;
+      background: #F5E6C8; border-bottom: 1px solid #D4B896;
+      padding: 9px 32px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+      color: #5C3D1E; text-align: center;
+    }
+
+    .page-hero {
+      padding: 164px 48px 72px;
+      border-bottom: 1px solid var(--rule);
+      max-width: 900px;
+    }
+    .page-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--mid);
+      margin-bottom: 20px;
+    }
+    .page-title {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: clamp(32px, 5.5vw, 58px);
+      line-height: 1.05; letter-spacing: -0.02em;
+      color: var(--ink); margin-bottom: 24px;
+    }
+    .page-sub {
+      font-family: 'Fraunces', serif; font-style: italic; font-weight: 300;
+      font-size: clamp(15px, 1.8vw, 18px); line-height: 1.5;
+      color: #555; max-width: 620px;
+    }
+    .page-meta {
+      margin-top: 20px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; color: var(--mid); letter-spacing: 0.1em;
+    }
+
+    .doc-body {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 0;
+      max-width: 1100px;
+    }
+    .doc-nav {
+      padding: 48px 32px 48px 48px;
+      position: sticky; top: 84px; height: fit-content;
+      border-right: 1px solid var(--rule);
+    }
+    .doc-nav-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--mid);
+      margin-bottom: 16px;
+    }
+    .doc-nav-links { display: flex; flex-direction: column; gap: 10px; }
+    .doc-nav-links a {
+      font-size: 12px; color: var(--mid); text-decoration: none;
+      transition: color 0.15s; line-height: 1.4;
+    }
+    .doc-nav-links a:hover { color: var(--ink); }
+
+    .doc-content { padding: 48px 64px 96px 48px; }
+
+    .doc-section { margin-bottom: 64px; }
+    .doc-section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--mid);
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .doc-section-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--rule);
+    }
+    .doc-section h2 {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: clamp(20px, 2.5vw, 26px);
+      line-height: 1.2; color: var(--ink);
+      margin-bottom: 20px;
+    }
+    .doc-section p {
+      font-size: 15px; line-height: 1.8; color: #333;
+      max-width: 680px;
+    }
+    .doc-section p + p { margin-top: 16px; }
+
+    .failure-grid {
+      display: flex; flex-direction: column; gap: 0;
+      border: 1px solid var(--rule); max-width: 680px;
+      margin-top: 8px;
+    }
+    .failure-item {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .failure-item:last-child { border-bottom: none; }
+    .fi-type {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--mid); margin-bottom: 6px;
+    }
+    .fi-body { font-size: 14px; line-height: 1.7; color: #444; }
+
+    .ask-block {
+      border-top: 2px solid var(--ink);
+      padding: 32px 0;
+      margin-top: 8px;
+      max-width: 680px;
+    }
+    .ask-block + .ask-block { border-top: 1px solid var(--rule); }
+    .ask-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--mid);
+      margin-bottom: 12px;
+    }
+    .ask-title {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: 20px; line-height: 1.2; color: var(--ink);
+      margin-bottom: 16px;
+    }
+    .ask-body { font-size: 15px; line-height: 1.8; color: #333; }
+    .ask-body p + p { margin-top: 12px; }
+    .ask-rationale {
+      margin-top: 16px; padding: 16px 20px;
+      background: var(--paper); border-left: 2px solid var(--rule);
+    }
+    .ar-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--mid); margin-bottom: 8px;
+    }
+    .ar-body { font-size: 14px; line-height: 1.7; color: #555; }
+
+    .doc-callout {
+      background: var(--ink); color: var(--cream);
+      padding: 32px; max-width: 640px; margin: 32px 0;
+    }
+    .doc-callout p {
+      font-family: 'Fraunces', serif; font-style: italic; font-weight: 300;
+      font-size: clamp(17px, 2vw, 20px); line-height: 1.5;
+      color: var(--cream); max-width: none;
+    }
+
+    .doc-colophon {
+      border-top: 1px solid var(--rule);
+      padding: 32px 0;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; color: var(--mid);
+      line-height: 1.6; max-width: 680px;
+    }
+
+    footer {
+      padding: 32px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid var(--rule);
+    }
+    .footer-left {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      color: var(--mid); letter-spacing: 0.06em;
+    }
+    .footer-left span { color: var(--ink); font-weight: 500; }
+    .footer-right { font-size: 12px; color: var(--mid); }
+    .footer-right a { color: var(--mid); text-decoration: none; }
+    .footer-right a:hover { color: var(--ink); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .page-hero { padding: 88px 24px 48px; }
+      .doc-body { grid-template-columns: 1fr; }
+      .doc-nav { display: none; }
+      .doc-content { padding: 40px 24px 64px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="proposal-notice">PROPOSITION &mdash; Aucune approbation institutionnelle ni adoption formelle. Travail indépendant de Cariboo Signals, ouvert à la critique et aux contributions communautaires.</div>
+
+  <nav>
+    <a href="/fr" class="nav-wordmark">TRACE</a>
+    <div class="nav-links">
+      <a href="/fr/#norme">La norme</a>
+      <a href="/fr/scorecard">Fiche d'évaluation</a>
+      <a href="/fr/policy-brief" class="active">Mémoire</a>
+      <a href="/fr/compact">Pacte</a>
+      <a href="/fr/metadata">Métadonnées</a>
+      <a href="/policy-brief" style="color:#666;border-left:1px solid #444;padding-left:20px;margin-left:8px;">EN</a>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-eyebrow">Mémoire de politique</div>
+    <h1 class="page-title">Qui a le droit de<br>raconter l'histoire<br>d'une communauté?</h1>
+    <p class="page-sub">Sur le contenu généré par l'IA, le journalisme communautaire et la nécessité d'une norme publique de responsabilité.</p>
+    <div class="page-meta">Pour les bailleurs de fonds et décideurs &nbsp;·&nbsp; Cariboo Signals / TRACE &nbsp;·&nbsp; Mai 2026</div>
+  </div>
+
+  <div class="doc-body">
+    <nav class="doc-nav">
+      <div class="doc-nav-label">Sections</div>
+      <div class="doc-nav-links">
+        <a href="#probleme">Le problème</a>
+        <a href="#echecs">Pourquoi les approches actuelles échouent</a>
+        <a href="#demandes">Trois demandes précises</a>
+        <a href="#pourquoi">Pourquoi ceci, pourquoi maintenant</a>
+      </div>
+    </nav>
+
+    <div class="doc-content">
+
+      <div class="doc-section" id="probleme">
+        <div class="doc-section-label">Le problème</div>
+        <h2>Un vide structurel de responsabilité dans le contenu communautaire.</h2>
+        <p>Le contenu généré par l'IA sur les communautés est désormais effectivement illimité en volume, en coût et en portée géographique. N'importe quel opérateur — d'une grande plateforme à un particulier avec un ordinateur portable — peut produire du contenu culturellement spécifique et localement ciblé sur n'importe quelle communauté, indéfiniment, à un coût marginal quasi nul.</p>
+        <p>Ce n'est pas un scénario hypothétique futur. C'est le présent.</p>
+        <p>Les codes d'éthique du journalisme ne couvrent pas cette production. Les politiques de contenu des plateformes traitent de la désinformation mais pas de la représentation, de l'appropriation ou de l'extraction. Aucune norme publique n'existe que les communautés peuvent invoquer et à laquelle les producteurs peuvent être tenus.</p>
+        <p>Le résultat est un vide structurel de responsabilité. Les communautés sont les sujets d'un contenu qu'elles n'ont pas commandé, qu'elles ne contrôlent pas et qu'elles ne peuvent pas corriger. Cela a toujours été vrai du journalisme externe. Ce qui est nouveau, c'est l'échelle : le volume de contenu communautaire produit en externe a dépassé la capacité de toute communauté à le surveiller, le contester ou y répondre.</p>
+
+        <div class="doc-callout">
+          <p>« Le volume de contenu communautaire produit en externe a dépassé la capacité de toute communauté à le surveiller, le contester ou y répondre. »</p>
+        </div>
+      </div>
+
+      <div class="doc-section" id="echecs">
+        <div class="doc-section-label">Pourquoi les approches actuelles échouent</div>
+        <h2>Chaque cadre existant répond à un problème différent.</h2>
+        <p>Le vide de responsabilité n'est pas le résultat d'un seul échec politique. C'est le résultat de plusieurs cadres, chacun répondant à une partie différente du problème, aucun ne couvrant la réalité émergente de la production de contenu communautaire à l'échelle de l'IA.</p>
+
+        <div class="failure-grid">
+          <div class="failure-item">
+            <div class="fi-type">Codes d'éthique journalistique</div>
+            <div class="fi-body">Lient les journalistes professionnels par l'identité professionnelle et l'emploi organisationnel. Ne s'étendent pas aux ONG, aux plateformes, aux opérateurs d'IA, aux chercheurs ou aux producteurs indépendants — la majorité des entités qui produisent désormais du contenu sur des communautés à grande échelle.</div>
+          </div>
+          <div class="failure-item">
+            <div class="fi-type">Modération de contenu des plateformes</div>
+            <div class="fi-body">Traite du contenu qui viole les politiques de la plateforme (désinformation, discours haineux, usurpation d'identité). Ne répond pas à la question de savoir si le contenu sert les communautés qu'il dépeint, ou si les communautés ont leur mot à dire dans leur représentation. Opère au niveau du contenu, pas au niveau du système.</div>
+          </div>
+          <div class="failure-item">
+            <div class="fi-type">Normes industrielles volontaires</div>
+            <div class="fi-body">Les principes d'IA responsable, les codes de créateurs et les cadres d'autorégulation sont auto-administrés, non contraignants et non appliqués. Ils n'offrent aucun mécanisme permettant aux communautés de les invoquer, et aucune conséquence pour les producteurs qui les ignorent au-delà du risque réputationnel qu'ils peuvent absorber.</div>
+          </div>
+          <div class="failure-item">
+            <div class="fi-type">Recours juridiques</div>
+            <div class="fi-body">Les plaintes en diffamation, droits d'auteur et protection des données sont rétrospectives, coûteuses et exigent des préjudices spécifiques identifiables. Non accessibles à la plupart des membres de la communauté. Ne traitent pas des échecs systémiques de représentation qui causent des préjudices sans un seul acte ou acteur identifiable.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="demandes">
+        <div class="doc-section-label">Trois demandes précises</div>
+        <h2>Interventions minimales nécessaires pour combler le vide.</h2>
+        <p>Les trois demandes suivantes ne constituent pas un programme réglementaire complet. Ce sont les interventions minimales nécessaires pour établir une norme publique fonctionnelle de responsabilité pour le contenu communautaire. Chacune est précise, mesurable et réalisable sans nécessiter de nouvelles infrastructures institutionnelles.</p>
+
+        <div class="ask-block">
+          <div class="ask-num">Demande 01</div>
+          <div class="ask-title">Divulgation obligatoire</div>
+          <div class="ask-body">
+            <p>Exiger que tout contenu généré par l'IA ou assisté par l'IA qui est publié et accessible au public divulgue : (a) que l'IA a été utilisée dans la production; (b) la nature de cette utilisation — génération, édition, curation ou synthèse; (c) l'organisation ou la personne responsable de la publication; et (d) si des membres de la communauté représentée ont participé à la production ou à la révision éditoriale.</p>
+          </div>
+          <div class="ask-rationale">
+            <div class="ar-label">Justification</div>
+            <div class="ar-body">La divulgation est la condition préalable à toute autre responsabilité. Les communautés ne peuvent pas invoquer des normes qu'elles ne peuvent pas voir violées. Les bailleurs de fonds ne peuvent pas évaluer ce qu'ils ne peuvent pas mesurer. Les publics ne peuvent pas porter de jugements éclairés sans information sur la façon dont le contenu a été produit. Les directives existantes de la FTC sur les avals et les avis générés par l'IA fournissent un modèle partiel; une règle spécifique aux médias étendrait cela au contenu éditorial et exigerait une divulgation spécifique à la communauté.</div>
+          </div>
+        </div>
+
+        <div class="ask-block">
+          <div class="ask-num">Demande 02</div>
+          <div class="ask-title">Financement de la gouvernance</div>
+          <div class="ask-body">
+            <p>Diriger une partie des revenus publicitaires des plateformes — par le biais d'un prélèvement obligatoire ou d'un cadre de licences conditionnel — vers des subventions d'infrastructure pour le journalisme communautaire, avec une allocation spécifique pour la capacité de gouvernance : conseils éditoriaux, responsables de la reddition de comptes, processus consultatifs communautaires et maintenance des archives.</p>
+            <p>Le problème structurel n'est pas un manque de contenu. C'est un manque de capacité pour les communautés à gouverner le contenu produit à leur sujet. Les plateformes profitent de l'engagement envers le contenu local tout en ne supportant aucun coût pour l'infrastructure de responsabilité communautaire.</p>
+          </div>
+          <div class="ask-rationale">
+            <div class="ar-label">Justification</div>
+            <div class="ar-body">La Loi canadienne sur les nouvelles en ligne et le Code australien des négociations sur les médias d'information ont établi que les plateformes ont des obligations envers les producteurs de nouvelles. Un mandat de financement de la gouvernance étendrait ce principe spécifiquement vers l'infrastructure de responsabilité communautaire — non pas pour produire plus de contenu, mais pour renforcer la capacité communautaire à l'évaluer et à le contester. La plupart des fonds de soutien existants au journalisme sont basés sur des projets et produisent des livrables. Cette demande finance les frais généraux de la responsabilité : les personnes et les processus qui rendent la correction continue possible.</div>
+          </div>
+        </div>
+
+        <div class="ask-block">
+          <div class="ask-num">Demande 03</div>
+          <div class="ask-title">Droits des données communautaires</div>
+          <div class="ask-body">
+            <p>Établir que les communautés ont un droit collectif à : (a) savoir quand du contenu culturellement significatif — y compris l'histoire orale, les savoirs traditionnels, le journalisme communautaire et les archives publiques — a été utilisé dans la formation d'IA; (b) se retirer de cette utilisation au niveau communautaire, pas seulement au niveau individuel; et (c) exiger la suppression des données d'entraînement d'origine communautaire sur demande, avec une application significative.</p>
+          </div>
+          <div class="ask-rationale">
+            <div class="ar-label">Justification</div>
+            <div class="ar-body">Les cadres actuels de droits des données sont conçus pour les individus : une personne peut demander la suppression de ses données. Les communautés qui détiennent des savoirs culturels collectifs — y compris les communautés autochtones, les communautés de la diaspora et les communautés rurales et régionales avec des identités culturelles distinctes — n'ont pas de mécanisme équivalent. L'utilisation agrégée du contenu d'origine communautaire dans la formation d'IA sans consentement, compensation ou même divulgation est de l'extraction à grande échelle. Plusieurs cadres de souveraineté des données autochtones, notamment les Principes PCAP et les Principes CARE pour la gouvernance des données autochtones, fournissent une structure de gouvernance qui pourrait éclairer une approche réglementaire.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="pourquoi">
+        <div class="doc-section-label">Pourquoi ceci, pourquoi maintenant</div>
+        <h2>La fenêtre pour établir un plancher est étroite.</h2>
+        <p>La production de contenu évolue plus vite que la capacité de gouvernance. Une fois que les normes et l'infrastructure du contenu IA non responsable sont établies — une fois que les communautés s'attendent à ce que le contenu à leur sujet soit produit sans leur participation, selon des conditions qu'elles ne contrôlent pas — modifier ces normes devient considérablement plus difficile. La dépendance au chemin dans les normes médiatiques est réelle. Les normes établies maintenant persisteront.</p>
+        <p>La Norme de responsabilité de contenu TRACE, fondée sur le Pacte de contenu communautaire, est une proposition vers un plancher public de responsabilité. Elle est précise, testable et opérable par les communautés sans nécessiter d'expertise juridique ou technique. Elle a été développée à travers un projet de journalisme communautaire en direct — Cariboo Signals — et testée face à des conditions de production réelles, pas des scénarios hypothétiques.</p>
+        <p>Nous ne demandons pas la perfection. Nous demandons un plancher : un ensemble minimum de conditions que le contenu sur les communautés doit remplir avant de pouvoir prétendre servir ces communautés. En dessous de ce plancher, la relation est de l'extraction. Le plancher est atteignable. L'obstacle n'est pas la complexité technique. C'est la volonté politique.</p>
+
+        <div class="doc-colophon">
+          Ce mémoire a été produit par Cariboo Signals, un projet de journalisme communautaire au service de la Colombie-Britannique rurale,<br>
+          dans le cadre du projet de Norme de responsabilité de contenu TRACE. Mai 2026.<br><br>
+          La norme TRACE, le Pacte de contenu communautaire et le barème d'évaluation sont disponibles sur tracestandard.org.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-left">
+      <span>TRACE</span> — Norme de responsabilité de contenu &nbsp;·&nbsp;
+      Fondée sur le Pacte de contenu communautaire &nbsp;·&nbsp;
+      Cariboo Signals, mai 2026
+    </div>
+    <div class="footer-right">
+      <a href="/fr">tracestandard.org</a>
+    </div>
+  </footer>
+
+</body>
+</html>

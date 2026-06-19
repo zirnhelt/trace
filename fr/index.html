@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr-CA">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TRACE — Content Accountability Standard</title>
+  <title>TRACE — Norme de responsabilité de contenu</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
@@ -40,13 +40,14 @@
       font-size: 13px; font-weight: 500;
       color: var(--cream); letter-spacing: 0.18em;
     }
-    .nav-links { display: flex; gap: 28px; }
+    .nav-links { display: flex; gap: 28px; align-items: center; }
     .nav-links a {
       font-size: 11px; font-weight: 500; text-transform: uppercase;
       letter-spacing: 0.1em; color: #888; text-decoration: none;
       transition: color 0.15s;
     }
     .nav-links a:hover { color: var(--cream); }
+    .nav-lang { color: var(--cream) !important; }
 
     .hero {
       min-height: 100vh;
@@ -449,126 +450,126 @@
 </head>
 <body>
 
-  <div class="proposal-notice">PROPOSAL &mdash; No institutional endorsement or formal adoption. Independent work by Cariboo Signals, open for critique and community input.</div>
+  <div class="proposal-notice">PROPOSITION &mdash; Aucune approbation institutionnelle ni adoption formelle. Travail indépendant de Cariboo Signals, ouvert à la critique et aux contributions communautaires.</div>
 
   <nav>
     <div class="nav-wordmark">TRACE</div>
     <div class="nav-links">
-      <a href="#standard">The Standard</a>
-      <a href="/scorecard">Scorecard</a>
-      <a href="/policy-brief">Policy Brief</a>
-      <a href="/compact">Compact</a>
-      <a href="/metadata">Metadata</a>
-      <a href="/fr" style="color:#666;border-left:1px solid #444;padding-left:20px;margin-left:8px;">FR</a>
+      <a href="#standard">La norme</a>
+      <a href="/fr/scorecard">Fiche d'évaluation</a>
+      <a href="/fr/policy-brief">Mémoire</a>
+      <a href="/fr/compact">Pacte</a>
+      <a href="/fr/metadata">Métadonnées</a>
+      <a href="/" class="nav-lang">EN</a>
     </div>
   </nav>
 
   <section class="hero" id="top">
     <div class="hero-bg-text">TRACE</div>
-    <div class="hero-eyebrow">Content Accountability Standard</div>
+    <div class="hero-eyebrow">Norme de responsabilité de contenu</div>
     <h1 class="hero-title">TRACE</h1>
     <div class="hero-expansion">
-      <div class="hero-letter"><span class="hl-char">T</span><span class="hl-word">Transparency</span></div>
-      <div class="hero-letter"><span class="hl-char">R</span><span class="hl-word">Representation</span></div>
-      <div class="hero-letter"><span class="hl-char">A</span><span class="hl-word">Accountability</span></div>
-      <div class="hero-letter"><span class="hl-char">C</span><span class="hl-word">Consent</span></div>
+      <div class="hero-letter"><span class="hl-char">T</span><span class="hl-word">Transparence</span></div>
+      <div class="hero-letter"><span class="hl-char">R</span><span class="hl-word">Représentation</span></div>
+      <div class="hero-letter"><span class="hl-char">A</span><span class="hl-word">Autonomie</span></div>
+      <div class="hero-letter"><span class="hl-char">C</span><span class="hl-word">Consentement</span></div>
       <div class="hero-letter"><span class="hl-char">E</span><span class="hl-word">Engagement</span></div>
     </div>
     <div class="hero-bottom">
-      <p class="hero-tagline">A shared standard for evaluating whether content about a community serves it — or extracts from it.</p>
-      <a href="/scorecard" class="hero-cta">Test Your Content →</a>
+      <p class="hero-tagline">Une norme commune pour évaluer si le contenu portant sur une communauté la sert — ou en extrait.</p>
+      <a href="/fr/scorecard" class="hero-cta">Évaluer votre contenu →</a>
     </div>
   </section>
 
   <section id="problem">
-    <div class="section-label">The Problem</div>
+    <div class="section-label">Le problème</div>
     <div class="problem-grid">
-      <div class="problem-statement">Communities are the subjects of content they didn't commission, don't control, and can't correct.</div>
+      <div class="problem-statement">Les communautés sont les sujets d'un contenu qu'elles n'ont pas commandé, qu'elles ne contrôlent pas et qu'elles ne peuvent pas corriger.</div>
       <div class="problem-body">
-        <p>This is not new. Externally produced journalism, documentary, and platform-driven content have always raised questions of representation and extraction. What is new is scale.</p>
-        <p>AI tools now allow any producer, from anywhere, to generate culturally specific content about a community indefinitely and at near-zero cost. Journalism ethics codes bind professional journalists — not NGOs, platforms, researchers, or AI operators. No shared accountability standard exists that communities can invoke and producers can be held to.</p>
-        <p>TRACE is a proposal toward that standard.</p>
+        <p>Ce n'est pas nouveau. Le journalisme produit de l'extérieur, les documentaires et le contenu généré par les plateformes ont toujours soulevé des questions de représentation et d'extraction. Ce qui est nouveau, c'est l'échelle.</p>
+        <p>Les outils d'IA permettent désormais à n'importe quel producteur, depuis n'importe où, de générer un contenu culturellement spécifique sur une communauté, indéfiniment et à un coût quasi nul. Les codes d'éthique journalistique lient les journalistes professionnels — pas les ONG, les plateformes, les chercheurs ou les opérateurs d'IA. Il n'existe aucune norme de responsabilité commune que les communautés peuvent invoquer et à laquelle les producteurs peuvent être tenus.</p>
+        <p>TRACE est une proposition vers cette norme.</p>
       </div>
     </div>
   </section>
 
   <section id="standard">
-    <div class="section-label">The Standard</div>
+    <div class="section-label">La norme</div>
     <div class="conditions">
       <div class="condition">
         <div class="cond-letter">T</div>
-        <div class="cond-word">Transparency</div>
-        <div class="cond-desc">Content must clearly disclose who or what produced it, how, and why — at the point of encounter, not in fine print. Audiences have a right to evaluate what they're consuming. Producers have an obligation to make that evaluation possible.</div>
+        <div class="cond-word">Transparence</div>
+        <div class="cond-desc">Le contenu doit clairement divulguer qui ou quoi l'a produit, comment et pourquoi — au point de rencontre, pas en petits caractères. Les publics ont le droit d'évaluer ce qu'ils consomment. Les producteurs ont l'obligation de rendre cette évaluation possible.</div>
       </div>
       <div class="condition">
         <div class="cond-letter">R</div>
-        <div class="cond-word">Representation</div>
-        <div class="cond-desc">Content that speaks for, about, or on behalf of a community must accurately reflect that community's actual diversity, complexity, and self-understanding — not a simplified version that serves the producer's narrative or platform's engagement model.</div>
+        <div class="cond-word">Représentation</div>
+        <div class="cond-desc">Le contenu qui parle au nom d'une communauté, à son sujet ou en son nom doit refléter fidèlement la diversité, la complexité et la compréhension qu'a d'elle-même cette communauté — pas une version simplifiée qui sert le récit du producteur ou le modèle d'engagement de la plateforme.</div>
       </div>
       <div class="condition">
         <div class="cond-letter">A</div>
-        <div class="cond-word">Accountability</div>
-        <div class="cond-desc">A genuine feedback mechanism must exist — not a comment form — through which the community can challenge, correct, or remove content. This mechanism must be accessible to community members who are not technically literate, and must have actual power to change outcomes.</div>
+        <div class="cond-word">Autonomie</div>
+        <div class="cond-desc">Un véritable mécanisme de rétroaction doit exister — pas un simple formulaire de commentaires — par lequel la communauté peut contester, corriger ou retirer le contenu. Ce mécanisme doit être accessible aux membres de la communauté sans compétences techniques, et doit avoir un pouvoir réel de changer les résultats.</div>
       </div>
       <div class="condition">
         <div class="cond-letter">C</div>
-        <div class="cond-word">Consent</div>
-        <div class="cond-desc">No content should attribute views, statements, cultural knowledge, or creative expression to living people without their explicit, informed, and revocable consent. This applies with particular force to community leaders and public figures whose attributed voice carries weight beyond their individual words.</div>
+        <div class="cond-word">Consentement</div>
+        <div class="cond-desc">Aucun contenu ne doit attribuer des opinions, des déclarations, des connaissances culturelles ou une expression créative à des personnes vivantes sans leur consentement explicite, éclairé et révocable. Cela s'applique avec une force particulière aux leaders communautaires et aux personnalités publiques dont la voix attribuée porte un poids au-delà de leurs mots individuels.</div>
       </div>
       <div class="condition">
         <div class="cond-letter">E</div>
         <div class="cond-word">Engagement</div>
-        <div class="cond-desc">Content that competes with or substitutes for human creators already doing this work in the community requires, at minimum, an honest assessment of that competition. The stronger standard is active collaboration where existing creators retain meaningful creative authority.</div>
+        <div class="cond-desc">Le contenu qui concurrence ou se substitue aux créateurs humains qui font déjà ce travail dans la communauté exige, au minimum, une évaluation honnête de cette concurrence. La norme plus forte est la collaboration active où les créateurs existants conservent une autorité créative significative.</div>
       </div>
     </div>
   </section>
 
   <section class="test-section" id="test">
-    <div class="section-label">Assessment Tool</div>
-    <h2 class="test-heading">Test Your Content</h2>
-    <p class="test-sub">Score any content project against the TRACE standard. Takes about ten minutes. Results in a shareable accountability card.</p>
-    <a href="/scorecard" class="test-cta">Open the Scorecard →</a>
+    <div class="section-label">Outil d'évaluation</div>
+    <h2 class="test-heading">Évaluer votre contenu</h2>
+    <p class="test-sub">Évaluez n'importe quel projet de contenu selon la norme TRACE. Prend environ dix minutes. Produit une fiche de responsabilité partageable.</p>
+    <a href="/fr/scorecard" class="test-cta">Ouvrir la fiche d'évaluation →</a>
     <div class="test-tracks">
       <div class="track-item">
-        <div class="track-name">Track A</div>
-        <div class="track-desc">Community-insider, non-commercial, self-funded. 6 categories, 21 points.</div>
+        <div class="track-name">Voie A</div>
+        <div class="track-desc">Perspective communautaire interne, non commerciale, autofinancée. 6 catégories, 21 points.</div>
       </div>
       <div class="track-item">
-        <div class="track-name">Track B</div>
-        <div class="track-desc">External, institutional, commercial, or mixed. 7 categories, 38 points.</div>
+        <div class="track-name">Voie B</div>
+        <div class="track-desc">Externe, institutionnel, commercial ou mixte. 7 catégories, 38 points.</div>
       </div>
     </div>
   </section>
 
   <section class="sample-section" id="sample">
-    <div class="section-label">Sample Assessment</div>
-    <p class="sample-intro">A completed TRACE assessment generates a shareable accountability card. This is a real self-assessment from the project that built the standard.</p>
+    <div class="section-label">Exemple d'évaluation</div>
+    <p class="sample-intro">Une évaluation TRACE complète génère une fiche de responsabilité partageable. Voici une auto-évaluation réelle du projet qui a bâti cette norme.</p>
     <div class="sample-card">
       <div class="sc-header">
         <div>
           <div class="sc-project">Cariboo Signals Radio</div>
-          <div class="sc-track">TRACK A — COMMUNITY INSIDER · TRACE ASSESSMENT</div>
+          <div class="sc-track">VOIE A — PERSPECTIVE INTERNE · ÉVALUATION TRACE</div>
         </div>
-        <div class="sc-verdict">Sound</div>
+        <div class="sc-verdict">Solide</div>
       </div>
       <div class="sc-categories">
         <div class="sc-cat-row">
-          <div class="sc-cat-name">T — Transparency</div>
+          <div class="sc-cat-name">T — Transparence</div>
           <div class="sc-bar"><div class="sc-bar-fill" style="width:75%"></div></div>
           <div class="sc-cat-pts">3/4</div>
         </div>
         <div class="sc-cat-row">
-          <div class="sc-cat-name">R — Representation</div>
+          <div class="sc-cat-name">R — Représentation</div>
           <div class="sc-bar"><div class="sc-bar-fill" style="width:75%"></div></div>
           <div class="sc-cat-pts">3/4</div>
         </div>
         <div class="sc-cat-row">
-          <div class="sc-cat-name">A — Accountability</div>
+          <div class="sc-cat-name">A — Autonomie</div>
           <div class="sc-bar"><div class="sc-bar-fill" style="width:67%"></div></div>
           <div class="sc-cat-pts">2/3</div>
         </div>
         <div class="sc-cat-row">
-          <div class="sc-cat-name">C — Consent</div>
+          <div class="sc-cat-name">C — Consentement</div>
           <div class="sc-bar"><div class="sc-bar-fill" style="width:100%"></div></div>
           <div class="sc-cat-pts">4/4</div>
         </div>
@@ -578,47 +579,47 @@
           <div class="sc-cat-pts">2/3</div>
         </div>
         <div class="sc-cat-row">
-          <div class="sc-cat-name">B — Community Benefit</div>
+          <div class="sc-cat-name">B — Bénéfice communautaire</div>
           <div class="sc-bar"><div class="sc-bar-fill" style="width:50%"></div></div>
           <div class="sc-cat-pts">1/2</div>
         </div>
       </div>
       <div class="sc-total">
-        <div class="sc-total-label">Total Score</div>
+        <div class="sc-total-label">Score total</div>
         <div>
           <span class="sc-total-score">15</span>
           <span class="sc-total-max">/ 20</span>
         </div>
       </div>
-      <div class="sc-verdict-desc">Meets the standard with minor gaps. A written improvement plan is recommended before next publication cycle. Accountability mechanism and community benefit documentation are the primary areas for development.</div>
+      <div class="sc-verdict-desc">Répond à la norme avec des lacunes mineures. Un plan d'amélioration écrit est recommandé avant le prochain cycle de publication. Le mécanisme d'autonomie communautaire et la documentation du bénéfice communautaire sont les principaux domaines à développer.</div>
       <div class="sc-stamp">
-        <span>TRACE Content Accountability Standard</span>
-        <span>May 2026</span>
+        <span>Norme de responsabilité de contenu TRACE</span>
+        <span>Mai 2026</span>
       </div>
     </div>
-    <a href="/scorecard" class="sample-cta">Score Your Content →</a>
+    <a href="/fr/scorecard" class="sample-cta">Évaluer votre contenu →</a>
   </section>
 
   <section id="foundation">
-    <div class="section-label">Foundation</div>
+    <div class="section-label">Fondements</div>
     <div class="foundation-grid">
       <div class="foundation-left">
-        <h2 class="foundation-title">The Community Content Compact</h2>
+        <h2 class="foundation-title">Le Pacte de contenu communautaire</h2>
         <div class="foundation-body">
-          <p>TRACE is built on the Community Content Compact — a manifesto for ethical content production developed through Cariboo Signals, a community journalism project serving rural British Columbia.</p>
-          <p>The Compact identifies the structural obstacles that good intentions alone cannot solve: project-based funding that produces pilots instead of infrastructure, and extraction models capitalized at incompatible scale.</p>
-          <p>Meeting the five conditions is achievable. The obstacle is not technical complexity. It is political.</p>
+          <p>TRACE est fondé sur le Pacte de contenu communautaire — un manifeste pour la production éthique de contenu développé par Cariboo Signals, un projet de journalisme communautaire desservant la Colombie-Britannique rurale.</p>
+          <p>Le Pacte identifie les obstacles structurels que les bonnes intentions seules ne peuvent résoudre : le financement par projet qui produit des pilotes plutôt que des infrastructures, et des modèles d'extraction capitalisés à une échelle incompatible.</p>
+          <p>Satisfaire aux cinq conditions est réalisable. L'obstacle n'est pas la complexité technique. Il est politique.</p>
         </div>
-        <a href="/compact" class="foundation-link">Read the Compact →</a>
+        <a href="/fr/compact" class="foundation-link">Lire le Pacte →</a>
       </div>
       <div>
         <div class="foundation-questions">
-          <div class="fq-label">Four Questions for Any Content Partnership</div>
+          <div class="fq-label">Quatre questions pour tout partenariat de contenu</div>
           <ul class="fq-list">
-            <li><span class="fq-num">01</span> Who owns the output?</li>
-            <li><span class="fq-num">02</span> Who owns the audience relationship?</li>
-            <li><span class="fq-num">03</span> Who owns the archive?</li>
-            <li><span class="fq-num">04</span> Does the community hold final editorial authority?</li>
+            <li><span class="fq-num">01</span> Qui possède le produit final?</li>
+            <li><span class="fq-num">02</span> Qui possède la relation avec l'audience?</li>
+            <li><span class="fq-num">03</span> Qui possède les archives?</li>
+            <li><span class="fq-num">04</span> La communauté détient-elle l'autorité éditoriale finale?</li>
           </ul>
         </div>
       </div>
@@ -626,57 +627,57 @@
   </section>
 
   <section id="origin">
-    <div class="section-label">Origin</div>
+    <div class="section-label">Origine</div>
     <div class="origin-layout">
       <div>
-        <p class="origin-statement">The five conditions in TRACE first appeared as a pre-publication checklist in a podcast conversation about AI-generated cultural content in underserved communities.</p>
+        <p class="origin-statement">Les cinq conditions de TRACE sont apparues pour la première fois comme une liste de vérification pré-publication dans une conversation de balado sur le contenu culturel généré par IA dans les communautés mal desservies.</p>
         <div class="origin-body">
-          <p>The episode named the governance gap TRACE is designed to fill: no shared standard that communities could invoke and producers could be held to. The conversation asked whether AI could legitimately serve communities that lack local creators — and under what conditions.</p>
-          <p>That question, and the five tests the hosts proposed to answer it, became the seed this framework grew from.</p>
+          <p>L'épisode a nommé la lacune de gouvernance que TRACE est conçu pour combler : l'absence d'une norme commune que les communautés pourraient invoquer et à laquelle les producteurs pourraient être tenus. La conversation a demandé si l'IA pouvait légitimement servir des communautés dépourvues de créateurs locaux — et sous quelles conditions.</p>
+          <p>Cette question, et les cinq tests que les animateurs ont proposés pour y répondre, sont devenus la graine dont ce cadre a grandi.</p>
         </div>
       </div>
       <div class="origin-citation">
-        <div class="oc-label">Origin Seed</div>
-        <div class="oc-title">Arts, Culture &amp; Digital Storytelling</div>
-        <div class="oc-meta">Cariboo Connections &nbsp;·&nbsp; May 18, 2026</div>
-        <blockquote class="oc-pull">"The real barrier isn't technical — it's structural. Venture-capital-driven extraction models vastly outpace community-controlled alternatives due to funding asymmetries, not superior design."</blockquote>
-        <div class="oc-five-label">The episode's five pre-publication tests became the TRACE conditions:</div>
+        <div class="oc-label">Graine d'origine</div>
+        <div class="oc-title">Arts, culture et narration numérique</div>
+        <div class="oc-meta">Cariboo Connections &nbsp;·&nbsp; 18 mai 2026</div>
+        <blockquote class="oc-pull">« Le véritable obstacle n'est pas technique — il est structurel. Les modèles d'extraction dirigés par le capital de risque dépassent largement les alternatives contrôlées par les communautés en raison des asymétries de financement, et non d'une conception supérieure. »</blockquote>
+        <div class="oc-five-label">Les cinq tests de pré-publication de l'épisode sont devenus les conditions TRACE :</div>
         <ol class="oc-tests">
-          <li>Is it labeled as AI-generated?</li>
-          <li>Does it avoid claiming human authorship?</li>
-          <li>Does it avoid displacing local human creators?</li>
-          <li>Does it avoid attributing views to living people without consent?</li>
-          <li>Does it include genuine community feedback mechanisms?</li>
+          <li>Est-il étiqueté comme généré par IA?</li>
+          <li>Évite-t-il de revendiquer une paternité humaine?</li>
+          <li>Évite-t-il de déplacer les créateurs humains locaux?</li>
+          <li>Évite-t-il d'attribuer des opinions à des personnes vivantes sans consentement?</li>
+          <li>Comprend-il de véritables mécanismes de rétroaction communautaire?</li>
         </ol>
       </div>
     </div>
   </section>
 
   <section id="resources">
-    <div class="section-label">Resources</div>
+    <div class="section-label">Ressources</div>
     <div class="resources-grid">
-      <a href="/scorecard" class="resource-card">
-        <div class="rc-type">Assessment Tool</div>
-        <div class="rc-title">TRACE Scorecard</div>
-        <div class="rc-desc">The interactive scoring tool for both tracks, with all criteria, point values, verdict thresholds, and a shareable accountability card.</div>
+      <a href="/fr/scorecard" class="resource-card">
+        <div class="rc-type">Outil d'évaluation</div>
+        <div class="rc-title">Fiche d'évaluation TRACE</div>
+        <div class="rc-desc">L'outil de notation interactif pour les deux voies, avec tous les critères, les valeurs de points, les seuils de verdict et une fiche de responsabilité partageable.</div>
         <div class="rc-arrow">→</div>
       </a>
-      <a href="/policy-brief" class="resource-card">
-        <div class="rc-type">Policy Brief</div>
-        <div class="rc-title">Who Gets to Tell a Community's Story?</div>
-        <div class="rc-desc">A brief for funders and policymakers, with three specific asks: mandatory disclosure, governance funding, and community data rights.</div>
+      <a href="/fr/policy-brief" class="resource-card">
+        <div class="rc-type">Mémoire de politique</div>
+        <div class="rc-title">Qui a le droit de raconter l'histoire d'une communauté?</div>
+        <div class="rc-desc">Un mémoire pour les bailleurs de fonds et les décideurs politiques, avec trois demandes spécifiques : divulgation obligatoire, financement de gouvernance et droits des données communautaires.</div>
         <div class="rc-arrow">→</div>
       </a>
-      <a href="/compact" class="resource-card">
-        <div class="rc-type">Foundation Document</div>
-        <div class="rc-title">The Community Content Compact</div>
-        <div class="rc-desc">The manifesto for ethical content production — five conditions, four questions, and a commitment framework for producers and communities.</div>
+      <a href="/fr/compact" class="resource-card">
+        <div class="rc-type">Document fondateur</div>
+        <div class="rc-title">Le Pacte de contenu communautaire</div>
+        <div class="rc-desc">Le manifeste pour la production éthique de contenu — cinq conditions, quatre questions et un cadre d'engagement pour les producteurs et les communautés.</div>
         <div class="rc-arrow">→</div>
       </a>
-      <a href="/metadata" class="resource-card">
-        <div class="rc-type">Technical Specification</div>
-        <div class="rc-title">Metadata Formats</div>
-        <div class="rc-desc">Embed TRACE assessment data directly in your content. Three formats: JSON-LD for web pages, XML for RSS feeds, and C2PA for audio files.</div>
+      <a href="/fr/metadata" class="resource-card">
+        <div class="rc-type">Spécification technique</div>
+        <div class="rc-title">Formats de métadonnées</div>
+        <div class="rc-desc">Intégrez les données d'évaluation TRACE directement dans votre contenu. Trois formats : JSON-LD pour les pages web, XML pour les flux RSS et C2PA pour les fichiers audio.</div>
         <div class="rc-arrow">→</div>
       </a>
     </div>
@@ -684,9 +685,9 @@
 
   <footer>
     <div class="footer-left">
-      <span>TRACE</span> — Content Accountability Standard &nbsp;·&nbsp;
-      Built on the Community Content Compact &nbsp;·&nbsp;
-      Cariboo Signals, May 2026
+      <span>TRACE</span> — Norme de responsabilité de contenu &nbsp;·&nbsp;
+      Fondée sur le Pacte de contenu communautaire &nbsp;·&nbsp;
+      Cariboo Signals, mai 2026
     </div>
     <div class="footer-right">
       <a href="https://github.com/zirnhelt/trace">github.com/zirnhelt/trace</a>
