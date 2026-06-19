@@ -285,7 +285,8 @@
     @media (max-width: 768px) {
       nav { padding: 0 20px; }
       .nav-links { display: none; }
-      .hero { padding: 64px 24px 48px; }
+      .hero { padding: 160px 24px 48px; justify-content: flex-start; }
+      .hero-bg-text { display: none; }
       .hero-expansion { flex-direction: column; }
       .hero-letter { border-right: none; border-bottom: 1px solid var(--rule); padding: 12px 0; }
       .hero-letter:last-child { border-bottom: none; }
@@ -693,5 +694,19 @@
     </div>
   </footer>
 
+<script>
+(function() {
+  var root = document.documentElement;
+  function upd() {
+    var n = document.querySelector('nav');
+    var b = document.querySelector('.proposal-notice');
+    var h = (n ? n.offsetHeight : 0) + (b ? b.offsetHeight : 0);
+    root.style.setProperty('--hh', h + 'px');
+    root.style.setProperty('scroll-padding-top', h + 'px');
+  }
+  upd();
+  window.addEventListener('resize', upd);
+})();
+</script>
 </body>
 </html>
