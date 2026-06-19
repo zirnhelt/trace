@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr-CA">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JSON-LD Metadata — TRACE Standard</title>
+  <title>Métadonnées JSON-LD — Norme TRACE</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -29,7 +29,6 @@
       line-height: 1.6;
     }
 
-    /* ── NAV ── */
     nav {
       position: fixed;
       top: 0;
@@ -74,7 +73,6 @@
       color: var(--cream);
     }
 
-    /* ── PROPOSAL NOTICE ── */
     .proposal-notice {
       position: fixed;
       top: 48px;
@@ -90,7 +88,6 @@
       z-index: 999;
     }
 
-    /* ── LAYOUT ── */
     .layout {
       display: grid;
       grid-template-columns: 240px 1fr;
@@ -99,7 +96,6 @@
       margin-top: 84px;
     }
 
-    /* ── SIDEBAR ── */
     .sidebar {
       position: sticky;
       top: 84px;
@@ -143,14 +139,12 @@
       color: var(--cream);
     }
 
-    /* ── MAIN CONTENT ── */
     .content {
       padding: 48px;
       border-left: 1px solid var(--rule);
       min-width: 0;
     }
 
-    /* ── SECTION LABEL ── */
     .section-label {
       font-family: 'DM Mono', monospace;
       font-size: 10px;
@@ -170,7 +164,6 @@
       background: var(--rule);
     }
 
-    /* ── SECTIONS ── */
     .section-overview {
       padding-bottom: 48px;
       border-bottom: 1px solid var(--rule);
@@ -188,7 +181,6 @@
       padding-bottom: 48px;
     }
 
-    /* ── BREADCRUMB ── */
     .breadcrumb {
       font-family: 'DM Mono', monospace;
       font-size: 10px;
@@ -197,7 +189,6 @@
       letter-spacing: 0.05em;
     }
 
-    /* ── HERO TITLE ── */
     .hero-title {
       font-family: 'Fraunces', serif;
       font-weight: 900;
@@ -227,7 +218,6 @@
       color: var(--ink);
     }
 
-    /* ── TABLES ── */
     .table-wrapper {
       overflow-x: auto;
       border: 1px solid var(--rule);
@@ -315,7 +305,6 @@
       color: var(--mid);
     }
 
-    /* ── SCORES SECTION ── */
     .scores-intro {
       font-size: 13px;
       color: #555;
@@ -383,7 +372,6 @@
       background: var(--paper);
     }
 
-    /* ── VERDICT SECTION ── */
     .verdict-tables {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -423,21 +411,10 @@
       text-align: center;
     }
 
-    .verdict-row-exemplary td:first-child {
-      border-left: 3px solid var(--green);
-    }
-
-    .verdict-row-sound td:first-child {
-      border-left: 3px solid var(--ink);
-    }
-
-    .verdict-row-developing td:first-child {
-      border-left: 3px solid #8B5E00;
-    }
-
-    .verdict-row-noncompliant td:first-child {
-      border-left: 3px solid #8B1A1A;
-    }
+    .verdict-row-exemplary td:first-child { border-left: 3px solid var(--green); }
+    .verdict-row-sound td:first-child { border-left: 3px solid var(--ink); }
+    .verdict-row-developing td:first-child { border-left: 3px solid #8B5E00; }
+    .verdict-row-noncompliant td:first-child { border-left: 3px solid #8B1A1A; }
 
     .verdict-note {
       font-family: 'DM Mono', monospace;
@@ -449,7 +426,6 @@
       line-height: 1.6;
     }
 
-    /* ── CODE BLOCKS ── */
     .code-block-wrapper {
       position: relative;
     }
@@ -505,7 +481,6 @@
       margin-bottom: 0;
     }
 
-    /* ── EMBEDDING SECTION ── */
     .embed-intro {
       font-size: 14px;
       color: #555;
@@ -533,7 +508,6 @@
       margin-top: 24px;
     }
 
-    /* ── VALIDATION SECTION ── */
     .validation-intro {
       font-size: 14px;
       color: #555;
@@ -589,7 +563,6 @@
       vertical-align: middle;
     }
 
-    /* ── FOOTER ── */
     footer {
       padding: 32px 48px;
       display: flex;
@@ -603,144 +576,84 @@
       gap: 12px;
     }
 
-    .footer-left {
-      line-height: 1.6;
-    }
+    .footer-left { line-height: 1.6; }
+    .footer-left strong { color: var(--ink); font-weight: 500; }
+    .footer-right a { color: var(--mid); text-decoration: none; transition: color 0.15s; }
+    .footer-right a:hover { color: var(--ink); }
 
-    .footer-left strong {
-      color: var(--ink);
-      font-weight: 500;
-    }
-
-    .footer-right a {
-      color: var(--mid);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
-    .footer-right a:hover {
-      color: var(--ink);
-    }
-
-    /* ── MOBILE ── */
     @media (max-width: 1023px) {
-      .sidebar {
-        display: none;
-      }
-
-      .layout {
-        grid-template-columns: 1fr;
-      }
+      .sidebar { display: none; }
+      .layout { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 768px) {
-      .content {
-        padding: 24px;
-        border-left: none;
-      }
-
-      .hero-title {
-        font-size: 36px;
-      }
-
-      pre.code-block {
-        font-size: 11px;
-      }
-
-      .scores-tables {
-        grid-template-columns: 1fr;
-      }
-
-      .verdict-tables {
-        grid-template-columns: 1fr;
-      }
-
-      .tool-grid {
-        grid-template-columns: 1fr;
-      }
-
-      footer {
-        padding: 24px;
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      nav {
-        padding: 0 16px;
-      }
-
-      .nav-links {
-        gap: 16px;
-      }
-
-      .proposal-notice {
-        padding: 9px 16px;
-        font-size: 10px;
-      }
+      .content { padding: 24px; border-left: none; }
+      .hero-title { font-size: 36px; }
+      pre.code-block { font-size: 11px; }
+      .scores-tables { grid-template-columns: 1fr; }
+      .verdict-tables { grid-template-columns: 1fr; }
+      .tool-grid { grid-template-columns: 1fr; }
+      footer { padding: 24px; flex-direction: column; align-items: flex-start; }
+      nav { padding: 0 16px; }
+      .nav-links { gap: 16px; }
+      .proposal-notice { padding: 9px 16px; font-size: 10px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
   <nav>
-    <a href="/" class="nav-wordmark">TRACE</a>
+    <a href="/fr" class="nav-wordmark">TRACE</a>
     <ul class="nav-links">
-      <li><a href="/#standard">The Standard</a></li>
-      <li><a href="/scorecard">Scorecard</a></li>
-      <li><a href="/policy-brief">Policy Brief</a></li>
-      <li><a href="/compact">Compact</a></li>
-      <li><a href="/metadata" class="active">Metadata</a></li>
-      <li><a href="/fr/metadata/json-ld" style="color:#666;border-left:1px solid #444;padding-left:20px;margin-left:8px;">FR</a></li>
+      <li><a href="/fr/#norme">La norme</a></li>
+      <li><a href="/fr/scorecard">Fiche d'évaluation</a></li>
+      <li><a href="/fr/policy-brief">Mémoire</a></li>
+      <li><a href="/fr/compact">Pacte</a></li>
+      <li><a href="/fr/metadata" class="active">Métadonnées</a></li>
+      <li><a href="/metadata/json-ld" style="color:#666;border-left:1px solid #444;padding-left:20px;">EN</a></li>
     </ul>
   </nav>
 
-  <!-- PROPOSAL NOTICE -->
   <div class="proposal-notice">
-    PROPOSAL — No institutional endorsement or formal adoption. Independent work by Cariboo Signals, open for critique and community input.
+    PROPOSITION — Aucune approbation institutionnelle ni adoption formelle. Travail indépendant de Cariboo Signals, ouvert à la critique et aux contributions communautaires.
   </div>
 
-  <!-- LAYOUT -->
   <div class="layout">
 
-    <!-- SIDEBAR -->
     <aside class="sidebar">
-      <div class="sidebar-label">TRACE / Metadata / JSON-LD</div>
+      <div class="sidebar-label">TRACE / Métadonnées / JSON-LD</div>
       <ul class="sidebar-nav">
-        <li><a href="#overview">— Overview</a></li>
-        <li><a href="#properties">— Properties</a></li>
-        <li><a href="#scores">— Scores object</a></li>
-        <li><a href="#verdicts">— Verdict values</a></li>
-        <li><a href="#examples">— Examples</a></li>
-        <li><a href="#embedding">— Embedding</a></li>
+        <li><a href="#overview">— Vue d'ensemble</a></li>
+        <li><a href="#properties">— Propriétés</a></li>
+        <li><a href="#scores">— Objet scores</a></li>
+        <li><a href="#verdicts">— Valeurs de verdict</a></li>
+        <li><a href="#examples">— Exemples</a></li>
+        <li><a href="#embedding">— Intégration</a></li>
         <li><a href="#validation">— Validation</a></li>
       </ul>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <main class="content">
 
-      <!-- OVERVIEW -->
       <section class="section-overview" id="overview">
-        <div class="breadcrumb">Metadata / JSON-LD</div>
+        <div class="breadcrumb">Métadonnées / JSON-LD</div>
         <h1 class="hero-title">JSON-LD</h1>
-        <p class="hero-subtitle">Embed TRACE assessment data as structured JSON-LD in your HTML. Readable by search engines, CMS platforms, and any JSON-LD processor. The lowest-friction way to add TRACE metadata to web-published content.</p>
+        <p class="hero-subtitle">Intégrez les données d'évaluation TRACE en JSON-LD structuré dans votre HTML. Lisible par les moteurs de recherche, les plateformes CMS et tout processeur JSON-LD. La méthode la moins contraignante pour ajouter des métadonnées TRACE au contenu publié sur le web.</p>
         <div class="context-block">
           @context: https://tracestandard.org/schema/v1<br>
           @type: TraceAssessment
         </div>
       </section>
 
-      <!-- PROPERTIES -->
       <section class="section" id="properties">
-        <div class="section-label">Property Reference</div>
+        <div class="section-label">Référence des propriétés</div>
         <div class="table-wrapper">
           <table>
             <thead>
               <tr>
-                <th>Field</th>
+                <th>Champ</th>
                 <th>Type</th>
-                <th>Required</th>
+                <th>Requis</th>
                 <th>Description</th>
               </tr>
             </thead>
@@ -748,131 +661,130 @@
               <tr>
                 <td class="td-field">@context</td>
                 <td class="td-type">string</td>
-                <td><span class="badge badge-required">Required</span></td>
-                <td class="td-desc">Must be exactly <code>"https://tracestandard.org/schema/v1"</code></td>
+                <td><span class="badge badge-required">Requis</span></td>
+                <td class="td-desc">Doit être exactement <code>"https://tracestandard.org/schema/v1"</code></td>
               </tr>
               <tr>
                 <td class="td-field">@type</td>
                 <td class="td-type">string</td>
-                <td><span class="badge badge-required">Required</span></td>
-                <td class="td-desc">Must be exactly <code>"TraceAssessment"</code></td>
+                <td><span class="badge badge-required">Requis</span></td>
+                <td class="td-desc">Doit être exactement <code>"TraceAssessment"</code></td>
               </tr>
               <tr>
                 <td class="td-field">project</td>
                 <td class="td-type">string</td>
-                <td><span class="badge badge-required">Required</span></td>
-                <td class="td-desc">The name of the content project being assessed</td>
+                <td><span class="badge badge-required">Requis</span></td>
+                <td class="td-desc">Le nom du projet de contenu évalué</td>
               </tr>
               <tr>
                 <td class="td-field">track</td>
                 <td class="td-type">"A" | "B"</td>
-                <td><span class="badge badge-required">Required</span></td>
-                <td class="td-desc">Track A (community insider) or Track B (external/institutional)</td>
+                <td><span class="badge badge-required">Requis</span></td>
+                <td class="td-desc">Voie A (perspective communautaire interne) ou Voie B (externe / institutionnel)</td>
               </tr>
               <tr>
                 <td class="td-field">verdict</td>
-                <td class="td-type">"Exemplary" | "Sound" | "Developing" | "Non-Compliant"</td>
-                <td><span class="badge badge-required">Required</span></td>
-                <td class="td-desc">The assessment verdict</td>
+                <td class="td-type">"Exemplaire" | "Solide" | "En développement" | "Non conforme"</td>
+                <td><span class="badge badge-required">Requis</span></td>
+                <td class="td-desc">Le verdict d'évaluation</td>
               </tr>
               <tr>
                 <td class="td-field">totalScore</td>
                 <td class="td-type">integer</td>
-                <td><span class="badge badge-required">Required</span></td>
-                <td class="td-desc">Total points scored</td>
+                <td><span class="badge badge-required">Requis</span></td>
+                <td class="td-desc">Points totaux obtenus</td>
               </tr>
               <tr>
                 <td class="td-field">maxScore</td>
                 <td class="td-type">integer</td>
-                <td><span class="badge badge-required">Required</span></td>
-                <td class="td-desc">Maximum possible points (20 for Track A, 35 for Track B)</td>
+                <td><span class="badge badge-required">Requis</span></td>
+                <td class="td-desc">Points maximum possibles (21 pour la Voie A, 38 pour la Voie B)</td>
               </tr>
               <tr>
                 <td class="td-field">assessedDate</td>
-                <td class="td-type">ISO 8601 date</td>
-                <td><span class="badge badge-required">Required</span></td>
-                <td class="td-desc">Date the assessment was completed (YYYY-MM-DD)</td>
+                <td class="td-type">Date ISO 8601</td>
+                <td><span class="badge badge-required">Requis</span></td>
+                <td class="td-desc">Date à laquelle l'évaluation a été complétée (AAAA-MM-JJ)</td>
               </tr>
               <tr>
                 <td class="td-field">assessorName</td>
                 <td class="td-type">string</td>
-                <td><span class="badge badge-optional">Optional</span></td>
-                <td class="td-desc">Name of the person or organization who conducted the assessment</td>
+                <td><span class="badge badge-optional">Optionnel</span></td>
+                <td class="td-desc">Nom de la personne ou de l'organisation qui a conduit l'évaluation</td>
               </tr>
               <tr>
                 <td class="td-field">assessorURL</td>
                 <td class="td-type">URL</td>
-                <td><span class="badge badge-optional">Optional</span></td>
-                <td class="td-desc">URL for the assessor's profile or organization page</td>
+                <td><span class="badge badge-optional">Optionnel</span></td>
+                <td class="td-desc">URL du profil ou de la page d'organisation de l'évaluateur</td>
               </tr>
               <tr>
                 <td class="td-field">scores</td>
                 <td class="td-type">object</td>
-                <td><span class="badge badge-optional">Optional</span></td>
-                <td class="td-desc">Per-category score breakdown (see Scores Object below)</td>
+                <td><span class="badge badge-optional">Optionnel</span></td>
+                <td class="td-desc">Détail des scores par catégorie (voir Objet scores ci-dessous)</td>
               </tr>
               <tr>
                 <td class="td-field">improvementPlan</td>
                 <td class="td-type">string</td>
-                <td><span class="badge badge-optional">Optional</span></td>
-                <td class="td-desc">URL or brief description of the improvement plan (required for Developing verdict)</td>
+                <td><span class="badge badge-optional">Optionnel</span></td>
+                <td class="td-desc">URL ou brève description du plan d'amélioration (requis pour le verdict En développement)</td>
               </tr>
               <tr>
                 <td class="td-field">nextReviewDate</td>
-                <td class="td-type">ISO 8601 date</td>
-                <td><span class="badge badge-optional">Optional</span></td>
-                <td class="td-desc">Planned date for next assessment</td>
+                <td class="td-type">Date ISO 8601</td>
+                <td><span class="badge badge-optional">Optionnel</span></td>
+                <td class="td-desc">Date prévue de la prochaine évaluation</td>
               </tr>
             </tbody>
           </table>
         </div>
       </section>
 
-      <!-- SCORES OBJECT -->
       <section class="section" id="scores">
-        <div class="section-label">Scores Object</div>
-        <p class="scores-intro">The <code>scores</code> property is an object with category identifiers as keys. Each value is an object with <code>score</code> and <code>max</code> properties.</p>
+        <div class="section-label">Objet scores</div>
+        <p class="scores-intro">La propriété <code>scores</code> est un objet avec des identifiants de catégorie comme clés. Chaque valeur est un objet avec les propriétés <code>score</code> et <code>max</code>.</p>
 
         <div class="code-block-wrapper">
           <pre class="code-block" id="scores-structure-code">"scores": {
-  "T": { "score": 3, "max": 4 },
+  "T": { "score": 3, "max": 5 },
   "R": { "score": 3, "max": 4 },
   ...
 }</pre>
-          <button class="copy-btn" onclick="copyCode('scores-structure-code', this)">Copy</button>
+          <button class="copy-btn" onclick="copyCode('scores-structure-code', this)">Copier</button>
         </div>
 
         <div class="scores-tables">
           <div class="scores-table-group">
-            <div class="scores-table-label">Track A — 6 categories</div>
+            <div class="scores-table-label">Voie A — 6 catégories</div>
             <div class="scores-table-wrapper">
               <table class="scores-table">
                 <thead>
                   <tr>
-                    <th>Key</th>
-                    <th>Category</th>
+                    <th>Clé</th>
+                    <th>Catégorie</th>
                     <th style="text-align:right;">Max</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td class="td-key">T</td>
-                    <td class="td-cat">Transparency</td>
-                    <td class="td-max">4</td>
+                    <td class="td-cat">Transparence</td>
+                    <td class="td-max">5</td>
                   </tr>
                   <tr>
                     <td class="td-key">R</td>
-                    <td class="td-cat">Representation</td>
+                    <td class="td-cat">Représentation</td>
                     <td class="td-max">4</td>
                   </tr>
                   <tr>
                     <td class="td-key">A</td>
-                    <td class="td-cat">Accountability</td>
+                    <td class="td-cat">Autonomie</td>
                     <td class="td-max">3</td>
                   </tr>
                   <tr>
                     <td class="td-key">C</td>
-                    <td class="td-cat">Consent</td>
+                    <td class="td-cat">Consentement</td>
                     <td class="td-max">4</td>
                   </tr>
                   <tr>
@@ -882,13 +794,13 @@
                   </tr>
                   <tr>
                     <td class="td-key">B</td>
-                    <td class="td-cat">Community Benefit</td>
+                    <td class="td-cat">Bénéfice communautaire</td>
                     <td class="td-max">2</td>
                   </tr>
                   <tr class="total-row">
                     <td class="td-key"></td>
                     <td class="td-total">Total</td>
-                    <td class="td-max td-total">20</td>
+                    <td class="td-max td-total">21</td>
                   </tr>
                 </tbody>
               </table>
@@ -896,35 +808,35 @@
           </div>
 
           <div class="scores-table-group">
-            <div class="scores-table-label">Track B — 7 categories</div>
+            <div class="scores-table-label">Voie B — 7 catégories</div>
             <div class="scores-table-wrapper">
               <table class="scores-table">
                 <thead>
                   <tr>
-                    <th>Key</th>
-                    <th>Category</th>
+                    <th>Clé</th>
+                    <th>Catégorie</th>
                     <th style="text-align:right;">Max</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td class="td-key">T</td>
-                    <td class="td-cat">Transparency</td>
-                    <td class="td-max">6</td>
+                    <td class="td-cat">Transparence</td>
+                    <td class="td-max">8</td>
                   </tr>
                   <tr>
                     <td class="td-key">R</td>
-                    <td class="td-cat">Representation</td>
+                    <td class="td-cat">Représentation</td>
                     <td class="td-max">6</td>
                   </tr>
                   <tr>
                     <td class="td-key">A</td>
-                    <td class="td-cat">Accountability</td>
+                    <td class="td-cat">Autonomie</td>
                     <td class="td-max">5</td>
                   </tr>
                   <tr>
                     <td class="td-key">C</td>
-                    <td class="td-cat">Consent</td>
+                    <td class="td-cat">Consentement</td>
                     <td class="td-max">6</td>
                   </tr>
                   <tr>
@@ -934,18 +846,18 @@
                   </tr>
                   <tr>
                     <td class="td-key">S</td>
-                    <td class="td-cat">Structural Benefit</td>
-                    <td class="td-max">4</td>
+                    <td class="td-cat">Bénéfice structurel</td>
+                    <td class="td-max">5</td>
                   </tr>
                   <tr>
                     <td class="td-key">D</td>
-                    <td class="td-cat">Data Rights</td>
+                    <td class="td-cat">Droits sur les données</td>
                     <td class="td-max">3</td>
                   </tr>
                   <tr class="total-row">
                     <td class="td-key"></td>
                     <td class="td-total">Total</td>
-                    <td class="td-max td-total">35</td>
+                    <td class="td-max td-total">38</td>
                   </tr>
                 </tbody>
               </table>
@@ -954,42 +866,41 @@
         </div>
       </section>
 
-      <!-- VERDICT VALUES -->
       <section class="section" id="verdicts">
-        <div class="section-label">Verdict Values</div>
+        <div class="section-label">Valeurs de verdict</div>
 
         <div class="verdict-tables">
           <div class="verdict-table-group">
-            <div class="verdict-table-label">Track A thresholds</div>
+            <div class="verdict-table-label">Seuils Voie A</div>
             <div class="verdict-table-wrapper">
               <table class="verdict-table">
                 <thead>
                   <tr>
                     <th>Verdict</th>
-                    <th style="text-align:center;">Min Score</th>
-                    <th style="text-align:center;">Max Score</th>
+                    <th style="text-align:center;">Score min</th>
+                    <th style="text-align:center;">Score max</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr class="verdict-row-exemplary">
-                    <td class="td-verdict">Exemplary</td>
-                    <td class="td-score">18</td>
-                    <td class="td-score">20</td>
+                    <td class="td-verdict">Exemplaire</td>
+                    <td class="td-score">19</td>
+                    <td class="td-score">21</td>
                   </tr>
                   <tr class="verdict-row-sound">
-                    <td class="td-verdict">Sound</td>
-                    <td class="td-score">14</td>
-                    <td class="td-score">17</td>
+                    <td class="td-verdict">Solide</td>
+                    <td class="td-score">15</td>
+                    <td class="td-score">18</td>
                   </tr>
                   <tr class="verdict-row-developing">
-                    <td class="td-verdict">Developing</td>
-                    <td class="td-score">10</td>
-                    <td class="td-score">13</td>
+                    <td class="td-verdict">En développement</td>
+                    <td class="td-score">11</td>
+                    <td class="td-score">14</td>
                   </tr>
                   <tr class="verdict-row-noncompliant">
-                    <td class="td-verdict">Non-Compliant</td>
+                    <td class="td-verdict">Non conforme</td>
                     <td class="td-score">0</td>
-                    <td class="td-score">9</td>
+                    <td class="td-score">10</td>
                   </tr>
                 </tbody>
               </table>
@@ -997,36 +908,36 @@
           </div>
 
           <div class="verdict-table-group">
-            <div class="verdict-table-label">Track B thresholds</div>
+            <div class="verdict-table-label">Seuils Voie B</div>
             <div class="verdict-table-wrapper">
               <table class="verdict-table">
                 <thead>
                   <tr>
                     <th>Verdict</th>
-                    <th style="text-align:center;">Min Score</th>
-                    <th style="text-align:center;">Max Score</th>
+                    <th style="text-align:center;">Score min</th>
+                    <th style="text-align:center;">Score max</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr class="verdict-row-exemplary">
-                    <td class="td-verdict">Exemplary</td>
-                    <td class="td-score">31</td>
-                    <td class="td-score">35</td>
+                    <td class="td-verdict">Exemplaire</td>
+                    <td class="td-score">34</td>
+                    <td class="td-score">38</td>
                   </tr>
                   <tr class="verdict-row-sound">
-                    <td class="td-verdict">Sound</td>
-                    <td class="td-score">24</td>
-                    <td class="td-score">30</td>
+                    <td class="td-verdict">Solide</td>
+                    <td class="td-score">26</td>
+                    <td class="td-score">33</td>
                   </tr>
                   <tr class="verdict-row-developing">
-                    <td class="td-verdict">Developing</td>
-                    <td class="td-score">17</td>
-                    <td class="td-score">23</td>
+                    <td class="td-verdict">En développement</td>
+                    <td class="td-score">18</td>
+                    <td class="td-score">25</td>
                   </tr>
                   <tr class="verdict-row-noncompliant">
-                    <td class="td-verdict">Non-Compliant</td>
+                    <td class="td-verdict">Non conforme</td>
                     <td class="td-score">0</td>
-                    <td class="td-score">16</td>
+                    <td class="td-score">17</td>
                   </tr>
                 </tbody>
               </table>
@@ -1034,165 +945,161 @@
           </div>
         </div>
 
-        <p class="verdict-note">The <code>verdict</code> field must exactly match one of the four strings above. Parsers should be case-sensitive.</p>
+        <p class="verdict-note">Le champ <code>verdict</code> doit correspondre exactement à l'une des quatre chaînes ci-dessus. Les analyseurs doivent respecter la casse.</p>
       </section>
 
-      <!-- EXAMPLES -->
       <section class="section" id="examples">
-        <div class="section-label">Examples</div>
+        <div class="section-label">Exemples</div>
 
         <div class="example-block">
-          <div class="code-block-label">Example 1 — Minimal (Track A)</div>
+          <div class="code-block-label">Exemple 1 — Minimal (Voie A)</div>
           <div class="code-block-wrapper">
             <pre class="code-block" id="example-1-code">&lt;script type="application/ld+json"&gt;
 {
   "@context": "https://tracestandard.org/schema/v1",
   "@type": "TraceAssessment",
-  "project": "Cariboo Signals — The Ranching Episode",
+  "project": "Cariboo Signals — L'épisode sur l'élevage",
   "track": "A",
-  "verdict": "Sound",
+  "verdict": "Solide",
   "totalScore": 15,
-  "maxScore": 20,
+  "maxScore": 21,
   "assessedDate": "2026-05-28"
 }
 &lt;/script&gt;</pre>
-            <button class="copy-btn" onclick="copyCode('example-1-code', this)">Copy</button>
+            <button class="copy-btn" onclick="copyCode('example-1-code', this)">Copier</button>
           </div>
         </div>
 
         <div class="example-block">
-          <div class="code-block-label">Example 2 — Full with scores (Track A)</div>
+          <div class="code-block-label">Exemple 2 — Complet avec scores (Voie A)</div>
           <div class="code-block-wrapper">
             <pre class="code-block" id="example-2-code">&lt;script type="application/ld+json"&gt;
 {
   "@context": "https://tracestandard.org/schema/v1",
   "@type": "TraceAssessment",
-  "project": "Cariboo Signals — The Ranching Episode",
+  "project": "Cariboo Signals — L'épisode sur l'élevage",
   "track": "A",
-  "verdict": "Sound",
+  "verdict": "Solide",
   "totalScore": 15,
-  "maxScore": 20,
+  "maxScore": 21,
   "assessedDate": "2026-05-28",
   "assessorName": "Cariboo Signals",
   "assessorURL": "https://cariboosignals.ca",
   "scores": {
-    "T": { "score": 3, "max": 4 },
+    "T": { "score": 4, "max": 5 },
     "R": { "score": 3, "max": 4 },
     "A": { "score": 2, "max": 3 },
-    "C": { "score": 4, "max": 4 },
+    "C": { "score": 3, "max": 4 },
     "E": { "score": 2, "max": 3 },
     "B": { "score": 1, "max": 2 }
   },
-  "improvementPlan": "https://cariboosignals.ca/trace-improvement-plan",
+  "improvementPlan": "https://cariboosignals.ca/plan-amelioration-trace",
   "nextReviewDate": "2026-11-28"
 }
 &lt;/script&gt;</pre>
-            <button class="copy-btn" onclick="copyCode('example-2-code', this)">Copy</button>
+            <button class="copy-btn" onclick="copyCode('example-2-code', this)">Copier</button>
           </div>
         </div>
 
         <div class="example-block">
-          <div class="code-block-label">Example 3 — Track B, Disqualified/Non-Compliant</div>
+          <div class="code-block-label">Exemple 3 — Voie B, Non conforme</div>
           <div class="code-block-wrapper">
             <pre class="code-block" id="example-3-code">&lt;script type="application/ld+json"&gt;
 {
   "@context": "https://tracestandard.org/schema/v1",
   "@type": "TraceAssessment",
-  "project": "Example External Documentary Series",
+  "project": "Exemple de série documentaire externe",
   "track": "B",
-  "verdict": "Non-Compliant",
+  "verdict": "Non conforme",
   "totalScore": 12,
-  "maxScore": 35,
+  "maxScore": 38,
   "assessedDate": "2026-05-28",
-  "assessorName": "External Production Co.",
+  "assessorName": "Production externe inc.",
   "scores": {
-    "T": { "score": 4, "max": 6 },
+    "T": { "score": 4, "max": 8 },
     "R": { "score": 3, "max": 6 },
     "A": { "score": 1, "max": 5 },
     "C": { "score": 2, "max": 6 },
     "E": { "score": 1, "max": 5 },
-    "S": { "score": 1, "max": 4 },
+    "S": { "score": 1, "max": 5 },
     "D": { "score": 0, "max": 3 }
   },
-  "improvementPlan": "Remediation plan in development. Publication paused."
+  "improvementPlan": "Plan de remédiation en développement. Publication suspendue."
 }
 &lt;/script&gt;</pre>
-            <button class="copy-btn" onclick="copyCode('example-3-code', this)">Copy</button>
+            <button class="copy-btn" onclick="copyCode('example-3-code', this)">Copier</button>
           </div>
         </div>
       </section>
 
-      <!-- EMBEDDING -->
       <section class="section" id="embedding">
-        <div class="section-label">HTML Embedding Pattern</div>
-        <p class="embed-intro">Place the script tag in the <code>&lt;head&gt;</code> of the HTML page that hosts the content. One tag per page — if a page contains multiple assessed items, embed the assessment for the primary item.</p>
+        <div class="section-label">Modèle d'intégration HTML</div>
+        <p class="embed-intro">Placez la balise script dans le <code>&lt;head&gt;</code> de la page HTML qui héberge le contenu. Une balise par page — si une page contient plusieurs éléments évalués, intégrez l'évaluation de l'élément principal.</p>
 
         <div class="code-block-wrapper">
           <pre class="code-block" id="embedding-code">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
+&lt;html lang="fr-CA"&gt;
 &lt;head&gt;
   &lt;meta charset="UTF-8" /&gt;
-  &lt;title&gt;Article Title&lt;/title&gt;
+  &lt;title&gt;Titre de l'article&lt;/title&gt;
 
-  &lt;!-- TRACE assessment metadata --&gt;
+  &lt;!-- Métadonnées d'évaluation TRACE --&gt;
   &lt;script type="application/ld+json"&gt;
   {
     "@context": "https://tracestandard.org/schema/v1",
     "@type": "TraceAssessment",
-    "project": "Your Project Name",
+    "project": "Nom de votre projet",
     "track": "A",
-    "verdict": "Sound",
+    "verdict": "Solide",
     "totalScore": 15,
-    "maxScore": 20,
+    "maxScore": 21,
     "assessedDate": "2026-05-28"
   }
   &lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
-  &lt;!-- page content --&gt;
+  &lt;!-- contenu de la page --&gt;
 &lt;/body&gt;
 &lt;/html&gt;</pre>
-          <button class="copy-btn" onclick="copyCode('embedding-code', this)">Copy</button>
+          <button class="copy-btn" onclick="copyCode('embedding-code', this)">Copier</button>
         </div>
 
         <div class="note-box">
-          Multiple JSON-LD blocks on a single page are valid. Place TRACE data in its own block rather than merging with other schema.org types.
+          Plusieurs blocs JSON-LD sur une seule page sont valides. Placez les données TRACE dans leur propre bloc plutôt que de les fusionner avec d'autres types schema.org.
         </div>
       </section>
 
-      <!-- VALIDATION -->
       <section class="section-last" id="validation">
-        <div class="section-label">Validation Tools</div>
-        <p class="validation-intro">Use these tools to verify your JSON-LD is well-formed before publishing.</p>
+        <div class="section-label">Outils de validation</div>
+        <p class="validation-intro">Utilisez ces outils pour vérifier que votre JSON-LD est bien formé avant de le publier.</p>
 
         <div class="tool-grid">
           <div class="tool-card">
             <div class="tool-card-name">Google Rich Results Test</div>
             <span class="tool-card-url">search.google.com/test/rich-results</span>
-            <p class="tool-card-desc">Validates structured data and previews how Google parses it.</p>
+            <p class="tool-card-desc">Valide les données structurées et prévisualise la façon dont Google les analyse.</p>
           </div>
           <div class="tool-card">
             <div class="tool-card-name">JSON-LD Playground</div>
             <span class="tool-card-url">json-ld.org/playground</span>
-            <p class="tool-card-desc">Interactive JSON-LD parser and validator.</p>
+            <p class="tool-card-desc">Analyseur et validateur JSON-LD interactif.</p>
           </div>
           <div class="tool-card">
             <div class="tool-card-name">Schema.org Validator</div>
             <span class="tool-card-url">validator.schema.org</span>
-            <p class="tool-card-desc">Checks schema.org-compatible structured data.</p>
+            <p class="tool-card-desc">Vérifie les données structurées compatibles avec schema.org.</p>
           </div>
           <div class="tool-card">
-            <div class="tool-card-name">TRACE Validator <span class="tool-card-coming">Coming soon</span></div>
+            <div class="tool-card-name">Validateur TRACE <span class="tool-card-coming">À venir</span></div>
             <span class="tool-card-url">tracestandard.org/validate</span>
-            <p class="tool-card-desc">Will validate TRACE-specific schema rules and thresholds.</p>
+            <p class="tool-card-desc">Validera les règles de schéma et les seuils spécifiques à TRACE.</p>
           </div>
         </div>
       </section>
 
-      <!-- FOOTER -->
       <footer>
         <div class="footer-left">
-          <strong>TRACE</strong> — Content Accountability Standard · Built on the Community Content Compact · Cariboo Signals, May 2026
+          <strong>TRACE</strong> — Norme de responsabilité de contenu · Fondée sur le Pacte de contenu communautaire · Cariboo Signals, mai 2026
         </div>
         <div class="footer-right">
           <a href="https://github.com/zirnhelt/trace" target="_blank" rel="noopener">github.com/zirnhelt/trace</a>
@@ -1208,14 +1115,14 @@
       var text = pre.textContent;
       navigator.clipboard.writeText(text).then(function() {
         var original = btn.textContent;
-        btn.textContent = 'Copied!';
+        btn.textContent = 'Copié!';
         setTimeout(function() {
           btn.textContent = original;
         }, 1500);
       }).catch(function() {
-        btn.textContent = 'Error';
+        btn.textContent = 'Erreur';
         setTimeout(function() {
-          btn.textContent = 'Copy';
+          btn.textContent = 'Copier';
         }, 1500);
       });
     }

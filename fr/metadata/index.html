@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr-CA">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Implement TRACE Metadata — TRACE Content Accountability Standard</title>
+  <title>Implémenter les métadonnées TRACE — Norme de responsabilité de contenu TRACE</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
@@ -81,7 +81,6 @@
     }
     .section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
 
-    /* Format cards */
     .format-grid {
       display: grid; grid-template-columns: repeat(3, 1fr);
       gap: 1px; background: var(--rule);
@@ -146,7 +145,6 @@
     }
     .fc-link:hover { background: var(--green); color: var(--cream); }
 
-    /* Diagnostic */
     .diagnostic {
       background: var(--paper); border: 1px solid var(--rule);
       padding: 36px; margin-top: 40px;
@@ -198,7 +196,6 @@
     }
     .reset-btn:hover { color: var(--ink); }
 
-    /* Comparison table */
     .compare-table {
       width: 100%; border-collapse: collapse;
       font-size: 13px;
@@ -221,7 +218,6 @@
     .partial { color: var(--amber); }
     .cross { color: #999; }
 
-    /* Note block */
     .note-block {
       background: var(--paper); border: 1px solid var(--rule);
       border-left: 3px solid var(--mid); padding: 16px 20px;
@@ -252,29 +248,28 @@
 </head>
 <body>
 
-  <div class="proposal-notice">PROPOSAL &mdash; No institutional endorsement or formal adoption. Independent work by Cariboo Signals, open for critique and community input.</div>
+  <div class="proposal-notice">PROPOSITION &mdash; Aucune approbation institutionnelle ni adoption formelle. Travail indépendant de Cariboo Signals, ouvert à la critique et aux contributions communautaires.</div>
 
   <nav>
-    <a href="/" class="nav-wordmark">TRACE</a>
+    <a href="/fr" class="nav-wordmark">TRACE</a>
     <div class="nav-links">
-      <a href="/#standard">The Standard</a>
-      <a href="/scorecard">Scorecard</a>
-      <a href="/policy-brief">Policy Brief</a>
-      <a href="/compact">Compact</a>
-      <a href="/metadata" class="active">Metadata</a>
-      <a href="/fr/metadata" style="color:#666;border-left:1px solid #444;padding-left:20px;margin-left:8px;">FR</a>
+      <a href="/fr/#norme">La norme</a>
+      <a href="/fr/scorecard">Fiche d'évaluation</a>
+      <a href="/fr/policy-brief">Mémoire</a>
+      <a href="/fr/compact">Pacte</a>
+      <a href="/fr/metadata" class="active">Métadonnées</a>
+      <a href="/metadata" style="color:#666;border-left:1px solid #444;padding-left:20px;margin-left:8px;">EN</a>
     </div>
   </nav>
 
   <div class="page-header">
-    <div class="breadcrumb"><a href="/">TRACE</a> / Metadata Standard</div>
-    <h1 class="page-title">Implement<br>TRACE Metadata</h1>
-    <p class="page-lead">TRACE assessments are designed to be machine-readable. Embedding them in your content makes accountability findable, indexable, and verifiable — without requiring anyone to visit the scorecard manually. Three formats exist for different publishing contexts.</p>
+    <div class="breadcrumb"><a href="/fr">TRACE</a> / Norme de métadonnées</div>
+    <h1 class="page-title">Implémenter<br>les métadonnées TRACE</h1>
+    <p class="page-lead">Les évaluations TRACE sont conçues pour être lisibles par les machines. Les intégrer dans votre contenu rend la responsabilité trouvable, indexable et vérifiable — sans que quiconque doive visiter manuellement la fiche d'évaluation. Trois formats existent pour différents contextes de publication.</p>
   </div>
 
-  <!-- Format cards -->
   <section id="formats">
-    <div class="section-label">Choose a Format</div>
+    <div class="section-label">Choisir un format</div>
 
     <div class="format-grid" id="format-grid">
 
@@ -282,224 +277,221 @@
         <div class="fc-tag">Format 01</div>
         <div class="fc-format-id">JSON-LD</div>
         <div class="fc-type">application/ld+json</div>
-        <div class="fc-desc">Structured linked data embedded in the HTML <code>&lt;head&gt;</code> or returned from an API. Readable by search engines, aggregators, and any JSON-aware tool. The default format for web-published content.</div>
-        <div class="fc-best-label">Best for</div>
+        <div class="fc-desc">Données liées structurées intégrées dans le <code>&lt;head&gt;</code> HTML ou retournées depuis une API. Lisibles par les moteurs de recherche, les agrégateurs et tout outil compatible JSON. Le format par défaut pour le contenu publié sur le web.</div>
+        <div class="fc-best-label">Idéal pour</div>
         <ul class="fc-best">
-          <li>Web pages and articles</li>
-          <li>REST API responses</li>
-          <li>Platforms with CMS access</li>
-          <li>SEO-visible accountability data</li>
+          <li>Pages web et articles</li>
+          <li>Réponses d'API REST</li>
+          <li>Plateformes avec accès CMS</li>
+          <li>Données de responsabilité visibles par les moteurs de recherche</li>
         </ul>
-        <a href="/metadata/json-ld" class="fc-link">View Spec →</a>
+        <a href="/fr/metadata/json-ld" class="fc-link">Voir la spécification →</a>
       </div>
 
       <div class="format-card" data-format="xml">
         <div class="fc-tag">Format 02</div>
         <div class="fc-format-id">XML</div>
-        <div class="fc-type">trace: namespace</div>
-        <div class="fc-desc">An XML namespace extension for RSS, Atom, and other feed formats. Add a <code>trace:</code> block to your feed's channel or item elements. Read natively by podcast apps and feed aggregators that support namespace extensions.</div>
-        <div class="fc-best-label">Best for</div>
+        <div class="fc-type">espace de noms trace:</div>
+        <div class="fc-desc">Une extension d'espace de noms XML pour RSS, Atom et d'autres formats de flux. Ajoutez un bloc <code>trace:</code> aux éléments de canal ou d'élément de votre flux. Lisible nativement par les applications de podcast et les agrégateurs de flux qui supportent les extensions d'espace de noms.</div>
+        <div class="fc-best-label">Idéal pour</div>
         <ul class="fc-best">
-          <li>Podcast RSS feeds</li>
-          <li>Atom and news feeds</li>
-          <li>XML-based document formats</li>
-          <li>Podcasting 2.0 ecosystems</li>
+          <li>Flux RSS de podcasts</li>
+          <li>Flux Atom et d'actualités</li>
+          <li>Formats de documents XML</li>
+          <li>Écosystèmes Podcasting 2.0</li>
         </ul>
-        <a href="/metadata/xml" class="fc-link">View Spec →</a>
+        <a href="/fr/metadata/xml" class="fc-link">Voir la spécification →</a>
       </div>
 
       <div class="format-card" data-format="c2pa">
         <div class="fc-tag">Format 03</div>
         <div class="fc-format-id">C2PA</div>
-        <div class="fc-type">trace.assessment assertion</div>
-        <div class="fc-desc">A TRACE assertion type within the Coalition for Content Provenance and Authenticity standard. Cryptographically signed and embedded directly in media files — survives download, re-hosting, and platform migration. The durability choice.</div>
-        <div class="fc-best-label">Best for</div>
+        <div class="fc-type">assertion trace.assessment</div>
+        <div class="fc-desc">Un type d'assertion TRACE dans la norme de la Coalition pour la provenance et l'authenticité du contenu. Signé cryptographiquement et intégré directement dans les fichiers médias — survit au téléchargement, à l'hébergement et à la migration de plateforme. Le choix de durabilité.</div>
+        <div class="fc-best-label">Idéal pour</div>
         <ul class="fc-best">
-          <li>Images, video, and audio files</li>
-          <li>PDFs and documents</li>
-          <li>AI-generated media</li>
-          <li>Long-term archival content</li>
+          <li>Images, vidéos et fichiers audio</li>
+          <li>PDFs et documents</li>
+          <li>Médias générés par l'IA</li>
+          <li>Contenu d'archivage à long terme</li>
         </ul>
-        <a href="/metadata/c2pa" class="fc-link">View Spec →</a>
+        <a href="/fr/metadata/c2pa" class="fc-link">Voir la spécification →</a>
       </div>
 
     </div>
 
-    <!-- Diagnostic -->
     <div class="diagnostic" id="diagnostic">
-      <div class="diag-title">Not sure which format you need?</div>
+      <div class="diag-title">Vous ne savez pas quel format vous avez besoin?</div>
 
       <div class="diag-q" id="q1">
-        <div class="diag-q-label">1. Where will this TRACE assessment data live?</div>
+        <div class="diag-q-label">1. Où vivront ces données d'évaluation TRACE?</div>
         <div class="diag-options">
-          <button class="diag-opt" data-q="1" data-val="web" onclick="answer(1,'web')">In an HTML page or API response</button>
-          <button class="diag-opt" data-q="1" data-val="feed" onclick="answer(1,'feed')">In a podcast or news feed</button>
-          <button class="diag-opt" data-q="1" data-val="file" onclick="answer(1,'file')">Embedded inside a media file</button>
-          <button class="diag-opt" data-q="1" data-val="unsure" onclick="answer(1,'unsure')">I'm not sure yet</button>
+          <button class="diag-opt" data-q="1" data-val="web" onclick="answer(1,'web')">Dans une page HTML ou une réponse API</button>
+          <button class="diag-opt" data-q="1" data-val="feed" onclick="answer(1,'feed')">Dans un flux de podcast ou d'actualités</button>
+          <button class="diag-opt" data-q="1" data-val="file" onclick="answer(1,'file')">Intégrées dans un fichier média</button>
+          <button class="diag-opt" data-q="1" data-val="unsure" onclick="answer(1,'unsure')">Je ne suis pas encore sûr</button>
         </div>
       </div>
 
       <div class="diag-q" id="q2" style="display:none">
-        <div class="diag-q-label">2. Who is the primary audience for this metadata?</div>
+        <div class="diag-q-label">2. Quel est le public principal pour ces métadonnées?</div>
         <div class="diag-options">
-          <button class="diag-opt" data-q="2" data-val="engines" onclick="answer(2,'engines')">Search engines and aggregators</button>
-          <button class="diag-opt" data-q="2" data-val="apps" onclick="answer(2,'apps')">Podcast or feed reader apps</button>
-          <button class="diag-opt" data-q="2" data-val="platforms" onclick="answer(2,'platforms')">Content platforms and archives</button>
-          <button class="diag-opt" data-q="2" data-val="anyone" onclick="answer(2,'anyone')">Whoever encounters the file</button>
+          <button class="diag-opt" data-q="2" data-val="engines" onclick="answer(2,'engines')">Moteurs de recherche et agrégateurs</button>
+          <button class="diag-opt" data-q="2" data-val="apps" onclick="answer(2,'apps')">Applications de podcast ou de lecture de flux</button>
+          <button class="diag-opt" data-q="2" data-val="platforms" onclick="answer(2,'platforms')">Plateformes de contenu et archives</button>
+          <button class="diag-opt" data-q="2" data-val="anyone" onclick="answer(2,'anyone')">Quiconque rencontre le fichier</button>
         </div>
       </div>
 
       <div class="diag-result" id="diag-result">
-        <div class="dr-label">Recommendation</div>
+        <div class="dr-label">Recommandation</div>
         <div class="dr-rec" id="dr-rec-text">—</div>
         <div class="dr-why" id="dr-why-text"></div>
-        <a href="#" class="dr-link" id="dr-link-el">Read the spec →</a>
-        <button class="reset-btn" onclick="resetDiag()">Start over</button>
+        <a href="#" class="dr-link" id="dr-link-el">Lire la spécification →</a>
+        <button class="reset-btn" onclick="resetDiag()">Recommencer</button>
       </div>
     </div>
   </section>
 
-  <!-- Comparison table -->
   <section id="compare">
-    <div class="section-label">Format Comparison</div>
+    <div class="section-label">Comparaison des formats</div>
     <table class="compare-table">
       <thead>
         <tr>
-          <th>Criterion</th>
+          <th>Critère</th>
           <th>JSON-LD</th>
-          <th>XML Namespace</th>
-          <th>C2PA Assertion</th>
+          <th>Espace de noms XML</th>
+          <th>Assertion C2PA</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Primary use context</td>
-          <td>Web pages, APIs</td>
-          <td>RSS / Atom feeds</td>
-          <td>Media files</td>
+          <td>Contexte d'utilisation principal</td>
+          <td>Pages web, APIs</td>
+          <td>Flux RSS / Atom</td>
+          <td>Fichiers médias</td>
         </tr>
         <tr>
-          <td>Human-readable without tools</td>
-          <td class="check">Yes — inspect source</td>
-          <td class="check">Yes — inspect feed</td>
-          <td class="cross">No — requires C2PA reader</td>
+          <td>Lisible par l'humain sans outils</td>
+          <td class="check">Oui — inspecter la source</td>
+          <td class="check">Oui — inspecter le flux</td>
+          <td class="cross">Non — nécessite un lecteur C2PA</td>
         </tr>
         <tr>
-          <td>Indexed by search engines</td>
-          <td class="check">Yes (Google, Bing)</td>
-          <td class="partial">Partial (feed crawlers)</td>
-          <td class="cross">No</td>
+          <td>Indexé par les moteurs de recherche</td>
+          <td class="check">Oui (Google, Bing)</td>
+          <td class="partial">Partiel (robots d'exploration de flux)</td>
+          <td class="cross">Non</td>
         </tr>
         <tr>
-          <td>Survives file download / re-hosting</td>
-          <td class="cross">No — page-level only</td>
-          <td class="cross">No — feed-level only</td>
-          <td class="check">Yes — embedded in file</td>
+          <td>Survit au téléchargement / ré-hébergement</td>
+          <td class="cross">Non — niveau page seulement</td>
+          <td class="cross">Non — niveau flux seulement</td>
+          <td class="check">Oui — intégré dans le fichier</td>
         </tr>
         <tr>
-          <td>Cryptographic verification</td>
-          <td class="cross">No</td>
-          <td class="cross">No</td>
-          <td class="check">Yes — tamper-evident</td>
+          <td>Vérification cryptographique</td>
+          <td class="cross">Non</td>
+          <td class="cross">Non</td>
+          <td class="check">Oui — inviolable</td>
         </tr>
         <tr>
-          <td>Supported file types</td>
+          <td>Types de fichiers supportés</td>
           <td>.html, .json</td>
           <td>.rss, .xml, .opml</td>
-          <td>JPEG, PNG, MP4, MP3, PDF, and more</td>
+          <td>JPEG, PNG, MP4, MP3, PDF, et plus</td>
         </tr>
         <tr>
-          <td>Implementation effort</td>
-          <td>Low — add a script tag</td>
-          <td>Low — add namespace + elements</td>
-          <td>Medium — requires C2PA tooling</td>
+          <td>Effort d'implémentation</td>
+          <td>Faible — ajouter une balise script</td>
+          <td>Faible — ajouter espace de noms + éléments</td>
+          <td>Moyen — nécessite des outils C2PA</td>
         </tr>
         <tr>
-          <td>Can coexist with other formats</td>
-          <td class="check">Yes</td>
-          <td class="check">Yes</td>
-          <td class="check">Yes</td>
+          <td>Peut coexister avec d'autres formats</td>
+          <td class="check">Oui</td>
+          <td class="check">Oui</td>
+          <td class="check">Oui</td>
         </tr>
         <tr>
-          <td>Versioning support</td>
-          <td class="check">Yes — frameworkVersion field</td>
-          <td class="check">Yes — version attribute</td>
-          <td class="check">Yes — specVersion field</td>
+          <td>Support de versionnement</td>
+          <td class="check">Oui — champ frameworkVersion</td>
+          <td class="check">Oui — attribut version</td>
+          <td class="check">Oui — champ specVersion</td>
         </tr>
         <tr>
-          <td>Community authorship possible</td>
-          <td class="check">Yes — assessedBy field</td>
-          <td class="check">Yes — trace:assessedBy element</td>
-          <td class="check">Yes — field in assertion data</td>
+          <td>Paternité communautaire possible</td>
+          <td class="check">Oui — champ assessedBy</td>
+          <td class="check">Oui — élément trace:assessedBy</td>
+          <td class="check">Oui — champ dans les données d'assertion</td>
         </tr>
       </tbody>
     </table>
 
     <div class="note-block">
-      <strong>Formats are complementary, not exclusive.</strong> A podcast episode might carry TRACE metadata in all three formats simultaneously: JSON-LD on the episode page, a <code>trace:</code> block in the RSS feed, and a C2PA assertion embedded in the audio file. Each serves a different reader in a different context.
+      <strong>Les formats sont complémentaires, pas exclusifs.</strong> Un épisode de podcast pourrait porter des métadonnées TRACE dans les trois formats simultanément : JSON-LD sur la page de l'épisode, un bloc <code>trace:</code> dans le flux RSS, et une assertion C2PA intégrée dans le fichier audio. Chacun sert un lecteur différent dans un contexte différent.
     </div>
   </section>
 
-  <!-- Common fields -->
   <section id="common">
-    <div class="section-label">What All Formats Carry</div>
+    <div class="section-label">Ce que tous les formats contiennent</div>
     <p style="font-size:15px; color:#444; line-height:1.75; max-width:680px; margin-bottom:32px;">
-      Regardless of format, every TRACE metadata object encodes the same core information. The field names differ by format; the data model is identical.
+      Quel que soit le format, chaque objet de métadonnées TRACE encode les mêmes informations de base. Les noms de champs diffèrent selon le format; le modèle de données est identique.
     </p>
     <table class="compare-table">
       <thead>
         <tr>
-          <th>Data Point</th>
-          <th>JSON-LD field</th>
-          <th>XML element</th>
-          <th>C2PA assertion key</th>
+          <th>Donnée</th>
+          <th>Champ JSON-LD</th>
+          <th>Élément XML</th>
+          <th>Clé d'assertion C2PA</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Content title</td>
+          <td>Titre du contenu</td>
           <td><code>contentTitle</code></td>
           <td><code>&lt;trace:content title="…"&gt;</code></td>
           <td><code>contentTitle</code></td>
         </tr>
         <tr>
-          <td>Producer</td>
+          <td>Producteur</td>
           <td><code>producer</code></td>
           <td><code>&lt;trace:producer&gt;</code></td>
           <td><code>producer</code></td>
         </tr>
         <tr>
-          <td>Community represented</td>
+          <td>Communauté représentée</td>
           <td><code>communityRepresented</code></td>
           <td><code>&lt;trace:community&gt;</code></td>
           <td><code>communityRepresented</code></td>
         </tr>
         <tr>
-          <td>AI disclosure</td>
+          <td>Divulgation IA</td>
           <td><code>aiGenerated</code>, <code>aiTools</code></td>
           <td><code>&lt;trace:ai generated="true"&gt;</code></td>
           <td><code>aiGenerated</code>, <code>aiTools</code></td>
         </tr>
         <tr>
-          <td>Track (A or B)</td>
+          <td>Voie (A ou B)</td>
           <td><code>track</code></td>
           <td><code>&lt;trace:track&gt;</code></td>
           <td><code>track</code></td>
         </tr>
         <tr>
-          <td>Disqualified</td>
+          <td>Disqualifié</td>
           <td><code>disqualified</code></td>
           <td><code>&lt;trace:disqualified&gt;</code></td>
           <td><code>disqualified</code></td>
         </tr>
         <tr>
-          <td>Category scores</td>
+          <td>Scores par catégorie</td>
           <td><code>scores.transparency</code>, etc.</td>
           <td><code>&lt;trace:score category="…"&gt;</code></td>
           <td><code>scores.transparency</code>, etc.</td>
         </tr>
         <tr>
-          <td>Total score</td>
+          <td>Score total</td>
           <td><code>totalScore</code>, <code>maxScore</code></td>
           <td><code>&lt;trace:total score="…" max="…"&gt;</code></td>
           <td><code>totalScore</code>, <code>maxScore</code></td>
@@ -511,13 +503,13 @@
           <td><code>verdict</code></td>
         </tr>
         <tr>
-          <td>Assessment date</td>
+          <td>Date d'évaluation</td>
           <td><code>assessmentDate</code></td>
           <td><code>&lt;trace:assessmentDate&gt;</code></td>
           <td><code>assessmentDate</code></td>
         </tr>
         <tr>
-          <td>Link to scorecard</td>
+          <td>Lien vers la fiche</td>
           <td><code>cardURL</code></td>
           <td><code>&lt;trace:cardURL&gt;</code></td>
           <td><code>cardURL</code></td>
@@ -528,9 +520,9 @@
 
   <footer>
     <div class="footer-left">
-      <span>TRACE</span> — Content Accountability Standard &nbsp;·&nbsp;
-      Built on the Community Content Compact &nbsp;·&nbsp;
-      Cariboo Signals, May 2026
+      <span>TRACE</span> — Norme de responsabilité de contenu &nbsp;·&nbsp;
+      Fondée sur le Pacte de contenu communautaire &nbsp;·&nbsp;
+      Cariboo Signals, mai 2026
     </div>
     <div class="footer-right">
       <a href="https://github.com/zirnhelt/trace">github.com/zirnhelt/trace</a>
@@ -541,14 +533,14 @@
     const answers = {};
 
     const recommendations = {
-      web:     { name: 'JSON-LD',         why: 'Web pages and API responses are the native home for JSON-LD. It\'s indexed by search engines, visible in page source, and requires nothing more than a script tag.',          link: '/metadata/json-ld' },
-      feed:    { name: 'XML Namespace',   why: 'RSS and Atom feeds already use XML namespaces to extend the core spec. The trace: namespace drops into any feed without breaking existing readers.',                            link: '/metadata/xml' },
-      file:    { name: 'C2PA Assertion',  why: 'Embedding metadata inside the file itself is the only format that survives download and re-hosting. C2PA also adds cryptographic signing, so the assertion can be verified.',  link: '/metadata/c2pa' },
-      engines: { name: 'JSON-LD',         why: 'JSON-LD with a published schema at tracestandard.org is directly indexable by major search engines and structured-data aggregators.',                                          link: '/metadata/json-ld' },
-      apps:    { name: 'XML Namespace',   why: 'Podcast and feed reader apps parse RSS namespaces natively. The trace: namespace integrates with Podcasting 2.0 tooling without any app changes.',                            link: '/metadata/xml' },
-      platforms:{ name: 'C2PA Assertion', why: 'Content platforms that support C2PA (Adobe, Google, YouTube) will surface the TRACE assertion alongside other content credentials. Best for long-lived archival content.',    link: '/metadata/c2pa' },
-      anyone:  { name: 'C2PA Assertion',  why: 'If the metadata needs to travel with the file regardless of where it ends up, C2PA is the only format that travels inside the file itself.',                                   link: '/metadata/c2pa' },
-      unsure:  null,
+      web:      { name: 'JSON-LD',              why: 'Les pages web et les réponses API sont l\'environnement naturel du JSON-LD. Il est indexé par les moteurs de recherche, visible dans le source de la page, et ne nécessite rien de plus qu\'une balise script.',                                                        link: '/fr/metadata/json-ld' },
+      feed:     { name: 'Espace de noms XML',   why: 'Les flux RSS et Atom utilisent déjà des espaces de noms XML pour étendre le spec de base. L\'espace de noms trace: s\'intègre dans n\'importe quel flux sans rompre les lecteurs existants.',                                                                         link: '/fr/metadata/xml' },
+      file:     { name: 'Assertion C2PA',       why: 'Intégrer les métadonnées dans le fichier lui-même est le seul format qui survit au téléchargement et au ré-hébergement. C2PA ajoute également une signature cryptographique, de sorte que l\'assertion peut être vérifiée.',                                          link: '/fr/metadata/c2pa' },
+      engines:  { name: 'JSON-LD',              why: 'Le JSON-LD avec un schéma publié sur tracestandard.org est directement indexable par les principaux moteurs de recherche et agrégateurs de données structurées.',                                                                                                     link: '/fr/metadata/json-ld' },
+      apps:     { name: 'Espace de noms XML',   why: 'Les applications de podcast et de lecture de flux analysent les espaces de noms RSS nativement. L\'espace de noms trace: s\'intègre avec les outils Podcasting 2.0 sans aucune modification des applications.',                                                     link: '/fr/metadata/xml' },
+      platforms:{ name: 'Assertion C2PA',       why: 'Les plateformes de contenu qui supportent C2PA (Adobe, Google, YouTube) afficheront l\'assertion TRACE aux côtés d\'autres informations d\'identification de contenu. Idéal pour le contenu d\'archivage à longue durée de vie.',                                   link: '/fr/metadata/c2pa' },
+      anyone:   { name: 'Assertion C2PA',       why: 'Si les métadonnées doivent voyager avec le fichier peu importe où il se retrouve, C2PA est le seul format qui voyage à l\'intérieur du fichier lui-même.',                                                                                                           link: '/fr/metadata/c2pa' },
+      unsure:   null,
     };
 
     function answer(q, val) {
@@ -576,7 +568,7 @@
       document.getElementById('dr-why-text').textContent = rec.why;
       const link = document.getElementById('dr-link-el');
       link.href = rec.link;
-      link.textContent = `Read the ${rec.name} spec →`;
+      link.textContent = `Lire la spécification ${rec.name} →`;
       result.classList.add('visible');
     }
 
@@ -585,7 +577,7 @@
     }
 
     function highlightCard(name) {
-      const map = { 'JSON-LD': 'jsonld', 'XML Namespace': 'xml', 'C2PA Assertion': 'c2pa' };
+      const map = { 'JSON-LD': 'jsonld', 'Espace de noms XML': 'xml', 'Assertion C2PA': 'c2pa' };
       const target = map[name];
       document.querySelectorAll('.format-card').forEach(card => {
         if (card.dataset.format === target) {
