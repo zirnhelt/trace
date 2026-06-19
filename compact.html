@@ -403,5 +403,19 @@
     </div>
   </footer>
 
+<script>
+(function() {
+  var root = document.documentElement;
+  function upd() {
+    var n = document.querySelector('nav');
+    var b = document.querySelector('.proposal-notice');
+    var h = (n ? n.offsetHeight : 0) + (b ? b.offsetHeight : 0);
+    root.style.setProperty('--hh', h + 'px');
+    root.style.setProperty('scroll-padding-top', h + 'px');
+  }
+  upd();
+  window.addEventListener('resize', upd);
+})();
+</script>
 </body>
 </html>
