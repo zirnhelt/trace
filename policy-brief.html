@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Who Gets to Tell a Community's Story? — TRACE Policy Brief</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -18,7 +18,7 @@
       --paper:   #FAFAF7;
     }
 
-    html { font-size: 16px; scroll-behavior: smooth; scroll-padding-top: 84px; }
+    html { font-size: 16px; scroll-behavior: smooth; scroll-padding-top: calc(84px + env(safe-area-inset-top, 0px)); }
 
     body {
       background: var(--cream);
@@ -33,7 +33,7 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       background: var(--ink);
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 32px; height: 48px;
+      padding: 0 32px; padding-top: env(safe-area-inset-top, 0px); height: calc(48px + env(safe-area-inset-top, 0px));
     }
     .nav-wordmark {
       font-family: 'DM Mono', monospace;
@@ -50,7 +50,7 @@
     .nav-links a:hover, .nav-links a.active { color: var(--cream); }
 
     .proposal-notice {
-      position: fixed; top: 48px; left: 0; right: 0; z-index: 99;
+      position: fixed; top: calc(48px + env(safe-area-inset-top, 0px)); left: 0; right: 0; z-index: 99;
       background: #F5E6C8; border-bottom: 1px solid #D4B896;
       padding: 9px 32px;
       font-family: 'DM Mono', monospace;
@@ -94,7 +94,7 @@
     }
     .doc-nav {
       padding: 48px 32px 48px 48px;
-      position: sticky; top: 84px; height: fit-content;
+      position: sticky; top: calc(84px + env(safe-area-inset-top, 0px)); height: fit-content;
       border-right: 1px solid var(--rule);
     }
     .doc-nav-label {

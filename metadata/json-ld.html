@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>JSON-LD Metadata — TRACE Standard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,7 +19,7 @@
       --paper: #FAFAF7;
     }
 
-    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+    html { scroll-behavior: smooth; scroll-padding-top: calc(84px + env(safe-area-inset-top, 0px)); }
 
     body {
       font-family: 'DM Sans', sans-serif;
@@ -35,7 +35,8 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 48px;
+      height: calc(48px + env(safe-area-inset-top, 0px));
+      padding-top: env(safe-area-inset-top, 0px);
       background: var(--ink);
       display: flex;
       align-items: center;
@@ -77,7 +78,7 @@
     /* ── PROPOSAL NOTICE ── */
     .proposal-notice {
       position: fixed;
-      top: 48px;
+      top: calc(48px + env(safe-area-inset-top, 0px));
       left: 0;
       right: 0;
       background: #F5E6C8;
@@ -96,18 +97,18 @@
       grid-template-columns: 240px 1fr;
       gap: 0;
       min-height: 100vh;
-      margin-top: 84px;
+      margin-top: calc(84px + env(safe-area-inset-top, 0px));
     }
 
     /* ── SIDEBAR ── */
     .sidebar {
       position: sticky;
-      top: 84px;
+      top: calc(84px + env(safe-area-inset-top, 0px));
       align-self: start;
       background: var(--ink);
       color: var(--cream);
       padding: 24px;
-      height: calc(100vh - 84px);
+      height: calc(100vh - 84px - env(safe-area-inset-top, 0px));
       overflow-y: auto;
     }
 
